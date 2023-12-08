@@ -28,7 +28,7 @@ public class Board {
 		Scanner scan = new Scanner(System.in);
 		while (this.turnCount < 66) {
 			Tile current = tiles.get(turnCount);
-			System.out.print
+			System.out.print("");
 			int x = scan.nextInt();
 			int y = scan.nextInt();
 			System.out.println("Send x and y coordinates for your tile:");
