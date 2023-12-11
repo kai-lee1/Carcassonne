@@ -16,6 +16,7 @@ public class Tile {
 	
 	public Tile(String type) {
 		this.type = type;
+		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		switch(type) {
 			case "allcity":
 				this.types = new int[] {2, 2, 2, 2};

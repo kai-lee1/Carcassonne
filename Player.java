@@ -17,7 +17,15 @@ public class Player {
             ((board.board[x+1][y].types[0] != -1) || (board.board[x][y+1].types[0] != -1) || (board.board[x-1][y].types[0] != -1) || (board.board[x][y-1].types[0] != -1)) ) {
             
                 board.board[x][y] = board.tiles.get(board.turnCount);
-                System.out.println("tile has been placed. " + x + y + " the turn is " + board.tiles.get(board.turnCount));
+
+                //testing
+                System.out.println("tile has been placed. " + x + y);
+                for(int i=0; i < 4; i++){
+                    System.out.print(board.board[x][y].types[i]);
+                }
+                System.out.println("here is some stuff " + board.board[x][y].meeple[0]);
+                //testing
+
                 Scanner scan = new Scanner(System.in);
                 System.out.println("Place meeple? y/n");
                 String answer = scan.nextLine();
@@ -29,8 +37,11 @@ public class Player {
 
             return true;
         }
+        else{ 
+            System.out.println("invalid tile");
+            return false;
+        }
         
-        return false;
 
     }
 
@@ -58,15 +69,16 @@ public class Player {
         
         
         switch(position) { //checking what sides meeple is connected to 
-			case 1:
-				if(tile.types[0] == 2 || tile.types[1] == 2){
-
+			case 0, 2, 3, 5, 6, 8, 9, 11:
+				if(tile.types[(position+1)/3] == 2 || tile.types[(position+1)/3] == 2){
+                    //do something idk will figure out later
                 }
-                else if (tile.types[0] == 1)
 				break;
+            case 1, 4, 7, 10:
+
     }
     board.players[turn].meepleCount--;
-    System.out.println("meeple has been placed");
+    System.out.println("meeple has been placed. remaining meeples: " + board.players[turn].meepleCount);
 
 }
 
