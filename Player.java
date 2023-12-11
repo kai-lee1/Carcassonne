@@ -31,11 +31,39 @@ public class Player {
      * 
      * for meeple on a side - 
      */
+    public boolean checkSide(Tile tile, int side){
+        if (tile.types[side] == 2) { 
+            checkSide(tile, side-1);
+            checkSide(tile, side+1);
+        }
+        else if (tile.types[side] == 1){
+            return false;
+        }
+        else {return false; }
 
-    public void placeMeeple(int position, int x, int y, Board board){ //position is one of the 8 sides of tile
-        Tile tile = board.board[x][y];
-        tile.meeple = new int[] {board.turnCount % board.players.length, };
+        return true;
     }
+    public void placeMeeple(int position, int x, int y, Board board){ //position is one of the 12 sides of tile
+        Tile tile = board.board[x][y];
+        tile.meeple[0] = board.turnCount % board.players.length; 
+
+        switch(position) { //checking what sides meeple is connected to 
+			case 1:
+				if(tile.types[0] == 2 || tile.types[1] == 2){
+
+                }
+                else if (tile.types[0] == 1)
+				break;
+            case 3: 
+                if(tile.types[1] == 2 || tile.types[2] == 2)
+				break;
+            case 5: 
+                if(tile.types[2] == 2 || tile.types[3] == 2)
+				break;
+    }
+    meepleCount--;
+
+}
 
     
 }

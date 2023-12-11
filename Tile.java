@@ -5,13 +5,14 @@ public class Tile {
 	//Later: shields, cathedrals, lakes, churches
 	public int[] types;
 	public boolean[][] connected;
-	public int[] meeple; //array of length 10. [0] is the player, 1 is for type, 2-9 is for if the meeple is connected to the respective side. 0 if not connected, 1 if connected
+	public int[] meeple; //array of length 14. [0] is the player, 1 is for type, 2-13 is for if the meeple is connected to the respective side. 
+	                     //0 if not connected, 1 if connected. NOTE - 1 is the top left corner of the tile, not the top middle
 	public String type;
 	
 	public Tile(int[] types, boolean[][] connected) {
 		this.types = types;
 		this.connected = connected;
-		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0};
+		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	}
 	
 	public Tile(String type) {

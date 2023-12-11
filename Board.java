@@ -33,6 +33,8 @@ public class Board {
 			int y = scan.nextInt();
 			System.out.println("Send x and y coordinates for your tile:");
 			int turn = turnCount % players.length;
+
+			this.turnCount += 1;
 			
 		}
 	}
