@@ -1,4 +1,4 @@
-
+package carcassonne;
 
 public class EmptyTile extends Tile {
 
