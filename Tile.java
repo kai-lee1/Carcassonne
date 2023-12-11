@@ -1,3 +1,4 @@
+package carcassonne;
 
 public class Tile {
 	//types: 0->field 1->road 2->city
