@@ -17,5 +17,8 @@ public class CarcassonneMain {
 				System.out.print(board.tiles.get(i).types[j]);
 			System.out.println();
 		}
+
+		board.gameTime(board); //TODO i think theres a better way to do this
+
 	}
 }

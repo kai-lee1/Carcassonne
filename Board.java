@@ -13,26 +13,27 @@ public class Board {
 	
 	public Board(int playerCount) {
 		this.turnCount = 0;
-		this.board = new Tile[145][145];
+		this.board = new Tile[145][145]; //the game board
 		this.extended = new int[]{0, 0, 0, 0};
 		this.players = new Player[playerCount];
 		this.generatePlayers(playerCount);
 		this.generateBoard();
-		this.tiles = new ArrayList<Tile>();
+		this.tiles = new ArrayList<Tile>(); //draw pile
 		this.generateTiles();
 		
 		
 	}
 	
-	public void gameTime() {
+	public void gameTime(Board board) {
 		Scanner scan = new Scanner(System.in);
 		while (this.turnCount < 66) {
 			Tile current = tiles.get(turnCount);
-			System.out.print("");
+			int turn = turnCount % players.length;
+			System.out.print("Player " + turn + "'s turn.");
+			System.out.println("Send x and y coordinates for your tile:");
 			int x = scan.nextInt();
 			int y = scan.nextInt();
-			System.out.println("Send x and y coordinates for your tile:");
-			int turn = turnCount % players.length;
+			players[turn].placeTile(x, y, board);
 
 			this.turnCount += 1;
 			
@@ -55,11 +56,25 @@ public class Board {
 	}
 	
 	// if tile1's side matches that of tile2
+	public int otherSide(int side){
+		switch (side) {
+			case 0:
+				return 2;	
+			case 1:
+				return 3;
+			case 2: 
+				return 0;
+			case 3:
+				return 1;
+		}
+		return -1000000; //idk
+	}
+
 	public boolean validSide(Tile tile1, Tile tile2, int side) {
-		if (tile2.types[side - 2] == -1) {
+		if (tile2.types[otherSide(side)] == -1) {
 			return true;
 		}
-		return (tile2.types[side - 2] == tile1.types[side]);
+		return (tile2.types[otherSide(side)] == tile1.types[side]);
 	}
 	
 	public void generateTiles() {

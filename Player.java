@@ -1,4 +1,4 @@
-
+import java.util.Scanner;
 
 public class Player {
     public int meepleCount;
@@ -10,13 +10,23 @@ public class Player {
 
     public boolean placeTile(int x, int y, Board board) {
         if ((board.validSide(board.tiles.get(board.turnCount), board.board[x][y-1], 0)) && 
-        (board.validSide(board.tiles.get(board.turnCount), board.board[x+1][y], 1)) &&
-        (board.validSide(board.tiles.get(board.turnCount), board.board[x][y+1], 2)) &&
-        (board.validSide(board.tiles.get(board.turnCount), board.board[x-1][y], 3)) &&
-        (board.board[x][y].types[0] == -1) &&
-        ((board.board[x+1][y].types[0] != -1) || (board.board[x][y+1].types[0] != -1) || (board.board[x-1][y].types[0] != -1) || (board.board[x][y-1].types[0] != -1)) ) {
+            (board.validSide(board.tiles.get(board.turnCount), board.board[x+1][y], 1)) &&
+            (board.validSide(board.tiles.get(board.turnCount), board.board[x][y+1], 2)) &&
+            (board.validSide(board.tiles.get(board.turnCount), board.board[x-1][y], 3)) &&
+            (board.board[x][y].types[0] == -1) &&
+            ((board.board[x+1][y].types[0] != -1) || (board.board[x][y+1].types[0] != -1) || (board.board[x-1][y].types[0] != -1) || (board.board[x][y-1].types[0] != -1)) ) {
             
-            board.board[x][y] = board.tiles.get(board.turnCount);
+                board.board[x][y] = board.tiles.get(board.turnCount);
+                System.out.println("tile has been placed. " + x + y + " the turn is " + board.tiles.get(board.turnCount));
+                Scanner scan = new Scanner(System.in);
+                System.out.println("Place meeple? y/n");
+                String answer = scan.nextLine();
+                if (answer.equals("y")) {
+                    System.out.println("Where? (0-11)");
+                    int position = scan.nextInt();
+                    placeMeeple(position, x, y, board);
+                }
+
             return true;
         }
         
@@ -25,11 +35,7 @@ public class Player {
     }
 
     /*
-     * for meeple in a corner - check if either of the adjacent edges is a city. if yes, meeple is part of city. then check what the city is connected to.
-     * if neither of adjacent edges is city, check if they are roads.(run this check for both edges) if road, stop checking for that side.  
-     * if field, then check next adjacent side and repeat.
      * 
-     * for meeple on a side - 
      */
     public boolean checkSide(Tile tile, int side){
         if (tile.types[side] == 2) { 
@@ -43,10 +49,14 @@ public class Player {
 
         return true;
     }
+
+
     public void placeMeeple(int position, int x, int y, Board board){ //position is one of the 12 sides of tile
         Tile tile = board.board[x][y];
-        tile.meeple[0] = board.turnCount % board.players.length; 
-
+        int turn = board.turnCount % board.players.length;
+        tile.meeple[0] = turn; 
+        
+        
         switch(position) { //checking what sides meeple is connected to 
 			case 1:
 				if(tile.types[0] == 2 || tile.types[1] == 2){
@@ -54,16 +64,13 @@ public class Player {
                 }
                 else if (tile.types[0] == 1)
 				break;
-            case 3: 
-                if(tile.types[1] == 2 || tile.types[2] == 2)
-				break;
-            case 5: 
-                if(tile.types[2] == 2 || tile.types[3] == 2)
-				break;
     }
-    meepleCount--;
+    board.players[turn].meepleCount--;
+    System.out.println("meeple has been placed");
+
+}
 
 }
 
     
-}
+
