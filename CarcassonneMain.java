@@ -1,4 +1,3 @@
-package carcassonne;
 import java.util.Scanner;
 
 public class CarcassonneMain {
