@@ -96,9 +96,13 @@ public class Player {
                 else if farm, keep going around.
 
     if meeple is on a corner spot (0, 2, 3, 5, 6, 8, 9, 11):
-	    check if side is a city (int divide by 3). if so, connect meeple to all other spots on the same side.  
-        
-
+	    check if side is a city (int divide by 3).     
+            if so, meeple is part of city. connect to all other spots on the same side. check again for both adjacent sides. 
+        else if road, check the adjacent side (only the closest one). 
+            if city or road, stop. 
+            else if farm, connect with all three on that side. check again for the side after that.
+        else, the entire side must be a farm. 
+            connect to all other spots on the same side. check again for both adjacent sides. 
      * 
      */
     board.players[turn].meepleCount--;
