@@ -78,6 +78,29 @@ public class Player {
             case 1, 4, 7, 10:
 
     }
+
+    /*
+     * if meeple is in a middle spot (1,4,7,10): 
+	    check if that side is city (int divide by 3). 
+        if so, meeple is connected to its two adjacent spots. check the adjacent sides. 
+            if city, connect all three spots on that side and keep going around. if not, stop. 
+	
+	    else if, check if the side is a road. 
+            if road, find the side that has the other end of the road, and connect the middle spot on that one. 
+            (todo: unless the current tile is one of the blocked road ones)
+	
+	    else, the entire side must be a farm. 
+            connect the adjacent two spots. check the adjacent sides. 
+                if city, stop. 
+                else if road, connect the next spot with meeple and then stop.
+                else if farm, keep going around.
+
+    if meeple is on a corner spot (0, 2, 3, 5, 6, 8, 9, 11):
+	    check if side is a city (int divide by 3). if so, connect meeple to all other spots on the same side.  
+        
+
+     * 
+     */
     board.players[turn].meepleCount--;
     System.out.println("meeple has been placed. remaining meeples: " + board.players[turn].meepleCount);
 
