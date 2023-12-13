@@ -86,7 +86,20 @@ public class Player {
                         }
                     }
                 }
-                else if ((tile.types[(position)/3] == 1))
+                else if ((tile.types[(position)/3] == 1)) {
+                    tile.meeple[position + 2] = 1;
+                    for (int i = 0; i < 3; i++) {
+                        boolean cons = tile.connected[position/3][i];
+                        if (cons) {
+                            if (tile.types[i] == 1) {
+                                tile.meeple[(position + 3 * i) % 12 + 2] = 1;
+                            }
+                        }
+                    }
+                }
+                else if ((tile.types[(position)/3] == 0)) {
+                    
+                }
         }
         
         switch(position) { //checking what sides meeple is connected to 
