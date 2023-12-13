@@ -66,13 +66,50 @@ public class Player {
     public void placeMeeple(int position, int x, int y, Board board){ //position is one of the 12 sides of tile
         Tile tile = board.board[x][y];
         int turn = board.turnCount % board.players.length;
-        tile.meeple[0] = turn; 
+        tile.meeple[0] = turn;
         
+        // New switch, case 1 edge, case 0 & 2 different side corners
+        switch(position % 3) {
+            case 1:
+                if ((tile.types[(position)/3] == 2)) {
+                    tile.meeple[position + 2] = 1;
+                    tile.meeple[position + 1] = 1;
+                    tile.meeple[position + 3] = 1;
+                    for (int i = 0; i < 3; i++) {
+                        boolean cons = tile.connected[position/3][i];
+                        if (cons) {
+                            if (tile.types[i] == 2) {
+                                tile.meeple[(position + 3 * i) % 12 + 2] = 1;
+                                tile.meeple[(position + 3 * i + 1) % 12 + 2] = 1;
+                                tile.meeple[(position + 3 * i - 1) % 12 + 2] = 1;
+                            }
+                        }
+                    }
+                }
+                else if ((tile.types[(position)/3] == 1))
+        }
         
         switch(position) { //checking what sides meeple is connected to 
 			case 0, 2, 3, 5, 6, 8, 9, 11:
-				if(tile.types[(position+1)/3] == 2 || tile.types[(position+1)/3] == 2){
+				if((tile.types[(position+1)/3] == 2) || (tile.types[(position-1)/3] == 2)){
                     //do something idk will figure out later
+                    if(position == 0){
+                        tile.meeple[2] = 1;
+                        tile.meeple[3] = 1;
+                        tile.meeple[13] = 1;
+
+                    }
+                    else if(position == 11){
+                        tile.meeple[2] = 1;
+                        tile.meeple[12] = 1;
+                        tile.meeple[13] = 1;
+
+                    }
+                    else {
+                    tile.meeple[position+2] = 1;
+                    tile.meeple[position+1] = 1;
+                    tile.meeple[position+3] = 1;
+                    }
                 }
 				break;
             case 1, 4, 7, 10:
