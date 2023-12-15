@@ -23,7 +23,7 @@ public class Player {
 
 		/*
 		 * scoring:
-		 * 
+		 * Score every time new tile is placed (every turn). 
 		 */
 
 
