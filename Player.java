@@ -9,7 +9,19 @@ public class Player {
 		this.meepleCount = 7;
 	}
 
-	public boolean placeTile(int x, int y, Board board) {
+	public void placeTile(int x, int y, Board board) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("how many times do you want to rotate tile? ");
+		int rotateans = Integer.parseInt(scan.nextLine());
+		rotateTile(board.turnCount, rotateans, board);
+		System.out.println("new tile after rotating: ");
+		for (int j = 0; j < 4; j++) {
+			System.out.print(board.tiles.get(board.turnCount).types[j]);
+		}
+		System.out.println("");
+
+
+
 		if ((board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x + 1][y], 1))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x][y + 1], 2))
@@ -20,27 +32,53 @@ public class Player {
 
 			board.board[x][y] = board.tiles.get(board.turnCount);
 
-			// testing
-			System.out.println("tile has been placed. " + x + y);
-			for (int i = 0; i < 4; i++) {
-				System.out.print(board.board[x][y].types[i]);
-			}
-			System.out.println("here is some stuff " + board.board[x][y].meeple[0]);
+			// // testing
+			// System.out.println("tile has been placed. " + x + y);
+			// for (int i = 0; i < 4; i++) {
+			// 	System.out.print(board.board[x][y].types[i]);
+			// }
+			// System.out.println("here is the player number: " + board.board[x][y].meeple[0]);
 			// testing
 
-			Scanner scan = new Scanner(System.in);
+			
 			System.out.println("Place meeple? y/n");
 			String answer = scan.nextLine();
+
+			boolean worked = false;
+			int position;
 			if (answer.equals("y")) {
 				System.out.println("Where? (0-11)");
-				int position = scan.nextInt();
-				placeMeeple(position, x, y, board);
-			}
+				position = Integer.parseInt(scan.nextLine());
+				worked = placeMeeple(position, x, y, board);
 
-			return true;
-		} else {
-			System.out.println("invalid tile");
-			return false;
+				while (!(worked)){
+					System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
+					answer = scan.nextLine();
+					if (answer.equals("y")) {
+						System.out.println("Where? (0-11)");
+						position = Integer.parseInt(scan.nextLine());
+						worked = placeMeeple(position, x, y, board);
+					}
+					else {
+						break;
+					}
+
+					if (worked){ 
+						System.out.println("meeple has been placed");
+					}
+
+			}
+			}
+			
+
+		} 
+		
+		else {
+			System.out.println("invalid tile. try new tile coordinates");
+			int newansx = Integer.parseInt(scan.nextLine());
+			int newansy = Integer.parseInt(scan.nextLine());
+			placeTile(newansx, newansy, board);
+
 		}
 
 	}
@@ -84,10 +122,11 @@ public class Player {
 						}
 					}
 				}
+
 			} else if ((tile.types[(position) / 3] == 1)) {
 				tile.meeple[position + 2] = 1;
 				for (int i = 1; i < 4; i++) {
-					boolean cons = tile.connected[position / 3][i];
+					boolean cons = tile.connected[position / 3][i - 1];
 					if (cons) {
 						if (tile.types[(position / 3 + i) % 4] == 1) {
 							tile.meeple[(position + 3 * i) % 12 + 2] = 1;
@@ -100,7 +139,7 @@ public class Player {
 				tile.meeple[position + 1] = 1;
 				tile.meeple[position + 3] = 1;
 				for (int i = 1; i < 4; i++) {
-					boolean cons = tile.connected[position / 3][i];
+					boolean cons = tile.connected[position / 3][i - 1];
 					if (cons) {
 						if (tile.types[(position / 3 + i) % 4] == 0) {
 							tile.meeple[(position + 3 * i) % 12 + 2] = 1;
@@ -163,7 +202,31 @@ public class Player {
 			return false;
 		}
 		return true;
+
+		
 	}
+	//0 1 2 3
+	public void rotateTile(int turn, int rotate, Board board){  //rotating clockwise
+		int[] old;
+		boolean[] oldcon;
+		boolean[][] oldcono;
+		for (int i = 0; i < rotate; i++) {
+			old = board.tiles.get(turn).types.clone();
+			board.tiles.get(turn).types = new int[] {old[3], old[0], old[1], old[2]};
+			
+			for(int j = 0; j < 4; j++){
+				oldcon = board.tiles.get(turn).connected[j];
+				board.tiles.get(turn).connected[j] = new boolean[] {oldcon[2], oldcon[0], oldcon[1]};
+			}
+
+			oldcono = board.tiles.get(turn).connected;
+			board.tiles.get(turn).connected = new boolean[][] {oldcono[3], oldcono[0], oldcono[1], oldcono[2]};
+		}
+		
+
+
+	}
+		
 	/*
 	 * if meeple is in a middle spot (1,4,7,10): check if that side is city (int
 	 * divide by 3). if so, meeple is connected to its two adjacent spots. check the

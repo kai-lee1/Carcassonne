@@ -29,10 +29,15 @@ public class Board {
 		while (this.turnCount < 66) {
 			Tile current = tiles.get(turnCount);
 			int turn = turnCount % players.length;
-			System.out.print("Player " + turn + "'s turn.");
+			System.out.print("Player " + turn + "'s turn. ");
+			System.out.println("here is the current tile to be placed: ");
+			for (int j = 0; j < 4; j++)
+				System.out.print(board.tiles.get(board.turnCount).types[j]);
+			System.out.println("");
+			System.out.println("starting tile is 2101");
 			System.out.println("Send x and y coordinates for your tile:");
-			int x = scan.nextInt();
-			int y = scan.nextInt();
+			int x = Integer.parseInt(scan.nextLine());
+			int y = Integer.parseInt(scan.nextLine());
 			players[turn].placeTile(x, y, board);
 
 			this.turnCount += 1;
