@@ -7,7 +7,7 @@ public class Board {
 	public Tile[][] board;
 	//-x x -y y
 	public int[] extended;
-	public Player[] players;
+	public Player[] players;  //playercount is players.size
 	public ArrayList<Tile> tiles;
 	public int turnCount;
 	
@@ -20,6 +20,7 @@ public class Board {
 		this.generateBoard();
 		this.tiles = new ArrayList<Tile>(); //draw pile
 		this.generateTiles();
+
 		
 		
 	}
@@ -39,11 +40,12 @@ public class Board {
 			int x = Integer.parseInt(scan.nextLine());
 			int y = Integer.parseInt(scan.nextLine());
 			players[turn].placeTile(x, y, board);
-
 			this.turnCount += 1;
-			
+			GUI.gui(board);
 		}
 	}
+
+
 	
 	public void generatePlayers(int playerCount) {
 		for (int i = 0; i < playerCount; i++) {

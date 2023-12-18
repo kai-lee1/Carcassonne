@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 public class Player {
 	public int meepleCount;
+	public int score;
 
 	public Player() {
 		this.meepleCount = 7;
+		this.score = 0;
 	}
 
 	public void placeTile(int x, int y, Board board) {
@@ -28,7 +30,7 @@ public class Player {
 
 
 
-		if ((board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))
+		if ((board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))  //if the tile is valid
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x + 1][y], 1))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x][y + 1], 2))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x - 1][y], 3))
@@ -45,7 +47,6 @@ public class Player {
 			// }
 			// System.out.println("here is the player number: " + board.board[x][y].meeple[0]);
 			// testing
-
 			
 			System.out.println("Place meeple? y/n");
 			String answer = scan.nextLine();
@@ -72,8 +73,94 @@ public class Player {
 				}
 				if (worked){ 
 						System.out.println("meeple has been placed");
+						meepleCount--;
 					}
 			}
+
+//for(int i = 0; i < 12; i++){
+
+			//scoring
+			//boolean[] checked = new boolean[] {false, false, false, false};
+				for (int i = 0; i < 4; i++){ //each side of the tile we are on
+					// if (checked[i]){
+					// 	continue;
+					// }
+					int tx = x;
+					int ty = y;
+					int type = board.board[tx][ty].types[i];
+					boolean continual = true;
+					switch (type) {
+
+
+					//if hitting the original tile, divide roadLength by 2 
+	
+					case 1: //if not field
+						int roadLength = 0;
+						while (continual) {
+							
+							 //get the checking tile coordinates, depending on which side of the current tile we are checking
+							Tile checkingTile;
+							 switch (i){
+								case 0:
+									checkingTile = board.board[tx][y-1];
+									break;
+								case 1:
+									checkingTile = board.board[tx+1][ty];
+									break;
+								case 2:
+									checkingTile = board.board[tx][ty+1];
+									break;
+								case 3: 
+									checkingTile = board.board[tx-1][ty];
+									break; 
+								default:
+									checkingTile = board.board[0][0];
+							}
+
+							if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
+								roadLength = 0;
+								break;
+							}
+
+							if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
+								continue;
+							}
+
+							roadLength++;
+
+							if (tx == x && ty == y && roadLength != 0){
+								roadLength = roadLength / 2;
+								break;
+							}
+
+							for (int j = 0; j < 3; j++){ //
+								if(checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 1){ //check if any of the other 3 sides on checkingTile are roads
+									continual = true;
+									break;
+								}
+								else { //if no other roads are connected, 
+									continual = false;
+									if(checkingTile.types[(i+j) % 4] == -1){
+										roadLength = 0;
+									}
+								}
+							}
+							
+							}
+
+							score += roadLength;
+							break;
+						
+
+						case 2: //city
+							int citySize = 0;
+
+
+
+					}
+					}
+				
+			
 			
 
 		} 
@@ -88,9 +175,16 @@ public class Player {
 
 	}
 
-	/*
+	/*end of placeTile
 	 * 
 	 */
+
+
+
+
+
+
+
 	public boolean checkSide(Tile tile, int side) {
 		if (tile.types[side] == 2) {
 			checkSide(tile, side - 1);
