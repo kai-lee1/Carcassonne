@@ -143,4 +143,12 @@ public class Tile {
 				break;
 		}
 	}
+	
+	public String toString() {
+		String ret = "";
+		for (int j = 0; j < 4; j++)
+			ret = ret.concat(Integer.toString(this.types[j]));
+			// System.out.println(ret);
+		return ret;
+	}
 }
