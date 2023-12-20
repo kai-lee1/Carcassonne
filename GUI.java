@@ -29,7 +29,7 @@ public class GUI {
         }
         for (int i = 1; i < 134; i++) {
             for (int k = 0; k < 133; k++) {
-                strdata[k][i] = data[k][i - 1].toString();
+                strdata[k][i] = data[i - 1][k].toString();
                 // System.out.println(data[i][j].toString());
             }
         }
