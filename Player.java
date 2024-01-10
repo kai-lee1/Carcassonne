@@ -76,11 +76,30 @@ public class Player {
 						meepleCount--;
 					}
 			}
+			scoring(x, y, board);
 
-//for(int i = 0; i < 12; i++){
+//for(int i = 0; i < 12; i++){ varun more like vabad
+		} 
+		
+		else {
+			System.out.println("invalid tile. try new tile coordinates");
+			int newansx = Integer.parseInt(scan.nextLine());
+			int newansy = Integer.parseInt(scan.nextLine());
+			placeTile(newansx, newansy, board);
 
-			//scoring
+		}
+
+	}
+
+	/*end of placeTile
+	 * 
+	 */
+
+
+	
+	public void scoring(int x, int y, Board board) {
 			//boolean[] checked = new boolean[] {false, false, false, false};
+			
 				for (int i = 0; i < 4; i++){ //each side of the tile we are on
 					// if (checked[i]){
 					// 	continue;
@@ -90,7 +109,6 @@ public class Player {
 					int type = board.board[tx][ty].types[i];
 					boolean continual = true;
 					switch (type) {
-
 
 					//if hitting the original tile, divide roadLength by 2 
 	
@@ -123,7 +141,7 @@ public class Player {
 							}
 
 							if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
-								continue;
+								continue; //TODO this doesn't make sense. figure it out later
 							}
 
 							roadLength++;
@@ -145,7 +163,6 @@ public class Player {
 									}
 								}
 							}
-							
 							}
 
 							score += roadLength;
@@ -154,33 +171,38 @@ public class Player {
 
 						case 2: //city
 							int citySize = 0;
+							Tile checkingTile;
+							 switch (i){
+								case 0:
+									checkingTile = board.board[tx][y-1];
+									break;
+								case 1:
+									checkingTile = board.board[tx+1][ty];
+									break;
+								case 2:
+									checkingTile = board.board[tx][ty+1];
+									break;
+								case 3: 
+									checkingTile = board.board[tx-1][ty];
+									break; 
+								default:
+									checkingTile = board.board[0][0];
+							}
+
+							if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
+								roadLength = 0;
+								break;
+							}
+
+							
+
 
 
 
 					}
 					}
-				
-			
-			
-
-		} 
-		
-		else {
-			System.out.println("invalid tile. try new tile coordinates");
-			int newansx = Integer.parseInt(scan.nextLine());
-			int newansy = Integer.parseInt(scan.nextLine());
-			placeTile(newansx, newansy, board);
-
-		}
-
+				//-----------------------end of scoring-----------------------------------
 	}
-
-	/*end of placeTile
-	 * 
-	 */
-
-
-
 
 
 
