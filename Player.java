@@ -76,7 +76,9 @@ public class Player {
 						meepleCount--;
 					}
 			}
-			scoring(x, y, board);
+			int[] meeplesPresent = new int[board.players.length]; //0 if no meeple from that player exists in the current search, 1 if yes
+			int scoore = 0;
+			scoring(x, y, board, scoore, meeplesPresent);
 
 //for(int i = 0; i < 12; i++){ varun more like vabad
 		} 
@@ -97,10 +99,10 @@ public class Player {
 
 
 	
-	public void scoring(int x, int y, Board board) {
+	public void scoring(int x, int y, Board board, int score, int[] meeplesPresent) {
 			//boolean[] checked = new boolean[] {false, false, false, false};
 			
-				for (int i = 0; i < 4; i++){ //each side of the tile we are on
+				c: for (int i = 0; i < 4; i++) { //each side of the tile we are on
 					// if (checked[i]){
 					// 	continue;
 					// }
@@ -108,98 +110,134 @@ public class Player {
 					int ty = y;
 					int type = board.board[tx][ty].types[i];
 					boolean continual = true;
+					
 					switch (type) {
-
-					//if hitting the original tile, divide roadLength by 2 
 	
-					case 1: //if not field
-						int roadLength = 0;
-						while (continual) {
-							
-							 //get the checking tile coordinates, depending on which side of the current tile we are checking
-							Tile checkingTile;
-							 switch (i){
-								case 0:
-									checkingTile = board.board[tx][y-1];
-									break;
-								case 1:
-									checkingTile = board.board[tx+1][ty];
-									break;
-								case 2:
-									checkingTile = board.board[tx][ty+1];
-									break;
-								case 3: 
-									checkingTile = board.board[tx-1][ty];
-									break; 
-								default:
-									checkingTile = board.board[0][0];
-							}
+							case 1: //------------------------------ROAD-----------------------------------
+								int roadLength = 1;
+								while (continual) {
+									
+									//get the checking tile coordinates, depending on which side of the current tile we are checking
+									Tile checkingTile;
+									switch (i){
+										case 0:
+											checkingTile = board.board[tx][y-1];
+											break;
+										case 1:
+											checkingTile = board.board[tx+1][ty];
+											break;
+										case 2:
+											checkingTile = board.board[tx][ty+1];
+											break;
+										case 3: 
+											checkingTile = board.board[tx-1][ty];
+											break; 
+										default:
+											checkingTile = board.board[0][0];
+									}
 
-							if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
-								roadLength = 0;
-								break;
-							}
+									if (checkingTile.meeple[1] == 1) { //if there is a meeple on checkingTile's road
+										meeplesPresent[checkingTile.meeple[0]] = 1;
+										break; 
+									}
 
-							if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
-								continue; //TODO this doesn't make sense. figure it out later
-							}
-
-							roadLength++;
-
-							if (tx == x && ty == y && roadLength != 0){
-								roadLength = roadLength / 2;
-								break;
-							}
-
-							for (int j = 0; j < 3; j++){ //
-								if(checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 1){ //check if any of the other 3 sides on checkingTile are roads
-									continual = true;
-									break;
-								}
-								else { //if no other roads are connected, 
-									continual = false;
-									if(checkingTile.types[(i+j) % 4] == -1){
+									if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
 										roadLength = 0;
+										break;
+									}
+
+									if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
+										continue c;
+									}
+
+									roadLength++;
+
+									if (tx == x && ty == y && roadLength != 0){ //if hitting the original tile, double count must have happened (circle road). divide by 2
+										roadLength = (roadLength + 1)/ 2;
+										break;
+									}
+
+									for (int j = 0; j < 3; j++){ 
+										if(checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 1){ //check if any of the other 3 sides on checkingTile are roads
+											continual = true;
+											break;
+										}
+										else { //if no other roads are connected, 
+											continual = false;
+											if(checkingTile.types[(i+j) % 4] == -1){
+												roadLength = 0;
+											}
+										}
 									}
 								}
-							}
-							}
 
-							score += roadLength;
-							break;
-						
+								for (i = 0; i < meeplesPresent.length; i++){
+									if (meeplesPresent[i] == 1){
+										board.players[i].score += roadLength;
+									System.out.println("here is the score of player " + i + ": " + score);
+									}
+								}
+								break c;
+								
+							case 2: //-------------------------------------CITY-------------------------------------------------
+								int citySize = 0;
+								Tile checkingTile;
+									switch (i){
+									case 0:
+										checkingTile = board.board[tx][y-1];
+										break;
+									case 1:
+										checkingTile = board.board[tx+1][ty];
+										break;
+									case 2:
+										checkingTile = board.board[tx][ty+1];
+										break;
+									case 3: 
+										checkingTile = board.board[tx-1][ty];
+										break; 
+									default:
+										checkingTile = board.board[0][0];
+								}
 
-						case 2: //city
-							int citySize = 0;
-							Tile checkingTile;
-							 switch (i){
-								case 0:
-									checkingTile = board.board[tx][y-1];
+								if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
+									roadLength = 0;
 									break;
-								case 1:
-									checkingTile = board.board[tx+1][ty];
-									break;
-								case 2:
-									checkingTile = board.board[tx][ty+1];
-									break;
-								case 3: 
-									checkingTile = board.board[tx-1][ty];
-									break; 
-								default:
-									checkingTile = board.board[0][0];
-							}
+								}
 
-							if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
-								roadLength = 0;
-								break;
-							}
+								if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
+									continue c; 
+								}
 
-							
+								citySize++;
+
+								for (int j = 0; j < 3; j++){ 
+										if(checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 2){ //check if any of the other 3 sides on checkingTile are cities
+											continual = true;
+											break;
+										}
+										else { //if no other roads are connected, 
+											continual = false;
+											if(checkingTile.types[(i+j) % 4] == -1){
+												citySize = 0;
+											}
+										}
+									}
+
+								
+								for (i = 0; i < meeplesPresent.length; i++){
+									if (meeplesPresent[i] == 1){
+										board.players[i].score += (citySize * 2);
+									System.out.println("here is the score of player " + i + ": " + score);
+									}
+								}
+								break c;
 
 
 
 
-					}
+
+
+						}
 					}
 				//-----------------------end of scoring-----------------------------------
 	}
