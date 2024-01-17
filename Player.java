@@ -30,7 +30,7 @@ public class Player {
 
 
 
-		if ((board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))  //if the tile is valid
+		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))  //if the tile is valid
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x + 1][y], 1))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x][y + 1], 2))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x - 1][y], 3))
@@ -101,7 +101,7 @@ public class Player {
 	
 	public void scoring(int x, int y, Board board, int score, int[] meeplesPresent) {
 			//boolean[] checked = new boolean[] {false, false, false, false};
-			
+			System.out.println("the scoring method has been called");
 				c: for (int i = 0; i < 4; i++) { //each side of the tile we are on
 					// if (checked[i]){
 					// 	continue;
