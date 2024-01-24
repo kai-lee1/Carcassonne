@@ -77,7 +77,7 @@ public class Player {
 					}
 			}
 			int[] meeplesPresent = new int[board.players.length]; //0 if no meeple from that player exists in the current search, 1 if yes
-			int scoore = 0;
+			Integer scoore = 1;
 			scoring(x, y, board, scoore, meeplesPresent);
 
 //for(int i = 0; i < 12; i++){ varun more like vabad
@@ -110,7 +110,7 @@ public class Player {
 					int ty = y;
 					int type = board.board[tx][ty].types[i];
 					boolean continual = true;
-					
+					System.out.println("we are looping"); //checking all 4 tiles around current tile
 					switch (type) {
 	
 						case 1: //------------------------------ROAD-----------------------------------
@@ -137,7 +137,7 @@ public class Player {
 								}
 
 								if (checkingTile.meeple[1] == 1) { //if there is a meeple on checkingTile's road
-									meeplesPresent[checkingTile.meeple[0]] = 1;
+									meeplesPresent[checkingTile.meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 									break; 
 								}
 

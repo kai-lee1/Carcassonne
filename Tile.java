@@ -148,6 +148,12 @@ public class Tile {
 		String ret = "";
 		for (int j = 0; j < 4; j++)
 			ret = ret.concat(Integer.toString(this.types[j]));
+			for (int x : meeple){
+				if (x > 0){
+					ret+=x;
+					break;
+				}
+			}
 			// System.out.println(ret);
 		return ret;
 	}
