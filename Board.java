@@ -41,7 +41,7 @@ public class Board {
 			int y = Integer.parseInt(scan.nextLine());
 			players[turn].placeTile(x, y, board);
 			this.turnCount += 1;
-			GUI.gui(board);
+			CarcassonneMain.drawGUI(board);
 		}
 	}
 

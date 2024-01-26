@@ -1,7 +1,11 @@
 package carcassonne;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 public class CarcassonneMain {
+	//Frame initialization
+	static JFrame f = new JFrame();
 	public static void main (String[] args) {
 		Board board = new Board(2);
 		// /*
@@ -18,10 +22,15 @@ public class CarcassonneMain {
 		// 		System.out.print(board.tiles.get(i).types[j]);
 		// 	System.out.println();
 		// }
-
-		GUI.gui(board);
+		
+		
+		GUI.gui(board, f);
 		
 		board.gameTime(board); //TODO i think theres a better way to do this
 
+	}
+
+	public static void drawGUI (Board board){
+		GUI.gui(board, f);
 	}
 }

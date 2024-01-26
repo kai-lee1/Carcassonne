@@ -179,72 +179,72 @@ public class Player {
 							}
 							break c;
 								
-							case 2: // CITY
-								int citySize = 0;
-				
-								while (continual) {
-									// get the checking tile coordinates, depending on which side of the current tile we are checking
-									Tile checkingTile;
-									switch (i) {
-										case 0:
-											checkingTile = board.board[tx][y - 1];
-											break;
-										case 1:
-											checkingTile = board.board[tx + 1][ty];
-											break;
-										case 2:
-											checkingTile = board.board[tx][ty + 1];
-											break;
-										case 3:
-											checkingTile = board.board[tx - 1][ty];
-											break;
-										default:
-											checkingTile = board.board[0][0];
-									}
-				
-									if (checkingTile.meeple[1] == 1) { // if there is a meeple on checkingTile's city
-										meeplesPresent[checkingTile.meeple[0]] = 1;
+						case 2: // CITY
+							int citySize = 0;
+			
+							while (continual) {
+								// get the checking tile coordinates, depending on which side of the current tile we are checking
+								Tile checkingTile;
+								switch (i) {
+									case 0:
+										checkingTile = board.board[tx][y - 1];
 										break;
-									}
-				
-									if (checkingTile.types[0] == -1) { // if checkingTile is empty, stop the while loop.
-										citySize = 0;
+									case 1:
+										checkingTile = board.board[tx + 1][ty];
 										break;
-									}
-				
-									if (checkingTile.types[(i + 2) % 4] != 2) {  // i+2 % 4 is the corresponding side on the checking tile.
-										continue c;
-									}
-				
-									citySize++;
-				
-									if (tx == x && ty == y && citySize != 0) { // if hitting the original tile, double count must have happened (enclosed city). divide by 2
-										citySize = (citySize + 1) / 2;
+									case 2:
+										checkingTile = board.board[tx][ty + 1];
 										break;
-									}
-				
-									for (int j = 0; j < 3; j++) {
-										if (checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 2) {
-											// check if any of the other 3 sides on checkingTile are cities
-											continual = true;
-											break;
-										} else {
-											// if no other cities are connected,
-											continual = false;
-											if (checkingTile.types[(i + j) % 4] == -1) {
-												citySize = 0;
-											}
+									case 3:
+										checkingTile = board.board[tx - 1][ty];
+										break;
+									default:
+										checkingTile = board.board[0][0];
+								}
+			
+								if (checkingTile.meeple[1] == 1) { // if there is a meeple on checkingTile's city
+									meeplesPresent[checkingTile.meeple[0]] = 1;
+									break;
+								}
+			
+								if (checkingTile.types[0] == -1) { // if checkingTile is empty, stop the while loop.
+									citySize = 0;
+									break;
+								}
+			
+								if (checkingTile.types[(i + 2) % 4] != 2) {  // i+2 % 4 is the corresponding side on the checking tile.
+									continue c;
+								}
+			
+								citySize++;
+			
+								if (tx == x && ty == y && citySize != 0) { // if hitting the original tile, double count must have happened (enclosed city). divide by 2
+									citySize = (citySize + 1) / 2;
+									break;
+								}
+			
+								for (int j = 0; j < 3; j++) {
+									if (checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 2) {
+										// check if any of the other 3 sides on checkingTile are cities
+										continual = true;
+										break;
+									} else {
+										// if no other cities are connected,
+										continual = false;
+										if (checkingTile.types[(i + j) % 4] == -1) {
+											citySize = 0;
 										}
 									}
 								}
-				
-								for (int k = 0; k < meeplesPresent.length; k++) {
-									if (meeplesPresent[k] == 1) {
-										board.players[k].score += (citySize * 2);
-										System.out.println("here is the score of player " + k + ": " + board.players[k].score);
-									}
+							}
+			
+							for (int k = 0; k < meeplesPresent.length; k++) {
+								if (meeplesPresent[k] == 1) {
+									board.players[k].score += (citySize * 2);
+									System.out.println("here is the score of player " + k + ": " + board.players[k].score);
 								}
-								break c;
+							}
+							break c;
 						}
 				}
 				//-----------------------end of scoring-----------------------------------

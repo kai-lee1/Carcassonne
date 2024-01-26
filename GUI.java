@@ -11,12 +11,9 @@ import java.lang.Integer;
 
 public class GUI {
     // Constructor
-    public static void gui(Board board) {
-        // Frame initialization
-        JFrame f;
+    public static void gui(Board board, JFrame f) {
         // Table
         JTable j;
-        f = new JFrame();
  
         // Frame Title
         f.setTitle("JTable Example");
@@ -57,4 +54,19 @@ public class GUI {
         // Frame Visible = true
         f.setVisible(true);
     }
+
+    // public void guiupdate(Board board, JFrame f, JTable j){
+    //     Tile[][] data = board.board;
+    //     String[][] strdata = new String[133][134];
+    //     for (int i = 0; i < 133; i++) {
+    //         strdata[i][0] = Integer.toString(i);
+    //     }
+    //     for (int i = 1; i < 134; i++) {
+    //         for (int k = 0; k < 133; k++) {
+    //             strdata[k][i] = data[i - 1][k].toString();
+    //             // System.out.println(data[i][j].toString());
+    //         }
+    //     }
+        
+    // }
 }
