@@ -45,10 +45,12 @@ public class GUI {
         // Initializing the JTable
         j = new JTable(strdata, columnNames);
         j.setBounds(133, 133, 500, 133);
-        j.setRowHeight(80);
+        j.setRowHeight(220);
         j.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for (int i = 1; i < 133; i++)
+        for (int i = 1; i < 133; i++) {
             j.getColumnModel().getColumn(i).setCellRenderer(new ImageRenderer());
+            j.getColumnModel().getColumn(i).setPreferredWidth(220);;
+        }
 
         // adding it to JScrollPane
         JScrollPane sp = new JScrollPane(j);
