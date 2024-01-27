@@ -107,15 +107,17 @@ class ImageRenderer extends DefaultTableCellRenderer {
 
     public ImageRenderer() {
         super();
-        System.out.println("made");
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        lbl.setText("(" + Integer.toString(row) + ", " + Integer.toString(column) + ")");
-        if (value.equals("emptytile.png"))
-            lbl.setIcon(blank);
-        else if (value.equals("edgecityroadstraight.png"))
+        // if (value.equals("emptytile.png"))
+        //     lbl.setIcon(blank);
+        if (value.equals("edgecityroadstraight.png"))
             lbl.setIcon(starttile);
+        else {
+            lbl.setIcon(blank);
+            lbl.setText("(" + Integer.toString(column - 1) + ", " + Integer.toString(row) + ")");
+        }
         return lbl;
     }
 }

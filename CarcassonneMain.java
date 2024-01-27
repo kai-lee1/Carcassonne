@@ -15,6 +15,8 @@ public class CarcassonneMain {
 	}
 
 	public static void drawGUI (Board board){
+		f.getContentPane().removeAll(); //or remove(JComponent)
+		f.repaint();
 		GUI.gui(board, f);
 	}
 }
