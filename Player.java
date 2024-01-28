@@ -377,6 +377,7 @@ public class Player {
 		int[] old;
 		boolean[] oldcon;
 		boolean[][] oldcono;
+		board.tiles.get(turn).rotations = board.tiles.get(turn).rotations + rotate;
 		for (int i = 0; i < rotate; i++) {
 			old = board.tiles.get(turn).types.clone();
 			board.tiles.get(turn).types = new int[] {old[3], old[0], old[1], old[2]};
@@ -389,7 +390,6 @@ public class Player {
 			oldcono = board.tiles.get(turn).connected;
 			board.tiles.get(turn).connected = new boolean[][] {oldcono[3], oldcono[0], oldcono[1], oldcono[2]};
 		}
-
 	}
 
 	//public void score (Board board, )

@@ -85,6 +85,9 @@ public class Board {
 	}
 	
 	public void generateTiles() {
+		for (int i = 0; i < 3; i++) {
+			tiles.add(new Tile("edgecityroadstraight"));
+		}
 		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("allcity"));
 		}
@@ -121,9 +124,6 @@ public class Board {
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("edgecityroadt"));
 		}
-		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadstraight"));
-		}
 		for (int i = 0; i < 8; i++) {
 			tiles.add(new Tile("straightroad"));
 		}
@@ -138,6 +138,6 @@ public class Board {
 		}
 		
 		
-		Collections.shuffle(tiles);
+		// Collections.shuffle(tiles);
 	}
 }
