@@ -110,7 +110,7 @@ public class Player {
 					int ty = y;
 					int type = board.board[tx][ty].types[i];
 					boolean continual = true;
-					System.out.println("we are looping"); //checking all 4 tiles around current tile
+					System.out.println("we are looping in scoring(). checking 4 tiles around!"); //checking all 4 tiles around current tile
 					switch (type) {
 	
 						case 1: //------------------------------ROAD-----------------------------------
@@ -136,7 +136,8 @@ public class Player {
 										checkingTile = board.board[0][0];
 								}
 
-								if (checkingTile.meeple[1] == 1) { //if there is a meeple on checkingTile's road
+								if (checkingTile.meeple[1] == 1 || board.board[tx][ty].meeple[1] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
+									System.out.println("the thing has happened");
 									meeplesPresent[checkingTile.meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 									break; 
 								}
@@ -147,7 +148,7 @@ public class Player {
 								}
 
 								if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
-									continue c;
+									continue c; //if corresponding side exists but is not a road, check the next checkingTile
 								}
 
 								roadLength++;
