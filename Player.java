@@ -147,7 +147,7 @@ public class Player {
 									break;
 								}
 
-								if (checkingTile.types[(i + 2) % 4] != 1){  //i+2 % 4 is the corresponding side on the checking tile.
+								if (checkingTile.types[(i + 2) % 4] != 1 ){  //i+2 % 4 is the corresponding side on the checking tile.
 									continue c; //if corresponding side exists but is not a road, check the next checkingTile
 								}
 

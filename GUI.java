@@ -54,7 +54,7 @@ public class GUI {
         //f.add(sp);
         f.getContentPane().add(BorderLayout.CENTER, sp);
         // Frame Size
-        f.setSize(500, 133);
+        
         // Frame Visible = true
         f.setVisible(true);
     }

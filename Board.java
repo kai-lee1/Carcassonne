@@ -86,58 +86,58 @@ public class Board {
 	
 	public void generateTiles() {
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadstraight"));
+			tiles.add(new Tile("edgecityroadstraight")); //done
 		}
 		for (int i = 0; i < 1; i++) {
-			tiles.add(new Tile("allcity"));
+			tiles.add(new Tile("allcity")); //done
 		}
 		for (int i = 0; i < 4; i++) {
-			tiles.add(new Tile("1not"));
+			tiles.add(new Tile("1not"));  //done
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("1road"));
+			tiles.add(new Tile("1road")); //done
 		}
 		for (int i = 0; i < 5; i++) {
-			tiles.add(new Tile("cornercity"));
+			tiles.add(new Tile("cornercity")); //done
 		}
 		for (int i = 0; i < 5; i++) {
-			tiles.add(new Tile("cornercityroad"));
+			tiles.add(new Tile("cornercityroad")); //done
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("bowtiecity"));
+			tiles.add(new Tile("bowtiecity")); //done
 		}
 		for (int i = 0; i < 2; i++) {
-			tiles.add(new Tile("2adjacentcity"));
+			tiles.add(new Tile("2adjacentcity")); //done
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("bowtiefield"));
+			tiles.add(new Tile("bowtiefield")); //done
 		}
 		for (int i = 0; i < 5; i++) {
-			tiles.add(new Tile("1edgecity"));
+			tiles.add(new Tile("1edgecity")); //done
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadleft"));
+			tiles.add(new Tile("edgecityroadleft")); //done 
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadright"));
+			tiles.add(new Tile("edgecityroadright")); //done
 		}
 		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadt"));
+			tiles.add(new Tile("edgecityroadt")); //done
 		}
 		for (int i = 0; i < 8; i++) {
-			tiles.add(new Tile("straightroad"));
+			tiles.add(new Tile("straightroad")); //done
 		}
 		for (int i = 0; i < 9; i++) {
-			tiles.add(new Tile("Lroad"));
+			tiles.add(new Tile("Lroad")); //done
 		}
 		for (int i = 0; i < 4; i++) {
-			tiles.add(new Tile("Troad"));
+			tiles.add(new Tile("Troad")); //done
 		}
 		for (int i = 0; i < 1; i++) {
-			tiles.add(new Tile("+road"));
+			tiles.add(new Tile("+road")); //done
 		}
 		
 		
-		// Collections.shuffle(tiles);
+		//Collections.shuffle(tiles);
 	}
 }

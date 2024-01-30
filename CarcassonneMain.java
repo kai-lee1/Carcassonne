@@ -9,6 +9,7 @@ public class CarcassonneMain {
 	public static void main(String[] args) {
 		Board board = new Board(2);
 		GUI.gui(board, f);
+		f.setSize(500, 133);
 
 		board.gameTime(board); // TODO i think theres a better way to do this
 
