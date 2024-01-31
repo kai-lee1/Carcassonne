@@ -137,10 +137,10 @@ public class Player {
 								}
 
 								System.out.println(board.board[tx][ty].meeple[1]);
-								
+
 								if (checkingTile.meeple[1] == 1 || board.board[tx][ty].meeple[1] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
 									System.out.println("the thing has happened!11!111!111!1");
-									meeplesPresent[checkingTile.meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+									meeplesPresent[board.board[tx][ty].meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 									break; 
 								}
 
