@@ -110,7 +110,7 @@ public class Player {
 					int ty = y;
 					int type = board.board[tx][ty].types[i];
 					boolean continual = true;
-					System.out.println("we are looping in scoring(). checking 4 tiles around!"); //checking all 4 tiles around current tile
+					System.out.println("we are looping in scoring(). checking 4 tiles around!"); // around current tile
 					switch (type) {
 	
 						case 1: //------------------------------ROAD-----------------------------------
@@ -136,8 +136,10 @@ public class Player {
 										checkingTile = board.board[0][0];
 								}
 
+								System.out.println(board.board[tx][ty].meeple[1]);
+								
 								if (checkingTile.meeple[1] == 1 || board.board[tx][ty].meeple[1] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
-									System.out.println("the thing has happened");
+									System.out.println("the thing has happened!11!111!111!1");
 									meeplesPresent[checkingTile.meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 									break; 
 								}
@@ -178,7 +180,7 @@ public class Player {
 								System.out.println("here is the score of player " + i + ": " + score);
 								}
 							}
-							break c;
+							break;
 								
 						case 2: // CITY
 							int citySize = 0;
@@ -245,8 +247,9 @@ public class Player {
 									System.out.println("here is the score of player " + k + ": " + board.players[k].score);
 								}
 							}
-							break c;
+							break; //TODO why is this here?
 						}
+						System.out.println("the switch has been ended");
 				}
 				//-----------------------end of scoring-----------------------------------
 	}
