@@ -142,7 +142,7 @@ class ImageRenderer extends DefaultTableCellRenderer {
         else if (((Tile) value).type.equals("+road")) {
             img = new ImageIcon(plusroad.getImage());
         }
-
+        lbl.setText("(" + Integer.toString(column) + ", " + Integer.toString(row) + ")");
         img = new RotatedIcon(img, Rotate.ABOUT_CENTER);
         ((RotatedIcon) img).setDegrees(((Tile) value).rotations * 90.0);
         lbl.setIcon(img);
