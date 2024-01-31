@@ -278,6 +278,7 @@ public class Player {
 		// New switch, case 1 edge, case 0 & 2 different side corners
 		switch (position % 3) {
 		case 1:
+			tile.meeple[1] = board.board[x][y].types[position / 3];
 			if ((tile.types[(position) / 3] == 2)) {
 				//know it isn't 0 or 11
 				tile.meeple[position + 2] = 1;
@@ -351,6 +352,7 @@ public class Player {
 					tile.meeple[(position + 8) % 12 + 2] = 1;
 				}
 			}
+			tile.meeple[1] = 0;
 			break;
 		case 2:
 			if (tile.types[(position) / 3] != 1 || tile.types[((position) / 3 + 1) % 3] == 0) {
@@ -368,6 +370,7 @@ public class Player {
 					tile.meeple[(position - 8) % 12 + 2] = 1;
 				}
 			}
+			tile.meeple[1] = 0;
 			break;
 		default:
 			return false;
