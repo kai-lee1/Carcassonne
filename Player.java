@@ -28,8 +28,6 @@ public class Player {
 		 * Score every time new tile is placed (every turn). 
 		 */
 
-
-
 		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))  //if the tile is valid
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x + 1][y], 1))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x][y + 1], 2))
@@ -39,14 +37,6 @@ public class Player {
 						|| (board.board[x - 1][y].types[0] != -1) || (board.board[x][y - 1].types[0] != -1))) {
 
 			board.board[x][y] = board.tiles.get(board.turnCount);
-
-			// // testing
-			// System.out.println("tile has been placed. " + x + y);
-			// for (int i = 0; i < 4; i++) {
-			// 	System.out.print(board.board[x][y].types[i]);
-			// }
-			// System.out.println("here is the player number: " + board.board[x][y].meeple[0]);
-			// testing
 			
 			System.out.println("Place meeple? y/n");
 			String answer = scan.nextLine();
@@ -80,7 +70,6 @@ public class Player {
 			Integer scoore = 1;
 			scoring(x, y, board, scoore, meeplesPresent);
 
-//for(int i = 0; i < 12; i++){ varun more like vabad
 		} 
 		
 		else {
@@ -140,7 +129,7 @@ public class Player {
 
 								if (checkingTile.meeple[1] == 1 || board.board[tx][ty].meeple[1] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
 									System.out.println("the thing has happened!11!111!111!1");
-									meeplesPresent[board.board[tx][ty].meeple[0]] = 1; //TODO  meeplesPresent is not being changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+									meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
 									break; 
 								}
 
@@ -182,7 +171,7 @@ public class Player {
 							}
 							break;
 								
-						case 2: // CITY
+						case 2: //------------------------------CITY-----------------------------------
 							int citySize = 0;
 			
 							while (continual) {
@@ -248,8 +237,15 @@ public class Player {
 								}
 							}
 							break; //TODO why is this here?
-						}
-						System.out.println("the switch has been ended");
+						
+
+						case 3: //------------------------------FARM-----------------------------------
+							System.out.println("switch has encountered a farm");
+							break;
+					}
+					System.out.println("the switch has been ended");
+
+						
 				}
 				//-----------------------end of scoring-----------------------------------
 	}
@@ -257,18 +253,17 @@ public class Player {
 
 
 
-	public boolean checkSide(Tile tile, int side) {
-		if (tile.types[side] == 2) {
-			checkSide(tile, side - 1);
-			checkSide(tile, side + 1);
-		} else if (tile.types[side] == 1) {
-			return false;
-		} else {
-			return false;
-		}
-
-		return true;
-	}
+	// public boolean checkSide(Tile tile, int side) {          //seems to be useless
+	// 	if (tile.types[side] == 2) {
+	// 		checkSide(tile, side - 1);
+	// 		checkSide(tile, side + 1);
+	// 	} else if (tile.types[side] == 1) {
+	// 		return false;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// 	return true;
+	// }
 
 	public boolean placeMeeple(int position, int x, int y, Board board) { // position is one of the 12 sides of tile
 		Tile tile = board.board[x][y];
@@ -376,9 +371,8 @@ public class Player {
 			return false;
 		}
 		return true;
-
-		
 	}
+	
 	//0 1 2 3
 	public void rotateTile(int turn, int rotate, Board board){  //rotating clockwise
 		int[] old;
