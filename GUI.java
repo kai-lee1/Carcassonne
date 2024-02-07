@@ -1,10 +1,10 @@
 package carcassonne;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.table.*;
-
-import carcassonne.RotatedIcon.Rotate;
 
 import java.lang.Integer;
 
@@ -79,10 +79,6 @@ class ImageRenderer extends DefaultTableCellRenderer {
     ImageIcon troad = new ImageIcon(getClass().getResource("Troad.png"));
     ImageIcon meeple = new ImageIcon(getClass().getResource("meeple.png"));
 
-    public ImageRenderer() {
-        super();
-    }
-
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         // if (value.equals("emptytile.png"))
         //     lbl.setIcon(blank);
@@ -148,9 +144,17 @@ class ImageRenderer extends DefaultTableCellRenderer {
             img2 = new ImageIcon(meeple.getImage());
         }
         lbl.setText("(" + Integer.toString(column) + ", " + Integer.toString(row) + ")");
-        img = new RotatedIcon(img, Rotate.ABOUT_CENTER);
-        ((RotatedIcon) img).setDegrees(((Tile) value).rotations * 90.0);
-        lbl.setIcon(img);
+        // img = new RotatedIcon(img, Rotate.ABOUT_CENTER);
+        // ((RotatedIcon) img).setDegrees(((Tile) value).rotations * 90.0);
+        BufferedImage combined = new BufferedImage(220, 220, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = combined.createGraphics();
+        AffineTransform old = g.getTransform();
+        g.rotate(((Tile) value).rotations * Math.PI / 2, 110, 110);
+        g.drawImage(((ImageIcon) img).getImage(), 0, 0, null);
+        g.setTransform(old);
+        g.drawImage(meeple.getImage(), 0, 0, null);
+        g.dispose();
+        lbl.setIcon(new ImageIcon(combined));
         return lbl;
     }
 }

@@ -273,6 +273,7 @@ public class Player {
 		Tile tile = board.board[x][y];
 		int turn = board.turnCount % board.players.length;
 		tile.meeple[0] = turn;
+		tile.meeple[14] = position;
 
 		// New switch, case 1 edge, case 0 & 2 different side corners
 		switch (position % 3) {

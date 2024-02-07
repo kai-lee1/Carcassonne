@@ -6,7 +6,7 @@ public class Tile {
 	public int[] types;
 	public int rotations;
 	public boolean[][] connected;
-	public int[] meeple; //array of length 14. [0] is the player, 1 is for type, 2-13 is for if the meeple is connected to the respective side. 
+	public int[] meeple; //array of length 15. [0] is the player, 1 is for type, 2-13 is for if the meeple is connected to the respective side. 
 	                     //0 if not connected, 1 if connected. NOTE - 0 is top left (https://tinyurl.com/yeyzkd96)
 	public String type;
 	
@@ -14,13 +14,13 @@ public class Tile {
 		this.type = "";
 		this.types = types;
 		this.connected = connected;
-		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
 		this.rotations = 0;
 	}
 	
 	public Tile(String type) {
 		this.type = type;
-		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
 		switch(type) {
 			case "allcity":
 				this.types = new int[] {2, 2, 2, 2};
