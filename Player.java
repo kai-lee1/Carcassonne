@@ -68,7 +68,7 @@ public class Player {
 			}
 			int[] meeplesPresent = new int[board.players.length]; //0 if no meeple from that player exists in the current search, 1 if yes
 			Integer scoore = 1;
-			scoring(x, y, board, scoore, meeplesPresent);
+			// scoring(x, y, board, scoore, meeplesPresent);
 
 		} 
 		
@@ -269,6 +269,7 @@ public class Player {
 		Tile tile = board.board[x][y];
 		int turn = board.turnCount % board.players.length;
 		tile.meeple[0] = turn;
+		tile.meeple[14] = position;
 
 		// New switch, case 1 edge, case 0 & 2 different side corners
 		switch (position % 3) {
