@@ -67,8 +67,11 @@ public class Player {
 					}
 			}
 			int[] meeplesPresent = new int[board.players.length]; //0 if no meeple from that player exists in the current search, 1 if yes
-			Integer scoore = 1;
-			// scoring(x, y, board, scoore, meeplesPresent);
+			Integer scoore = 0;
+			scoring(x, y, board, scoore, meeplesPresent);
+			System.out.println("scoore is: " + scoore);
+			System.out.println("score of player 1: " + board.players[0].score);
+			System.out.println("score of player 2: " + board.players[1].score);
 
 		} 
 		
@@ -163,12 +166,13 @@ public class Player {
 								}
 							}
 
-							for (i = 0; i < meeplesPresent.length; i++){
-								if (meeplesPresent[i] == 1){
-									board.players[i].score += roadLength;
-								System.out.println("here is the score of player " + i + ": " + score);
+							for (int k = 0; k < meeplesPresent.length; k++){
+								if (meeplesPresent[k] == 1){
+									board.players[k].score += roadLength;
+								System.out.println("here is the score of player " + k + ": " + score);
 								}
 							}
+							System.out.println("about to break out of road case");
 							break;
 								
 						case 2: //------------------------------CITY-----------------------------------
@@ -239,7 +243,7 @@ public class Player {
 							break; //TODO why is this here?
 						
 
-						case 3: //------------------------------FARM-----------------------------------
+						case 0: //------------------------------FARM-----------------------------------
 							System.out.println("switch has encountered a farm");
 							break;
 					}
