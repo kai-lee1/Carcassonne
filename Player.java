@@ -141,6 +141,24 @@ public class Player {
 									break;
 								}
 
+								for (int j = 1; j < 12; j +=3) { //checking the sides that 
+									if(board.board[tx][ty].meeple[j+3] == 1){
+										if(j == 1 && board.board[tx][ty - 1].types[2] == -1){
+											break c;
+										}
+										if(j == 4 && board.board[tx + 1][ty].types[3] == -1){
+											break c;
+										}
+										if(j == 7 && board.board[tx][ty + 1].types[0] == -1){
+											break c;
+										}
+										if(j == 10 && board.board[tx - 1][ty].types[1] == -1){
+											break c;
+										}
+
+									}
+								}
+
 								if (checkingTile.types[(i + 2) % 4] != 1 ){  //i+2 % 4 is the corresponding side on the checking tile.
 									continue c; //if corresponding side exists but is not a road, check the next checkingTile
 								}
