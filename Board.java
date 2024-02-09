@@ -85,6 +85,9 @@ public class Board {
 	}
 	
 	public void generateTiles() {
+		for (int i = 0; i < 4; i++) {
+			tiles.add(new Tile("Troad")); //done
+		}
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("edgecityroadstraight")); //done
 		}
@@ -130,14 +133,11 @@ public class Board {
 		for (int i = 0; i < 9; i++) {
 			tiles.add(new Tile("Lroad")); //done
 		}
-		for (int i = 0; i < 4; i++) {
-			tiles.add(new Tile("Troad")); //done
-		}
 		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("+road")); //done
 		}
 		
 		
-		Collections.shuffle(tiles);
+		//Collections.shuffle(tiles);
 	}
 }

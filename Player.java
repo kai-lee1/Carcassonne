@@ -107,7 +107,8 @@ public class Player {
 	
 						case 1: //------------------------------ROAD-----------------------------------
 							int roadLength = 1;
-							while (continual) {
+							
+							while (continual) {  //-----------------------while loop -----------------------------------
 								
 								//get the checking tile coordinates, depending on which side of the current tile we are checking
 								Tile checkingTile;
@@ -130,16 +131,18 @@ public class Player {
 
 								System.out.println(board.board[tx][ty].meeple[1]);
 
-								if (checkingTile.meeple[1] == 1 || board.board[tx][ty].meeple[1] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
-									System.out.println("the thing has happened!11!111!111!1");
-									meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
-									break; 
-								}
-
 								if (checkingTile.types[0] == -1) { //if checkingTile is empty, stop the while loop. 
 									roadLength = 0;
 									break;
 								}
+
+								if (/*checkingTile.meeple[(i*3+1+6)%12 + 2] == 1 || */ board.board[tx][ty].meeple[i*3+1 + 2] == 1) { //if there is a meeple on checkingTile's road. meeple[1] is for the 
+									System.out.println("the thing has happened!11!111!111!1"); 
+									meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
+									break; 
+								}
+
+
 
 								// for (int j = 1; j < 12; j +=3) { //checking the sides that     //commented out for now. idk what this does
 								// 	if(board.board[tx][ty].meeple[j+3] == 1){
@@ -177,7 +180,7 @@ public class Player {
 									}
 									else { //if no other roads are connected, 
 										continual = false;
-										if(checkingTile.types[(i+j) % 4] == -1){
+										if(checkingTile.types[0] == -1){
 											roadLength = 0;
 										}
 									}
