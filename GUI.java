@@ -5,7 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.table.*;
-
+import java.util.Arrays;
 import java.lang.Integer;
 
 public class GUI {
@@ -152,9 +152,61 @@ class ImageRenderer extends DefaultTableCellRenderer {
         g.rotate(((Tile) value).rotations * Math.PI / 2, 110, 110);
         g.drawImage(((ImageIcon) img).getImage(), 0, 0, null);
         g.setTransform(old);
-        g.drawImage(meeple.getImage(), 0, 0, null);
+        if (((Tile) value).meeple[14] != -1) {
+            int[] pos = meeplePos(((Tile) value).meeple[14]);
+            System.out.println(Arrays.toString(pos));
+            g.drawImage(meeple.getImage(), pos[0], pos[1], null);
+        }
         g.dispose();
         lbl.setIcon(new ImageIcon(combined));
         return lbl;
+    }
+
+    int[] meeplePos(int pos) {
+        int[] xy = new int[2];
+        switch(pos) {
+            case 0:
+                xy = new int[] {42, 14};
+                break;
+            case 1:
+                xy = new int[] {110, 14};
+                break;
+            case 2:
+                xy = new int[] {178, 14};
+                break;
+            case 3:
+                xy = new int[] {206, 42};
+                break;
+            case 4:
+                xy = new int[] {206, 110};
+                break;
+            case 5:
+                xy = new int[] {206, 178};
+                break;
+            case 6:
+                xy = new int[] {178, 206};
+                break;
+            case 7:
+                xy = new int[] {110, 206};
+                break;
+            case 8:
+                xy = new int[] {42, 206};
+                break;
+            case 9:
+                xy = new int[] {14, 178};
+                break;
+            case 10:
+                xy = new int[] {14, 110};
+                break;
+            case 11:
+                xy = new int[] {14, 42};
+                break;
+            default:
+                xy = new int[] {0, 0};
+                break;
+        }
+        xy[0] -= 14;
+        xy[1] -= 14;
+        return xy;
     }
 }
