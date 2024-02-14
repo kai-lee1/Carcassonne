@@ -2,6 +2,7 @@ package carcassonne;
 
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Player {
 	public int meepleCount;
@@ -277,15 +278,84 @@ class Scorer {
 	public void scoring(int x, int y, Board board, int score, int[] meeplesPresent) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
 		System.out.println("the scoring method has been called");
+		int[] checkedSides = new int[] { -1 };
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
 			int tx = x;
 			int ty = y;
 			int type = board.board[tx][ty].types[i];
 			boolean continual = true;
+			if (checkedSides[0] == i)
+				continue;
+
 			System.out.println("we are looping in scoring(). checking 4 tiles around!"); // around current tile
 			switch (type) {
 
 				case 1: // ------------------------------ROAD-----------------------------------
+					int[] xy;
+					switch (i) {
+						case 0:
+							xy = new int[] { tx, ty - 1 };
+							break;
+						case 1:
+							xy = new int[] { tx + 1, ty };
+							break;
+						case 2:
+							xy = new int[] { tx, ty + 1 };
+							break;
+						case 3:
+							xy = new int[] { tx - 1, ty };
+							break;
+						default:
+							xy = new int[] { 0, 0 };
+							break;
+					}
+					tiletracker.add(board.board[x][y]);
+					roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
+					int s = -1; // i is the previousSide of just-placed tile, j is a counter for
+					// board.board[x][y]
+					for (int j = 0; j < 3; j++) {
+						// if (board.board[x][y].connected[previousSide][j] &&
+						// board.board[x][y].types[j] == 1) {
+						if (i < j) {
+							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 1) {
+								s = j + 1;
+								break;
+							}
+						} else if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 1) {
+							s = j;
+							break;
+						}
+						// }
+					}
+					if (s == -1)
+						continue c;
+					switch (s) {
+						case 0:
+							xy = new int[] { tx, ty - 1 };
+							break;
+						case 1:
+							xy = new int[] { tx + 1, ty };
+							break;
+						case 2:
+							xy = new int[] { tx, ty + 1 };
+							break;
+						case 3:
+							xy = new int[] { tx - 1, ty };
+							break;
+						default:
+							xy = new int[] { 0, 0 };
+							break;
+					}
+					roadScore(xy[0], xy[1], board, meeplesPresent, (s + 2) % 4);
+					for (int k = 0; k < tiletracker.size(); k++) {
+						if (tiletracker.get(k).types[0] == -1)
+							continue c;
+					}
+					for (int k = 0; k < meeplesPresent.length; k++) { // score is actually
+						if (meeplesPresent[k] == 1) {
+							board.players[k].score += tiletracker.size();
+						}
+					}
 					break;
 
 				case 2: // ------------------------------CITY-----------------------------------
@@ -368,106 +438,91 @@ class Scorer {
 		// -----------------------end of scoring-----------------------------------
 	}
 
-	public int roadScore(int x, int y, Board board, int score, int[] meeplesPresent, int previousSide, int roadLength) {
-		roadLength = 1;
+	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
 		int tx = x;
 		int ty = y;
-		boolean continual = true;
-		int i = -1;
-		for (int j = 0; j < 4; j++) {
-			if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 1) {
-				if (previousSide < j)
-					i = j + 1;
-				else
-					i = j;
-				break;
-			}
+		int i = -1; // i is the previousSide of just-placed tile, j is a counter for
+					// board.board[x][y]
+
+		System.out.println(Arrays.toString(board.board[tx][ty].meeple));
+		if (board.board[tx][ty].meeple[previousSide * 3 + 1 + 2] == 1) {
+			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
+			// meeple is on
+			System.out.println("the thing has happened!11!111!111!1");
+			meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
 		}
 
-		if (i == -1) {
-			return 1;
+		for (int j = 0; j < 3; j++) {
+			// if (board.board[x][y].connected[previousSide][j] &&
+			// board.board[x][y].types[j] == 1) {
+			if (previousSide < j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 1) {
+					i = j + 1;
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 1) {
+				i = j;
+				break;
+			}
+			// }
 		}
 
 		tiletracker.add(board.board[x][y]);
 
-		while (continual) { // -----------------------while loop -----------------------------------
-
-			// get the checking tile coordinates, depending on which side of the current
-			// tile we are checking
-			Tile checkingTile;
-			switch (i) {
-				case 0:
-					checkingTile = board.board[tx][y - 1];
-					break;
-				case 1:
-					checkingTile = board.board[tx + 1][ty];
-					break;
-				case 2:
-					checkingTile = board.board[tx][ty + 1];
-					break;
-				case 3:
-					checkingTile = board.board[tx - 1][ty];
-					break;
-				default:
-					checkingTile = board.board[0][0];
-			}
-
-			System.out.println(board.board[tx][ty].meeple[1]);
-
-			if (checkingTile.types[0] == -1) { // if checkingTile is empty, stop the while loop.
-				roadLength = 0;
-				break;
-			}
-
-			if (/* checkingTile.meeple[(i*3+1+6)%12 + 2] == 1 || */ board.board[tx][ty].meeple[i * 3 + 1
-					+ 2] == 1) { // if there is a meeple on checkingTile's road. meeple[1] is tile type that
-									// meeple is on
-				System.out.println("the thing has happened!11!111!111!1");
-				meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
-				break;
-			}
-
-			if (checkingTile.types[(i + 2) % 4] != 1) { // i+2 % 4 is the corresponding side on the checking
-														// tile.
-				continue c; // if corresponding side exists but is not a road, check the next checkingTile
-				// apparently this is a failsafe (i dont understand what it does)
-			}
-
-			roadLength++;
-
-			if (tx == x && ty == y && roadLength != 0) { // if hitting the original tile, double count must
-															// have happened (circle road). divide by 2
-				roadLength = (roadLength + 1) / 2;
-				break;
-			}
-
-			for (int j = 0; j < 3; j++) {
-				if (checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 1) { 
-					// check if any of the other 3 sides on checkingTile are roads
-					continual = true;
-					break;
-				} else { // if no other roads are connected,
-					continual = false;
-					if (checkingTile.types[0] == -1) {
-						roadLength = 0;
-					}
-				}
-			}
+		if (i == -1) {
+			return;
 		}
 
-		for (int k = 0; k < meeplesPresent.length; k++) { // score is actually changed here
-			if (meeplesPresent[k] == 1) {
-				board.players[k].score += roadLength;
-				System.out.println("here is the score of player " + k + ": " + score);
-			}
+		// get the checking tile coordinates, depending on which side of the current
+		// tile we are checking
+		Tile checkingTile;
+		int[] xy;
+		switch (i) {
+			case 0:
+				checkingTile = board.board[tx][y - 1];
+				xy = new int[] { tx, ty - 1 };
+				break;
+			case 1:
+				checkingTile = board.board[tx + 1][ty];
+				xy = new int[] { tx + 1, ty };
+				break;
+			case 2:
+				checkingTile = board.board[tx][ty + 1];
+				xy = new int[] { tx, ty + 1 };
+				break;
+			case 3:
+				checkingTile = board.board[tx - 1][ty];
+				xy = new int[] { tx - 1, y };
+				break;
+			default:
+				checkingTile = board.board[0][0];
+				xy = new int[] { 0, 0 };
+				break;
 		}
-		if (){
-			roadScore(scorer, x, y, board, score, meeplesPresent, 0, roadLength);
+
+		System.out.println(board.board[tx][ty].meeple[1]);
+
+		if (checkingTile.types[0] == -1) { // if checkingTile is empty, add empty tile to tiletracker
+			tiletracker.add(new EmptyTile());
 		}
-			
-		System.out.println("about to break out of road case");
-		break;
+
+		System.out.println(Arrays.toString(new int[] { tx, ty }));
+
+		if (board.board[x][y] == board.board[this.x][this.y]) { // if hitting the original tile, double count must
+			// have happened (circle road). divide by 2
+			return;
+		}
+
+		// for (int k = 0; k < meeplesPresent.length; k++) { // score is actually
+		// changed here
+		// if (meeplesPresent[k] == 1) {
+		// board.players[k].score += roadLength;
+		// System.out.println("here is the score of player " + k + ": " + score);
+		// }
+		// }
+
+		roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
+
 	}
-
 
 }
