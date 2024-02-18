@@ -68,11 +68,9 @@ public class Player {
 					meepleCount--;
 				}
 			}
-			int[] meeplesPresent = new int[board.players.length]; // 0 if no meeple from that player exists in the
-																	// current search, 1 if yes
 			Integer scoore = 0;
 			Scorer scorer = new Scorer(board, x, y);
-			scorer.scoring(x, y, board, scoore, meeplesPresent);
+			scorer.scoring(x, y, board, scoore);
 			System.out.println("scoore is: " + scoore);
 			System.out.println("score of player 1: " + board.players[0].score);
 			System.out.println("score of player 2: " + board.players[1].score);
@@ -88,23 +86,6 @@ public class Player {
 		}
 
 	}
-
-	/*
-	 * end of placeTile
-	 * 
-	 */
-
-	// public boolean checkSide(Tile tile, int side) { //seems to be useless
-	// if (tile.types[side] == 2) {
-	// checkSide(tile, side - 1);
-	// checkSide(tile, side + 1);
-	// } else if (tile.types[side] == 1) {
-	// return false;
-	// } else {
-	// return false;
-	// }
-	// return true;
-	// }
 
 	public boolean placeMeeple(int position, int x, int y, Board board) { // position is one of the 12 sides of tile
 		Tile tile = board.board[x][y];
@@ -134,12 +115,22 @@ public class Player {
 
 				} else if ((tile.types[(position) / 3] == 1)) {
 					tile.meeple[position + 2] = 1;
-					for (int i = 1; i < 4; i++) {
-						boolean cons = tile.connected[position / 3][i - 1];
-						if (cons) {
-							if (tile.types[(position / 3 + i) % 4] == 1) {
-								tile.meeple[(position + 3 * i) % 12 + 2] = 1;
+					// for (int i = 1; i < 4; i++) {
+					// 	if (tile.connected[position / 3][i - 1]) {
+					// 		if (tile.types[(position / 3 + i) % 4] == 1) {
+					// 			tile.meeple[(position + 3 * i) % 12 + 2] = 1;
+					// 		}
+					// 	}
+					// }
+					for (int j = 0; j < 3; j++) {
+						if (position / 3 < j) {
+							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 1) {
+								tile.meeple[(j + 1) * 3 + 2] = 1;
+								break;
 							}
+						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 1) {
+							tile.meeple[j * 3 + 2] = 1;
+							break;
 						}
 					}
 				} else {
@@ -275,15 +266,18 @@ class Scorer {
 		this.y = y;
 	}
 
-	public void scoring(int x, int y, Board board, int score, int[] meeplesPresent) {
+	public void scoring(int x, int y, Board board, int score) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
 		System.out.println("the scoring method has been called");
 		int[] checkedSides = new int[] { -1 };
+		int[] meeplesPresent = new int[board.players.length];
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
 			int tx = x;
 			int ty = y;
 			int type = board.board[tx][ty].types[i];
+			meeplesPresent = new int[board.players.length];
 			boolean continual = true;
+			
 			if (checkedSides[0] == i)
 				continue;
 
@@ -309,6 +303,12 @@ class Scorer {
 							xy = new int[] { 0, 0 };
 							break;
 					}
+					if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
+						// if there is a meeple on checkingTile's road. meeple[1] is tile type that
+						// meeple is on
+						System.out.println("the thing has happened!11!111!111!1");
+						meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
+					}
 					tiletracker.add(board.board[x][y]);
 					roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 					int s = -1; // i is the previousSide of just-placed tile, j is a counter for
@@ -327,8 +327,18 @@ class Scorer {
 						}
 						// }
 					}
-					if (s == -1)
+					if (s == -1) {
+						for (int k = 0; k < tiletracker.size(); k++) {
+							if (tiletracker.get(k).types[0] == -1)
+								continue c;
+						}
+						for (int k = 0; k < meeplesPresent.length; k++) { // score is actually
+							if (meeplesPresent[k] == 1) {
+								board.players[k].score += tiletracker.size();
+							}
+						}
 						continue c;
+					}
 					switch (s) {
 						case 0:
 							xy = new int[] { tx, ty - 1 };
@@ -347,6 +357,7 @@ class Scorer {
 							break;
 					}
 					roadScore(xy[0], xy[1], board, meeplesPresent, (s + 2) % 4);
+					checkedSides[0] = s;
 					for (int k = 0; k < tiletracker.size(); k++) {
 						if (tiletracker.get(k).types[0] == -1)
 							continue c;
