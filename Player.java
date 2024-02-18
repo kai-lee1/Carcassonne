@@ -269,7 +269,7 @@ class Scorer {
 	public void scoring(int x, int y, Board board, int score) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
 		System.out.println("the scoring method has been called");
-		int[] checkedSides = new int[] { -1 };
+		int[] checkedSides = new int[] { 0, 0, 0, 0 };
 		int[] meeplesPresent = new int[board.players.length];
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
 			int tx = x;
@@ -278,8 +278,8 @@ class Scorer {
 			meeplesPresent = new int[board.players.length];
 			boolean continual = true;
 			
-			if (checkedSides[0] == i)
-				continue;
+			if (checkedSides[i] == 1)
+				continue c;
 
 			System.out.println("we are looping in scoring(). checking 4 tiles around!"); // around current tile
 			switch (type) {
@@ -309,14 +309,15 @@ class Scorer {
 						System.out.println("the thing has happened!11!111!111!1");
 						meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
 					}
-					tiletracker.add(board.board[x][y]);
+					if (!tiletracker.contains(board.board[x][y]))
+						tiletracker.add(board.board[x][y]);
 					roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 					int s = -1; // i is the previousSide of just-placed tile, j is a counter for
 					// board.board[x][y]
 					for (int j = 0; j < 3; j++) {
 						// if (board.board[x][y].connected[previousSide][j] &&
 						// board.board[x][y].types[j] == 1) {
-						if (i < j) {
+						if (i <= j) {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 1) {
 								s = j + 1;
 								break;
@@ -357,7 +358,7 @@ class Scorer {
 							break;
 					}
 					roadScore(xy[0], xy[1], board, meeplesPresent, (s + 2) % 4);
-					checkedSides[0] = s;
+					checkedSides[s] = 1;
 					for (int k = 0; k < tiletracker.size(); k++) {
 						if (tiletracker.get(k).types[0] == -1)
 							continue c;
@@ -466,7 +467,7 @@ class Scorer {
 		for (int j = 0; j < 3; j++) {
 			// if (board.board[x][y].connected[previousSide][j] &&
 			// board.board[x][y].types[j] == 1) {
-			if (previousSide < j) {
+			if (previousSide <= j) {
 				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 1) {
 					i = j + 1;
 					break;
@@ -478,7 +479,8 @@ class Scorer {
 			// }
 		}
 
-		tiletracker.add(board.board[x][y]);
+		if (!tiletracker.contains(board.board[x][y]))
+			tiletracker.add(board.board[x][y]);
 
 		if (i == -1) {
 			return;
@@ -519,7 +521,7 @@ class Scorer {
 
 		System.out.println(Arrays.toString(new int[] { tx, ty }));
 
-		if (board.board[x][y] == board.board[this.x][this.y]) { // if hitting the original tile, double count must
+		if (x == this.x && y == this.y) { // if hitting the original tile, double count must
 			// have happened (circle road). divide by 2
 			return;
 		}

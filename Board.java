@@ -85,6 +85,9 @@ public class Board {
 	}
 	
 	public void generateTiles() {
+		for (int i = 0; i < 9; i++) {
+			tiles.add(new Tile("Lroad")); //done
+		}
 		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("Troad")); //done
 		}
@@ -129,9 +132,6 @@ public class Board {
 		}
 		for (int i = 0; i < 8; i++) {
 			tiles.add(new Tile("straightroad")); //done
-		}
-		for (int i = 0; i < 9; i++) {
-			tiles.add(new Tile("Lroad")); //done
 		}
 		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("+road")); //done

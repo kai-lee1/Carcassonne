@@ -1,7 +1,7 @@
 package carcassonne;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
+import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -48,7 +48,7 @@ public class GUI {
         // adding it to JScrollPane
         JScrollPane sp = new JScrollPane(j);
         //f.add(sp);
-        f.getContentPane().add(BorderLayout.CENTER, sp);
+        f.getContentPane().add(sp);
         // Frame Size
         
         // Frame Visible = true
