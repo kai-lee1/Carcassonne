@@ -399,7 +399,7 @@ class Scorer {
 						if (i > j) {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 2) {
 								// check if any of the other 3 sides on checkingTile are cities
-								//if so, add that side number to 
+								//if so, add that side number to sides
 								// TODO add this code
 								sides.add(j);
 							}
