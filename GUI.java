@@ -154,7 +154,6 @@ class ImageRenderer extends DefaultTableCellRenderer {
         g.setTransform(old);
         if (((Tile) value).meeple[14] != -1) {
             int[] pos = meeplePos(((Tile) value).meeple[14]);
-            System.out.println(Arrays.toString(pos));
             g.drawImage(meeple.getImage(), pos[0], pos[1], null);
         }
         g.dispose();

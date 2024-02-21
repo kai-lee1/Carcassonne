@@ -71,7 +71,6 @@ public class Player {
 			Integer scoore = 0;
 			Scorer scorer = new Scorer(board, x, y);
 			scorer.scoring(x, y, board, scoore);
-			System.out.println("scoore is: " + scoore);
 			System.out.println("score of player 1: " + board.players[0].score);
 			System.out.println("score of player 2: " + board.players[1].score);
 
@@ -268,7 +267,6 @@ class Scorer {
 
 	public void scoring(int x, int y, Board board, int score) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
-		System.out.println("the scoring method has been called");
 		int[] checkedSides = new int[] { 0, 0, 0, 0 };
 		int[] meeplesPresent = new int[board.players.length];
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
@@ -281,7 +279,6 @@ class Scorer {
 			if (checkedSides[i] == 1)
 				continue c;
 
-			System.out.println("we are looping in scoring(). checking 4 tiles around!"); // around current tile
 			switch (type) {
 
 				case 1: // ------------------------------ROAD-----------------------------------
@@ -306,7 +303,6 @@ class Scorer {
 					if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
 						// if there is a meeple on checkingTile's road. meeple[1] is tile type that
 						// meeple is on
-						System.out.println("the thing has happened!11!111!111!1");
 						meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
 					}
 					if (!tiletracker.contains(board.board[x][y]))
@@ -435,17 +431,13 @@ class Scorer {
 					for (int k = 0; k < meeplesPresent.length; k++) {
 						if (meeplesPresent[k] == 1) {
 							board.players[k].score += (citySize * 2);
-							System.out.println("here is the score of player " + k + ": " + board.players[k].score);
 						}
 					}
 					break; // TODO why is this here?
 
 				case 0: // ------------------------------FARM-----------------------------------
-					System.out.println("switch has encountered a farm");
 					break;
 			}
-			System.out.println("the switch has been ended");
-
 		}
 		// -----------------------end of scoring-----------------------------------
 	}
@@ -456,11 +448,9 @@ class Scorer {
 		int i = -1; // i is the previousSide of just-placed tile, j is a counter for
 					// board.board[x][y]
 
-		System.out.println(Arrays.toString(board.board[tx][ty].meeple));
 		if (board.board[tx][ty].meeple[previousSide * 3 + 1 + 2] == 1) {
 			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
 			// meeple is on
-			System.out.println("the thing has happened!11!111!111!1");
 			meeplesPresent[board.board[tx][ty].meeple[0]] = 1;
 		}
 
@@ -513,13 +503,11 @@ class Scorer {
 				break;
 		}
 
-		System.out.println(board.board[tx][ty].meeple[1]);
 
 		if (checkingTile.types[0] == -1) { // if checkingTile is empty, add empty tile to tiletracker
 			tiletracker.add(new EmptyTile());
 		}
 
-		System.out.println(Arrays.toString(new int[] { tx, ty }));
 
 		if (x == this.x && y == this.y) { // if hitting the original tile, double count must
 			// have happened (circle road). divide by 2

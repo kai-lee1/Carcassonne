@@ -144,7 +144,6 @@ public class Tile {
 					{false, false, false}};
 				break;
 			default:
-				System.out.print("tf");
 				break;
 		}
 	}
