@@ -68,9 +68,8 @@ public class Player {
 					meepleCount--;
 				}
 			}
-			Integer scoore = 0;
 			Scorer scorer = new Scorer(board, x, y);
-			scorer.scoring(x, y, board, scoore);
+			scorer.scoring(x, y, board);
 			System.out.println("score of player 1: " + board.players[0].score);
 			System.out.println("score of player 2: " + board.players[1].score);
 
@@ -115,11 +114,11 @@ public class Player {
 				} else if ((tile.types[(position) / 3] == 1)) {
 					tile.meeple[position + 2] = 1;
 					// for (int i = 1; i < 4; i++) {
-					// 	if (tile.connected[position / 3][i - 1]) {
-					// 		if (tile.types[(position / 3 + i) % 4] == 1) {
-					// 			tile.meeple[(position + 3 * i) % 12 + 2] = 1;
-					// 		}
-					// 	}
+					// if (tile.connected[position / 3][i - 1]) {
+					// if (tile.types[(position / 3 + i) % 4] == 1) {
+					// tile.meeple[(position + 3 * i) % 12 + 2] = 1;
+					// }
+					// }
 					// }
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
@@ -265,24 +264,23 @@ class Scorer {
 		this.y = y;
 	}
 
-	public void scoring(int x, int y, Board board, int score) {
+	public void scoring(int x, int y, Board board) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
 		int[] checkedSides = new int[] { 0, 0, 0, 0 };
 		int[] meeplesPresent = new int[board.players.length];
+		int[] xy;
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
 			int tx = x;
 			int ty = y;
 			int type = board.board[tx][ty].types[i];
 			meeplesPresent = new int[board.players.length];
-			boolean continual = true;
-			
+
 			if (checkedSides[i] == 1)
 				continue c;
 
 			switch (type) {
 
 				case 1: // ------------------------------ROAD-----------------------------------
-					int[] xy;
 					switch (i) {
 						case 0:
 							xy = new int[] { tx, ty - 1 };
@@ -369,61 +367,49 @@ class Scorer {
 				case 2: // ------------------------------CITY-----------------------------------
 					int citySize = 0;
 
-					while (continual) {
-						// get the checking tile coordinates, depending on which side of the current
-						// tile we are checking
-						Tile checkingTile;
-						switch (i) {
-							case 0:
-								checkingTile = board.board[tx][y - 1];
-								break;
-							case 1:
-								checkingTile = board.board[tx + 1][ty];
-								break;
-							case 2:
-								checkingTile = board.board[tx][ty + 1];
-								break;
-							case 3:
-								checkingTile = board.board[tx - 1][ty];
-								break;
-							default:
-								checkingTile = board.board[0][0];
-						}
-
-						if (checkingTile.meeple[1] == 1) { // if there is a meeple on checkingTile's city
-							meeplesPresent[checkingTile.meeple[0]] = 1;
+					// get the checking tile coordinates, depending on which side of the current
+					// tile we are checking
+					switch (i) {
+						case 0:
+							xy = new int[] {tx, y - 1};
 							break;
-						}
-
-						if (checkingTile.types[0] == -1) { // if checkingTile is empty, stop the while loop.
-							citySize = 0;
+						case 1:
+						xy = new int[] {tx + 1, y};
 							break;
-						}
-
-						if (checkingTile.types[(i + 2) % 4] != 2) { // i+2 % 4 is the corresponding side on the checking
-																	// tile.
-							continue c;
-						}
-
-						citySize++;
-
-						if (tx == x && ty == y && citySize != 0) { // if hitting the original tile, double count must
-																	// have happened (enclosed city). divide by 2
-							citySize = (citySize + 1) / 2;
+						case 2:
+							xy = new int[] {tx, y + 1};
 							break;
-						}
+						case 3:
+							xy = new int[] {tx - 1, y};
+							break;
+						default:
+							xy = new int[] {0, 0};
+					}
 
-						for (int j = 0; j < 3; j++) {
-							if (checkingTile.connected[i][j] && checkingTile.types[(i + j) % 4] == 2) {
+					if (board.board[x][y].meeple[i*3+2] == 1) {
+						meeplesPresent[board.board[x][y].meeple[0]] = 1;
+					}
+
+					if (board.board[xy[0]][xy[1]].types[0] == -1) { // if checkingTile is empty, stop the while loop.
+						tiletracker.add(new EmptyTile());
+						break;
+					}
+
+					tiletracker.add(board.board[x][y]);
+
+					ArrayList<Integer> sides = new ArrayList<Integer>();
+
+					for (int j = 0; j < 3; j++) {
+						if (i > j) {
+							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 2) {
 								// check if any of the other 3 sides on checkingTile are cities
-								continual = true;
-								break;
-							} else {
-								// if no other cities are connected,
-								continual = false;
-								if (checkingTile.types[(i + j) % 4] == -1) {
-									citySize = 0;
-								}
+								// TODO add this code
+								sides.add(j);
+							}
+						} else {
+							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 2) {
+								// check if any of the other 3 sides on checkingTile are cities
+								sides.add(j + 1);
 							}
 						}
 					}
@@ -503,11 +489,9 @@ class Scorer {
 				break;
 		}
 
-
 		if (checkingTile.types[0] == -1) { // if checkingTile is empty, add empty tile to tiletracker
 			tiletracker.add(new EmptyTile());
 		}
-
 
 		if (x == this.x && y == this.y) { // if hitting the original tile, double count must
 			// have happened (circle road). divide by 2
