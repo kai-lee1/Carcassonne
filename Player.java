@@ -425,8 +425,7 @@ class Scorer {
 	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
 		int tx = x;
 		int ty = y;
-		int i = -1; // i is the previousSide of just-placed tile, j is a counter for
-					// board.board[x][y]
+		int i = -1; //TODO whats i
 
 		if (board.board[tx][ty].meeple[previousSide * 3 + 1 + 2] == 1) {
 			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
@@ -435,8 +434,7 @@ class Scorer {
 		}
 
 		for (int j = 0; j < 3; j++) {
-			// if (board.board[x][y].connected[previousSide][j] &&
-			// board.board[x][y].types[j] == 1) {
+
 			if (previousSide <= j) {
 				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 1) {
 					i = j + 1;
@@ -452,7 +450,7 @@ class Scorer {
 		if (!tiletracker.contains(board.board[x][y]))
 			tiletracker.add(board.board[x][y]);
 
-		if (i == -1) {
+		if (i == -1) { //if hitting empty tile, end roadScore
 			return;
 		}
 
@@ -491,14 +489,6 @@ class Scorer {
 			// have happened (circle road). divide by 2
 			return;
 		}
-
-		// for (int k = 0; k < meeplesPresent.length; k++) { // score is actually
-		// changed here
-		// if (meeplesPresent[k] == 1) {
-		// board.players[k].score += roadLength;
-		// System.out.println("here is the score of player " + k + ": " + score);
-		// }
-		// }
 
 		roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 
