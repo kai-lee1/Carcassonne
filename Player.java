@@ -268,6 +268,7 @@ class Scorer {
 			int ty = y;
 			int type = board.board[tx][ty].types[i];
 			meeplesPresent = new int[board.players.length];
+			this.tiletracker = new ArrayList<Tile>();
 
 			if (checkedSides[i] == 1)
 				continue c;
@@ -385,7 +386,6 @@ class Scorer {
 					}
 
 					if (board.board[xy[0]][xy[1]].types[0] == -1) { // if checkingTile is empty, stop the while loop.
-						tiletracker.add(new EmptyTile());
 						break;
 					}
 
@@ -396,16 +396,21 @@ class Scorer {
 					for (int j = 0; j < 3; j++) {
 						if (i > j) {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 2) {
-								// check if any of the other 3 sides on checkingTile are cities
-								// TODO add this code
 								sides.add(j);
 							}
 						} else {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 2) {
-								// check if any of the other 3 sides on checkingTile are cities
 								sides.add(j + 1);
 							}
 						}
+					}
+
+					if (sides.size() == 0) {
+						break;
+					}
+
+					for (int j = 0; j < sides.size(); j++) {
+						
 					}
 
 					for (int k = 0; k < meeplesPresent.length; k++) {
@@ -413,13 +418,17 @@ class Scorer {
 							board.players[k].score += (citySize * 2);
 						}
 					}
-					break; // TODO why is this here?
+					break;
 
 				case 0: // ------------------------------FARM-----------------------------------
 					break;
 			}
 		}
 		// -----------------------end of method-----------------------------------
+	}
+
+	public void cityScore() {
+
 	}
 
 	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
