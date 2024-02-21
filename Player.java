@@ -24,11 +24,7 @@ public class Player {
 		}
 		System.out.println("");
 
-		/*
-		 * scoring:
-		 * Score every time new tile is placed (every turn).
-		 */
-
+		//score every time a new tile is placed
 		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0)) // if the
 																											// tile is
 																											// valid
@@ -222,8 +218,6 @@ public class Player {
 			board.tiles.get(turn).connected = new boolean[][] { oldcono[3], oldcono[0], oldcono[1], oldcono[2] };
 		}
 	}
-
-	// public void score (Board board, )
 
 	/*
 	 * if meeple is in a middle spot (1,4,7,10): check if that side is city (int
@@ -439,7 +433,7 @@ class Scorer {
 					break;
 			}
 		}
-		// -----------------------end of scoring-----------------------------------
+		// -----------------------end of method-----------------------------------
 	}
 
 	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
