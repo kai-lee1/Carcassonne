@@ -268,7 +268,6 @@ class Scorer {
 			int ty = y;
 			int type = board.board[tx][ty].types[i];
 			meeplesPresent = new int[board.players.length];
-			this.tiletracker = new ArrayList<Tile>();
 
 			if (checkedSides[i] == 1)
 				continue c;
@@ -388,6 +387,7 @@ class Scorer {
 					}
 
 					if (board.board[xy[0]][xy[1]].types[0] == -1) { // if checkingTile is empty, stop the while loop.
+						tiletracker.add(new EmptyTile());
 						break;
 					}
 
@@ -398,21 +398,16 @@ class Scorer {
 					for (int j = 0; j < 3; j++) {
 						if (i > j) {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 2) {
+								// check if any of the other 3 sides on checkingTile are cities, and connected to side i
+								//if so, add that side number to sides
 								sides.add(j);
 							}
 						} else {
 							if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 2) {
+								// check if any of the other 3 sides on checkingTile are cities1					1
 								sides.add(j + 1);
 							}
 						}
-					}
-
-					if (sides.size() == 0) {
-						break;
-					}
-
-					for (int j = 0; j < sides.size(); j++) {
-						
 					}
 
 					// for (int k = 0; k < meeplesPresent.length; k++) {
@@ -427,10 +422,6 @@ class Scorer {
 			}
 		}
 		// -----------------------end of method-----------------------------------
-	}
-
-	public void cityScore() {
-
 	}
 
 	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
