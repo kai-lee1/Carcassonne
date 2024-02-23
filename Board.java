@@ -28,6 +28,7 @@ public class Board {
 	public void gameTime(Board board) {
 		Scanner scan = new Scanner(System.in);
 		while (this.turnCount < 66) {
+			Tile current = tiles.get(turnCount);
 			int turn = turnCount % players.length;
 			System.out.print("Player " + turn + "'s turn. ");
 			System.out.println("here is the current tile to be placed: ");
@@ -38,11 +39,10 @@ public class Board {
 			System.out.println("Send x and y coordinates for your tile:");
 			int x = Integer.parseInt(scan.nextLine());
 			int y = Integer.parseInt(scan.nextLine());
-			players[turn].placeTile(x, y, board, scan);
+			players[turn].placeTile(x, y, board);
 			this.turnCount += 1;
 			CarcassonneMain.drawGUI(board);
 		}
-		scan.close();
 	}
 
 
@@ -85,9 +85,6 @@ public class Board {
 	}
 	
 	public void generateTiles() {
-		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("bowtiefield")); //done
-		}
 		for (int i = 0; i < 9; i++) {
 			tiles.add(new Tile("Lroad")); //done
 		}
@@ -117,6 +114,9 @@ public class Board {
 		}
 		for (int i = 0; i < 2; i++) {
 			tiles.add(new Tile("2adjacentcity")); //done
+		}
+		for (int i = 0; i < 3; i++) {
+			tiles.add(new Tile("bowtiefield")); //done
 		}
 		for (int i = 0; i < 5; i++) {
 			tiles.add(new Tile("1edgecity")); //done
