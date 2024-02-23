@@ -400,6 +400,11 @@ class Scorer {
 						cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 					}
 
+					for (int k = 0; k < tiletracker.size(); k++) {
+						if (tiletracker.get(k).types[0] == -1)
+							continue c;
+					}
+
 					for (int k = 0; k < meeplesPresent.length; k++) {
 						if (meeplesPresent[k] == 1) {
 							board.players[k].score += tiletracker.size();
