@@ -542,5 +542,4 @@ class Scorer {
 			cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 		}
 	}
-//hello
 }
