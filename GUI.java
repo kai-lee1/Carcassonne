@@ -5,7 +5,6 @@ import java.awt.geom.*;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import java.util.Arrays;
 import java.lang.Integer;
 
 public class GUI {
@@ -83,7 +82,6 @@ class ImageRenderer extends DefaultTableCellRenderer {
         // if (value.equals("emptytile.png"))
         //     lbl.setIcon(blank);
         Icon img = blank;
-        Icon img2 = meeple;
         if (((Tile) value).type.equals("")) {
             lbl.setIcon(blank);
             lbl.setText("(" + Integer.toString(column) + ", " + Integer.toString(row) + ")");
@@ -139,9 +137,6 @@ class ImageRenderer extends DefaultTableCellRenderer {
         }
         else if (((Tile) value).type.equals("+road")) {
             img = new ImageIcon(plusroad.getImage());
-        }
-        if (((Tile) value).meeple[0] != -1) {
-            img2 = new ImageIcon(meeple.getImage());
         }
         lbl.setText("(" + Integer.toString(column) + ", " + Integer.toString(row) + ")");
         // img = new RotatedIcon(img, Rotate.ABOUT_CENTER);
