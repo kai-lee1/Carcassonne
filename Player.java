@@ -126,21 +126,21 @@ public class Player {
 					tile.meeple[position + 3] = 1;
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
-							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 1) {
+							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 0) {
 								tile.meeple[(j + 1) * 3 + 2] = 1;
 								tile.meeple[(j + 1) * 3 + 2 - 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 							}
-						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 1) {
+						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 0) {
 							tile.meeple[j * 3 + 2] = 1;
 							tile.meeple[j * 3 + 2 + 1] = 1;
 							tile.meeple[j * 3 + 2 - 1] = 1;
 						}
 					}
-					if (tile.types[(position / 3 + 1) % 4] == 1) {
+					if (tile.types[(position / 3 + 1) % 4] == 0) {
 						tile.meeple[(position + 2) % 12 + 2] = 1;
 					}
-					if (tile.types[(position / 3 + 3) % 4] == 1) {
+					if (tile.types[(position / 3 + 3) % 4] == 0) {
 						tile.meeple[(position - 2) % 12 + 2] = 1;
 					}
 
@@ -155,6 +155,8 @@ public class Player {
 				// side must be road and meeple must be adjacent to non-field
 				if (tile.types[(position) / 3] != 1 || tile.types[((position) / 3 - 1) % 3] == 0) {
 					// destroy target player
+					tile.meeple[0] = -1;
+					tile.meeple[14] = -1;
 					return false;
 				}
 				if (tile.types[((position) / 3 - 1) % 3] == 1) {
@@ -172,6 +174,8 @@ public class Player {
 				break;
 			case 2:
 				if (tile.types[(position) / 3] != 1 || tile.types[((position) / 3 + 1) % 3] == 0) {
+					tile.meeple[0] = -1;
+					tile.meeple[14] = -1;
 					return false;
 				}
 				if (tile.types[((position) / 3 + 1) % 3] == 1) {
