@@ -1,6 +1,5 @@
 package carcassonne;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class Board {
@@ -27,6 +26,7 @@ public class Board {
 	
 	public void gameTime(Board board) {
 		Scanner scan = new Scanner(System.in);
+		System.out.println("starting tile is 2101");
 		while (this.turnCount < 66) {
 			int turn = turnCount % players.length;
 			System.out.print("Player " + turn + "'s turn. ");
@@ -34,7 +34,6 @@ public class Board {
 			for (int j = 0; j < 4; j++)
 				System.out.print(board.tiles.get(board.turnCount).types[j]);
 			System.out.println("");
-			System.out.println("starting tile is 2101");
 			System.out.println("Send x and y coordinates for your tile:");
 			int x = Integer.parseInt(scan.nextLine());
 			int y = Integer.parseInt(scan.nextLine());
