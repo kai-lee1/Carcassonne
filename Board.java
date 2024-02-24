@@ -18,10 +18,7 @@ public class Board {
 		this.generatePlayers(playerCount);
 		this.generateBoard();
 		this.tiles = new ArrayList<Tile>(); //draw pile
-		this.generateTiles();
-
-		
-		
+		this.generateTiles();		
 	}
 	
 	public void gameTime(Board board) {
@@ -33,10 +30,24 @@ public class Board {
 			System.out.println("here is the current tile to be placed: ");
 			for (int j = 0; j < 4; j++)
 				System.out.print(board.tiles.get(board.turnCount).types[j]);
-			System.out.println("");
-			System.out.println("Send x and y coordinates for your tile:");
-			int x = Integer.parseInt(scan.nextLine());
-			int y = Integer.parseInt(scan.nextLine());
+			long endWaitTime = System.currentTimeMillis() + 500*1000;
+			while (System.currentTimeMillis() < endWaitTime && !CarcassonneMain.ready) {
+				// isConditionMet = condition();
+				if (CarcassonneMain.ready) {
+					break;
+				} else {
+					try {
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException e) {}
+				}
+			}
+			// System.out.println("");
+			// System.out.println("Send x and y coordinates for your tile:");
+			// int x = Integer.parseInt(scan.nextLine());
+			// int y = Integer.parseInt(scan.nextLine());
+			int x = Integer.parseInt(CarcassonneMain.inp.coordx.getText());
+			int y = Integer.parseInt(CarcassonneMain.inp.coordy.getText());
 			players[turn].placeTile(x, y, board, scan);
 			this.turnCount += 1;
 			CarcassonneMain.drawGUI(board);

@@ -13,14 +13,15 @@ public class Player {
 	}
 
 	public void placeTile(int x, int y, Board board, Scanner scan) {
-		System.out.println("how many times do you want to rotate tile? ");
-		int rotateans = Integer.parseInt(scan.nextLine());
+		// System.out.println("how many times do you want to rotate tile? ");
+		// int rotateans = Integer.parseInt(scan.nextLine());
+		int rotateans = Integer.parseInt(CarcassonneMain.inp.rots.getText());
 		rotateTile(board.turnCount, rotateans, board);
-		System.out.println("new tile after rotating: ");
-		for (int j = 0; j < 4; j++) {
-			System.out.print(board.tiles.get(board.turnCount).types[j]);
-		}
-		System.out.println("");
+		// System.out.println("new tile after rotating: ");
+		// for (int j = 0; j < 4; j++) {
+		// 	System.out.print(board.tiles.get(board.turnCount).types[j]);
+		// }
+		// System.out.println("");
 
 		// score every time a new tile is placed
 		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0)) // if the

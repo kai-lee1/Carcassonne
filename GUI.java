@@ -49,7 +49,6 @@ public class GUI {
 
         // adding it to JScrollPane
         sp = new JScrollPane(j);
-        System.out.println(y);
         
         //f.add(sp);
         f.getContentPane().add(sp);
