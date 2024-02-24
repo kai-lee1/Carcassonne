@@ -8,8 +8,11 @@ import javax.swing.table.*;
 import java.lang.Integer;
 
 public class GUI {
+    static Tile[][] strdata;
+    static Tile[][] data;
+    static JScrollPane sp;
     // Constructor
-    public static void gui(Board board, JFrame f) {
+    public static void gui(Board board, JFrame f, int x, int y) {
         // Table
         JTable j;
 
@@ -18,8 +21,8 @@ public class GUI {
         f.setTitle("Carcassonne");
 
         // Data to be displayed in the JTable
-        Tile[][] data = board.board;
-        Tile[][] strdata = new Tile[133][133];
+        data = board.board;
+        strdata = new Tile[133][133];
         for (int i = 0; i < 133; i++) {
             for (int k = 0; k < 133; k++) {
                 strdata[k][i] = data[i][k];
@@ -45,13 +48,18 @@ public class GUI {
         }
 
         // adding it to JScrollPane
-        JScrollPane sp = new JScrollPane(j);
+        sp = new JScrollPane(j);
+        System.out.println(y);
+        
         //f.add(sp);
         f.getContentPane().add(sp);
         // Frame Size
         
         // Frame Visible = true
         f.setVisible(true);
+
+        sp.getVerticalScrollBar().setValue(y);
+        sp.getHorizontalScrollBar().setValue(x);
     }
 }
 

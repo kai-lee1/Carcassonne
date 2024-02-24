@@ -10,6 +10,7 @@ public class CarcassonneMain {
 	public static void main(String[] args) {
 		Board board = new Board(2);
 		f.setSize(500, 133);
+		GUI.gui(board, f, 0, 0);
 		drawGUI(board);
 		// inp.draw();
 
@@ -20,6 +21,6 @@ public class CarcassonneMain {
 	public static void drawGUI (Board board){
 		f.getContentPane().removeAll(); //or remove(JComponent)
 		f.repaint();
-		GUI.gui(board, f);
+		GUI.gui(board, f, GUI.sp.getHorizontalScrollBar().getValue(), GUI.sp.getVerticalScrollBar().getValue());
 	}
 }
