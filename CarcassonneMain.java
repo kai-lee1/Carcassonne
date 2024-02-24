@@ -24,4 +24,19 @@ public class CarcassonneMain {
 		f.repaint();
 		GUI.gui(board, f, GUI.sp.getHorizontalScrollBar().getValue(), GUI.sp.getVerticalScrollBar().getValue());
 	}
+
+	public static void waitButton() {
+		long endWaitTime = System.currentTimeMillis() + 500*1000;
+		while (System.currentTimeMillis() < endWaitTime && !CarcassonneMain.ready) {
+			// isConditionMet = condition();
+			if (CarcassonneMain.ready) {
+				break;
+			} else {
+				try {
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e) {}
+			}
+		}
+	}
 }

@@ -12,9 +12,11 @@ public class Player {
 		this.score = 0;
 	}
 
-	public void placeTile(int x, int y, Board board, Scanner scan) {
+	public void placeTile(Board board, Scanner scan) {
 		// System.out.println("how many times do you want to rotate tile? ");
 		// int rotateans = Integer.parseInt(scan.nextLine());
+		int x = Integer.parseInt(CarcassonneMain.inp.coordx.getText());
+		int y = Integer.parseInt(CarcassonneMain.inp.coordy.getText());
 		int rotateans = Integer.parseInt(CarcassonneMain.inp.rots.getText());
 		rotateTile(board.turnCount, rotateans, board);
 		// System.out.println("new tile after rotating: ");
@@ -36,20 +38,19 @@ public class Player {
 
 			board.board[x][y] = board.tiles.get(board.turnCount);
 
-			System.out.println("Place meeple? y/n");
-			String answer = scan.nextLine();
+			//System.out.println("Place meeple? y/n");
+			//String answer = scan.nextLine();
 
 			boolean worked = false;
 			int position;
-			if (answer.equals("y")) {
-				System.out.println("Where? (0-11)");
-				position = Integer.parseInt(scan.nextLine());
+			if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
+				// System.out.println("Where? (0-11)");
+				position = Integer.parseInt(CarcassonneMain.inp.meeple.getText());
 				worked = placeMeeple(position, x, y, board);
 
 				while (!(worked)) {
 					System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
-					answer = scan.nextLine();
-					if (answer.equals("y")) {
+					if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
 						System.out.println("Where? (0-11)");
 						position = Integer.parseInt(scan.nextLine());
 						worked = placeMeeple(position, x, y, board);
@@ -72,11 +73,12 @@ public class Player {
 
 		else {
 			System.out.println("invalid tile. try new tile coordinates");
-			int newansx = Integer.parseInt(scan.nextLine());
-			int newansy = Integer.parseInt(scan.nextLine());
-			placeTile(newansx, newansy, board, scan);
+			CarcassonneMain.waitButton();
+			placeTile(board, scan);
 
 		}
+
+		CarcassonneMain.ready = false;
 	}
 
 	public boolean placeMeeple(int position, int x, int y, Board board) { // position is one of the 12 sides of tile

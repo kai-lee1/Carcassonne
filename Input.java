@@ -29,7 +29,7 @@ public class Input {
         meeple = new JTextField(300);
         coordxloc = new JLabel("X Coordinate:");
         coordyloc = new JLabel("Y Coordinate:");
-        rotsloc = new JLabel("Rotations:");
+        rotsloc = new JLabel("Rotations (Clockwise):");
         meepleloc = new JLabel("Meeple:");
         button = new JButton("Confirm");
         button.addActionListener(new ButtonPress());
