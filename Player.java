@@ -360,6 +360,14 @@ class Scorer {
 							board.players[k].score += tiletracker.size();
 						}
 					}
+					if (meeplesPresent.length > 0) {
+						this.tiletracker = new ArrayList<Tile>();
+						if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
+							board.players[board.board[x][y].meeple[0]].meepleCount += 1;
+							board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+						}
+						sweepRoadMeeples(xy[0], xy[1], board, (s + 2) % 4);
+					}
 					break;
 
 				case 2: // ------------------------------CITY-----------------------------------
@@ -404,7 +412,7 @@ class Scorer {
 							default:
 								xy = new int[] { 0, 0 };
 						}
-						cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
+						cityScore(xy[0], xy[1], board, meeplesPresent, (sides.get(j) + 2) % 4);
 					}
 
 					for (int k = 0; k < tiletracker.size(); k++) {
@@ -417,6 +425,32 @@ class Scorer {
 							board.players[k].score += tiletracker.size() * 2;
 						}
 					}
+					if (meeplesPresent.length > 0) {
+						this.tiletracker = new ArrayList<Tile>();
+						if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
+							board.players[board.board[x][y].meeple[0]].meepleCount += 1;
+							board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+						}
+						for (int j = 0; j < sides.size(); j++) {
+							switch (sides.get(j)) {
+								case 0:
+									xy = new int[] { tx, y - 1 };
+									break;
+								case 1:
+									xy = new int[] { tx + 1, y };
+									break;
+								case 2:
+									xy = new int[] { tx, y + 1 };
+									break;
+								case 3:
+									xy = new int[] { tx - 1, y };
+									break;
+								default:
+									xy = new int[] { 0, 0 };
+							}
+							sweepCityMeeples(xy[0], xy[1], board, (sides.get(j) + 2) % 4);
+						}
+					}
 					break; // TODO why is this here?
 
 				case 0: // ------------------------------FARM-----------------------------------
@@ -424,6 +458,69 @@ class Scorer {
 			}
 		}
 		// -----------------------end of method-----------------------------------
+	}
+
+	public void sweepRoadMeeples(int x, int y, Board board, int previousSide) {
+		int i = -1; // TODO whats i
+
+		if (board.board[x][y].meeple[previousSide * 3 + 1 + 2] == 1) {
+			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
+			// meeple is on
+			board.players[board.board[x][y].meeple[0]].meepleCount += 1;
+			board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+		}
+
+		for (int j = 0; j < 3; j++) {
+
+			if (previousSide <= j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 1) {
+					i = j + 1;
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 1) {
+				i = j;
+				break;
+			}
+		}
+
+		if (!tiletracker.contains(board.board[x][y]))
+			tiletracker.add(board.board[x][y]);
+
+		if (i == -1) { // if hitting empty tile, end roadScore
+			return;
+		}
+
+		// get new checking tile coordinates, depending on which side of the current
+		// tile (old checkingTile) we are checking
+		int[] xy;
+		switch (i) {
+			case 0:
+				xy = new int[] { x, y - 1 };
+				break;
+			case 1:
+				xy = new int[] { x + 1, y };
+				break;
+			case 2:
+				xy = new int[] { x, y + 1 };
+				break;
+			case 3:
+				xy = new int[] { x - 1, y };
+				break;
+			default:
+				xy = new int[] { 0, 0 };
+				break;
+		}
+
+		if (board.board[xy[0]][xy[1]].types[0] == -1) { // if checkingTile is empty, add empty tile to tiletracker
+			tiletracker.add(new EmptyTile());
+		}
+
+		if (x == this.x && y == this.y) { // if hitting the original tile, double count must
+			// have happened (circle road). divide by 2
+			return;
+		}
+
+		sweepRoadMeeples(xy[0], xy[1], board, (i + 2) % 4);
 	}
 
 	public void roadScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
@@ -487,6 +584,65 @@ class Scorer {
 
 		roadScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 
+	}
+
+	public void sweepCityMeeples(int x, int y, Board board, int previousSide) {
+		if (board.board[x][y].meeple[previousSide * 3 + 1 + 2] == 1) {
+			board.players[board.board[x][y].meeple[0]].meepleCount += 1;
+			board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+		}
+
+		if (!tiletracker.contains(board.board[x][y]))
+			tiletracker.add(board.board[x][y]);
+		else
+			return;
+
+		ArrayList<Integer> sides = new ArrayList<Integer>();
+
+		for (int j = 0; j < 3; j++) {
+
+			if (previousSide <= j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 2) {
+					sides.add(j + 1);
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 2) {
+				sides.add(j);
+				break;
+			}
+		}
+
+		if (sides.size() == 0)
+			return;
+
+		// get new checking tile coordinates, depending on which side of the current
+		// tile (old checkingTile) we are checking
+		int[] xy;
+		for (int i = 0; i < sides.size(); i++) {
+			int j = sides.get(i);
+			switch (j) {
+				case 0:
+					xy = new int[] { x, y - 1 };
+					break;
+				case 1:
+					xy = new int[] { x + 1, y };
+					break;
+				case 2:
+					xy = new int[] { x, y + 1 };
+					break;
+				case 3:
+					xy = new int[] { x - 1, y };
+					break;
+				default:
+					xy = new int[] { 0, 0 };
+					break;
+			}
+			if (board.board[xy[0]][xy[1]].types[0] == -1) { // if checkingTile is empty, add empty tile to tiletracker
+				tiletracker.add(new EmptyTile());
+				return;
+			}
+			sweepCityMeeples(xy[0], xy[1], board, (j + 2) % 4);
+		}
 	}
 
 	public void cityScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
