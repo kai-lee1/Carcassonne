@@ -1,6 +1,5 @@
 package carcassonne;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Board {
 	public Tile[][] board;
