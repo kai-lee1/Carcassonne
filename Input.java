@@ -16,6 +16,7 @@ public class Input {
     private JLabel meepleloc;
     private JPanel mainPanel;
     private JButton button;
+    public JLabel error;
 
     public Input() {
         inpf = new JFrame();
@@ -33,6 +34,8 @@ public class Input {
         meepleloc = new JLabel("Meeple:");
         button = new JButton("Confirm");
         button.addActionListener(new ButtonPress());
+        error = new JLabel("");
+        error.setForeground(new Color(255, 0, 0));
         mainPanel.add(coordxloc);
         mainPanel.add(coordx);
         mainPanel.add(coordyloc);
@@ -42,6 +45,7 @@ public class Input {
         mainPanel.add(meepleloc);
         mainPanel.add(meeple);
         mainPanel.add(button);
+        mainPanel.add(error);
     }
 
     public void draw() {

@@ -22,7 +22,6 @@ public class Board {
 	}
 	
 	public void gameTime(Board board) {
-		Scanner scan = new Scanner(System.in);
 		System.out.println("starting tile is 2101");
 		while (this.turnCount < 66) {
 			int turn = turnCount % players.length;
@@ -35,11 +34,10 @@ public class Board {
 			// System.out.println("Send x and y coordinates for your tile:");
 			// int x = Integer.parseInt(scan.nextLine());
 			// int y = Integer.parseInt(scan.nextLine());
-			players[turn].placeTile(board, scan);
+			players[turn].placeTile(board);
 			this.turnCount += 1;
 			CarcassonneMain.drawGUI(board);
 		}
-		scan.close();
 	}
 
 

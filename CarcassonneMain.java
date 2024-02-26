@@ -7,6 +7,7 @@ public class CarcassonneMain {
 	static JFrame f = new JFrame();
 	static Input inp = new Input();
 	static boolean ready = false;
+	static long endWaitTime = System.currentTimeMillis() + 500*1000;
 
 	public static void main(String[] args) {
 		Board board = new Board(2);
@@ -26,10 +27,9 @@ public class CarcassonneMain {
 	}
 
 	public static void waitButton() {
-		long endWaitTime = System.currentTimeMillis() + 500*1000;
-		while (System.currentTimeMillis() < endWaitTime && !CarcassonneMain.ready) {
+		while (System.currentTimeMillis() < endWaitTime && !ready) {
 			// isConditionMet = condition();
-			if (CarcassonneMain.ready) {
+			if (ready) {
 				break;
 			} else {
 				try {
@@ -38,5 +38,6 @@ public class CarcassonneMain {
 				catch (InterruptedException e) {}
 			}
 		}
+		ready = false;
 	}
 }

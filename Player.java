@@ -12,23 +12,21 @@ public class Player {
 		this.score = 0;
 	}
 
-	public void placeTile(Board board, Scanner scan) {
+	public void placeTile(Board board) {
 		// System.out.println("how many times do you want to rotate tile? ");
 		// int rotateans = Integer.parseInt(scan.nextLine());
 		int x = Integer.parseInt(CarcassonneMain.inp.coordx.getText());
 		int y = Integer.parseInt(CarcassonneMain.inp.coordy.getText());
 		int rotateans = Integer.parseInt(CarcassonneMain.inp.rots.getText());
 		rotateTile(board.turnCount, rotateans, board);
-		// System.out.println("new tile after rotating: ");
-		// for (int j = 0; j < 4; j++) {
-		// 	System.out.print(board.tiles.get(board.turnCount).types[j]);
-		// }
-		// System.out.println("");
+		System.out.println("new tile after rotating: ");
+		for (int j = 0; j < 4; j++) {
+			System.out.print(board.tiles.get(board.turnCount).types[j]);
+		}
+		System.out.println("");
 
 		// score every time a new tile is placed
-		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0)) // if the
-																											// tile is
-																											// valid
+		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x + 1][y], 1))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x][y + 1], 2))
 				&& (board.validSide(board.tiles.get(board.turnCount), board.board[x - 1][y], 3))
@@ -38,8 +36,8 @@ public class Player {
 
 			board.board[x][y] = board.tiles.get(board.turnCount);
 
-			//System.out.println("Place meeple? y/n");
-			//String answer = scan.nextLine();
+			// System.out.println("Place meeple? y/n");
+			// String answer = scan.nextLine();
 
 			boolean worked = false;
 			int position;
@@ -50,9 +48,11 @@ public class Player {
 
 				while (!(worked)) {
 					System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
+					CarcassonneMain.inp.error.setText("invalid meeple position.");
+					CarcassonneMain.waitButton();
 					if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
 						System.out.println("Where? (0-11)");
-						position = Integer.parseInt(scan.nextLine());
+						position = Integer.parseInt(CarcassonneMain.inp.meeple.getText());
 						worked = placeMeeple(position, x, y, board);
 					} else {
 						break;
@@ -73,12 +73,12 @@ public class Player {
 
 		else {
 			System.out.println("invalid tile. try new tile coordinates");
+			CarcassonneMain.inp.error.setText("Invalid tile. Try new coordinates");
 			CarcassonneMain.waitButton();
-			placeTile(board, scan);
+			placeTile(board);
 
 		}
 
-		CarcassonneMain.ready = false;
 	}
 
 	public boolean placeMeeple(int position, int x, int y, Board board) { // position is one of the 12 sides of tile
@@ -364,7 +364,7 @@ class Scorer {
 						this.tiletracker = new ArrayList<Tile>();
 						if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
 							board.players[board.board[x][y].meeple[0]].meepleCount += 1;
-							board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+							board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 						}
 						sweepRoadMeeples(xy[0], xy[1], board, (s + 2) % 4);
 					}
@@ -429,7 +429,7 @@ class Scorer {
 						this.tiletracker = new ArrayList<Tile>();
 						if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
 							board.players[board.board[x][y].meeple[0]].meepleCount += 1;
-							board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+							board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 						}
 						for (int j = 0; j < sides.size(); j++) {
 							switch (sides.get(j)) {
@@ -467,7 +467,7 @@ class Scorer {
 			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
 			// meeple is on
 			board.players[board.board[x][y].meeple[0]].meepleCount += 1;
-			board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+			board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 		}
 
 		for (int j = 0; j < 3; j++) {
@@ -589,7 +589,7 @@ class Scorer {
 	public void sweepCityMeeples(int x, int y, Board board, int previousSide) {
 		if (board.board[x][y].meeple[previousSide * 3 + 1 + 2] == 1) {
 			board.players[board.board[x][y].meeple[0]].meepleCount += 1;
-			board.board[x][y].meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+			board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 		}
 
 		if (!tiletracker.contains(board.board[x][y]))
