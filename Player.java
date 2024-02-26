@@ -422,6 +422,9 @@ class Scorer {
 					for (int k = 0; k < meeplesPresent.length; k++) {
 						if (meeplesPresent[k] == 1) {
 							board.players[k].score += tiletracker.size() * 2;
+							//removing meeples after city finishes scoring
+							
+							board.players[k].meepleCount++;
 						}
 					}
 					if (meeplesPresent.length > 0) {
@@ -452,7 +455,9 @@ class Scorer {
 					}
 					break; // TODO why is this here?
 
-				case 0: // ------------------------------FARM-----------------------------------
+				case 0: // ------------------------------FARM-----------------------------------	
+					break;
+				default:
 					break;
 			}
 		}
@@ -703,6 +708,10 @@ class Scorer {
 			}
 			cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 		}
+	}
+
+	public void farmScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
+
 	}
 
 }
