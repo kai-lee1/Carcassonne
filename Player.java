@@ -455,9 +455,6 @@ class Scorer {
 					break;
 				default:
 					break;
-				
-				default:
-					break;
 			}
 		}
 		// -----------------------end of method-----------------------------------
