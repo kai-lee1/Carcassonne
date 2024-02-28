@@ -8,6 +8,7 @@ public class CarcassonneMain {
 	static Input inp = new Input();
 	static boolean ready = false;
 	static long endWaitTime = System.currentTimeMillis() + 500*1000;
+	static int cityCount = 0;
 
 	public static void main(String[] args) {
 		Board board = new Board(2);
