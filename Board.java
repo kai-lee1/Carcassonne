@@ -39,6 +39,16 @@ public class Board {
 		}
 	}
 
+	public void endGame(Board board){
+		for (int i = 0; i < board.board.length; i++) {
+			for (int j = 0; j < board.board[i].length; j++){
+				if (board.board[i][j].meeple[1] == 0){
+					
+				}
+			}
+		}
+	}
+
 
 	
 	public void generatePlayers(int playerCount) {

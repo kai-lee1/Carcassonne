@@ -16,7 +16,8 @@ public class CarcassonneMain {
 		drawGUI(board);
 		inp.draw();
 
-		board.gameTime(board);
+		board.gameTime(board); // TODO i think theres a better way to do this
+		board.endGame(board);
 
 	}
 
