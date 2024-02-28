@@ -11,6 +11,7 @@ public class Tile {
 	                     //0 if not connected, 1 if connected. NOTE - 0 is top left (https://tinyurl.com/yeyzkd96)
 						 //ex. meeple[4] is 1, means that meeple is connected to top middle ("2" on the 12 point system)
 	public String type;
+	public int[] completion;
 	
 	public Tile(int[] types, boolean[][] connected) {
 		this.type = "";
@@ -18,11 +19,13 @@ public class Tile {
 		this.connected = connected;
 		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
 		this.rotations = 0;
+		this.completion = new int[] {0, 0, 0, 0};
 	}
 	
 	public Tile(String type) {
 		this.type = type;
 		this.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+		this.completion = new int[] {0, 0, 0, 0};
 		switch(type) {
 			case "allcity":
 				this.types = new int[] {2, 2, 2, 2};
