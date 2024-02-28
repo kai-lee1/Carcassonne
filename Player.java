@@ -709,8 +709,4 @@ class Scorer {
 		}
 	}
 
-	public void farmScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
-
-	}
-
 }

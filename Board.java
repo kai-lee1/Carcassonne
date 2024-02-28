@@ -42,11 +42,24 @@ public class Board {
 	public void endGame(Board board){
 		for (int i = 0; i < board.board.length; i++) {
 			for (int j = 0; j < board.board[i].length; j++){
-				if (board.board[i][j].meeple[1] == 0){
-					
+				Tile current = board.board.[i][j];
+				if (board.board.board[i][j].meeple[1] == 0){
+					continue;
 				}
 			}
 		}
+	}
+
+	public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
+		return;
+	}
+
+	public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
+		return;
+	}
+
+	public void endGameField(int x, int y, Board board, int[] meeplesPresent){
+		return;
 	}
 
 
