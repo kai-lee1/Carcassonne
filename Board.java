@@ -42,8 +42,8 @@ public class Board {
 	public void endGame(Board board){
 		for (int i = 0; i < board.board.length; i++) {
 			for (int j = 0; j < board.board[i].length; j++){
-				Tile current = board.board.[i][j];
-				if (board.board.board[i][j].meeple[1] == 0){
+				Tile current = board.board[i][j];
+				if (current.meeple[1] == 0){
 					continue;
 				}
 			}
