@@ -455,9 +455,6 @@ class Scorer {
 					break;
 				default:
 					break;
-				
-				default:
-					break;
 			}
 		}
 		// -----------------------end of method-----------------------------------
@@ -707,10 +704,6 @@ class Scorer {
 			}
 			cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
 		}
-	}
-
-	public void farmScore(int x, int y, Board board, int[] meeplesPresent, int previousSide) {
-
 	}
 
 }
