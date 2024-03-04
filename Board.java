@@ -46,24 +46,71 @@ public class Board {
 		for (int i = 0; i < board.board.length; i++) {
 			for (int j = 0; j < board.board[i].length; j++){
 				Tile current = board.board[i][j];
-				if (current.meeple[1] == 0){
-					continue;
+				int[] meeplesPresent = new int[board.players.length];
+
+				if (current.types[0] != -1 && current.meeple[1] == 0){ //if not empty and has meeple
+					if(current.meeple[1] == 0){
+						for (int k = 0; k < 4; k++){
+							endGameField(i, j, board, meeplesPresent, k); //call endGameField on the tile
+							//TODO k may be wrong here
+							//its supposed to be previousSide
+						}
+					}
 				}
 			}
 		}
 	}
 
-	public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
-		return;
-	}
+	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
+		ArrayList<Integer> sides = new ArrayList<Integer>();
 
-	public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
-		return;
-	}
+		for (int j = 0; j < 3; j++) {
 
-	public void endGameField(int x, int y, Board board, int[] meeplesPresent){
-		return;
-	}
+			if (previousSide <= j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 2) {
+					sides.add(j + 1);
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 2) {
+				sides.add(j);
+				break;
+			}
+		}
+
+		if (sides.size() == 0)
+			return;
+
+		// get new checking tile coordinates, depending on which side of the current
+		// tile (old checkingTile) we are checking
+		int[] xy;
+		for (int i = 0; i < sides.size(); i++) {
+			switch (i) {
+				case 0:
+					xy = new int[] { x, y - 1 };
+					break;
+				case 1:
+					xy = new int[] { x + 1, y };
+					break;
+				case 2:
+					xy = new int[] { x, y + 1 };
+					break;
+				case 3:
+					xy = new int[] { x - 1, y };
+					break;
+				default:
+					xy = new int[] { 0, 0 };
+					break;
+			}
+		}
+}
+
+public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
+	return;
+}
+
+public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
+	return;
+}
 
 
 	
