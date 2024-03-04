@@ -97,12 +97,12 @@ public class Player {
 					tile.meeple[position + 3] = 1;
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
-							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 1) {
+							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 2) {
 								tile.meeple[(j + 1) * 3 + 2] = 1;
 								tile.meeple[(j + 1) * 3 + 2 - 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 							}
-						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 1) {
+						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 2) {
 							tile.meeple[j * 3 + 2] = 1;
 							tile.meeple[j * 3 + 2 + 1] = 1;
 							tile.meeple[j * 3 + 2 - 1] = 1;
@@ -123,6 +123,7 @@ public class Player {
 					}
 				} else {
 					// field
+					board.fieldMeeples.add(new int[] {x, y});
 					tile.meeple[position + 2] = 1;
 					tile.meeple[position + 1] = 1;
 					tile.meeple[position + 3] = 1;
@@ -161,6 +162,7 @@ public class Player {
 					tile.meeple[14] = -1;
 					return false;
 				}
+				board.fieldMeeples.add(new int[] {x, y});
 				if (tile.types[((position) / 3 - 1) % 3] == 1) {
 					tile.meeple[position + 2] = 1;
 					tile.meeple[(position - 1) % 12 + 2] = 1;
@@ -180,6 +182,7 @@ public class Player {
 					tile.meeple[14] = -1;
 					return false;
 				}
+				board.fieldMeeples.add(new int[] {x, y});
 				if (tile.types[((position) / 3 + 1) % 3] == 1) {
 					tile.meeple[position + 2] = 1;
 					tile.meeple[(position + 1) % 12 + 2] = 1;
@@ -262,8 +265,9 @@ class Scorer {
 	public void scoring(int x, int y, Board board) {
 		// boolean[] checked = new boolean[] {false, false, false, false};
 		int[] checkedSides = new int[] { 0, 0, 0, 0 };
-		int[] meeplesPresent = new int[board.players.length];
+		int[] meeplesPresent;
 		int[] xy;
+		int[] xyn;
 		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
 			int tx = x;
 			int ty = y;
@@ -319,37 +323,29 @@ class Scorer {
 						}
 
 					}
-					if (s == -1) {
-						for (int k = 0; k < tiletracker.size(); k++) {
-							if (tiletracker.get(k).types[0] == -1)
-								continue c;
-						}
-						for (int k = 0; k < meeplesPresent.length; k++) { // score is actually changed
-							if (meeplesPresent[k] == 1) {
-								board.players[k].score += tiletracker.size();
-							}
-						}
-						continue c;
-					}
 					switch (s) {
 						case 0:
-							xy = new int[] { tx, ty - 1 };
+							xyn = new int[] { tx, ty - 1 };
 							break;
 						case 1:
-							xy = new int[] { tx + 1, ty };
+							xyn = new int[] { tx + 1, ty };
 							break;
 						case 2:
-							xy = new int[] { tx, ty + 1 };
+							xyn = new int[] { tx, ty + 1 };
 							break;
 						case 3:
-							xy = new int[] { tx - 1, ty };
+							xyn = new int[] { tx - 1, ty };
 							break;
+						case -1:
+							xyn = new int[] {xy[0], xy[1]};
 						default:
-							xy = new int[] { 0, 0 };
+							xyn = new int[] { 0, 0 };
 							break;
 					}
-					roadScore(xy[0], xy[1], board, meeplesPresent, (s + 2) % 4);
-					checkedSides[s] = 1;
+					if (s != -1) {
+						roadScore(xyn[0], xyn[1], board, meeplesPresent, (s + 2) % 4);
+						checkedSides[s] = 1;
+					}
 					for (int k = 0; k < tiletracker.size(); k++) {
 						if (tiletracker.get(k).types[0] == -1)
 							continue c;
@@ -364,7 +360,12 @@ class Scorer {
 						board.players[board.board[x][y].meeple[0]].meepleCount += 1;
 						board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 					}
-					sweepRoadMeeples(xy[0], xy[1], board, (s + 2) % 4);
+					board.board[x][y].completion[i] = 1;
+					sweepRoadMeeples(xy[0], xy[1], board, (i + 2) % 4);
+					if (s != -1) {
+						board.board[x][y].completion[s] = 1;
+						sweepRoadMeeples(xyn[0], xyn[1], board, (s + 2) % 4);
+					}
 					break;
 
 				case 2: // ------------------------------CITY-----------------------------------
@@ -420,8 +421,8 @@ class Scorer {
 					for (int k = 0; k < meeplesPresent.length; k++) {
 						if (meeplesPresent[k] == 1) {
 							board.players[k].score += tiletracker.size() * 2;
-							//removing meeples after city finishes scoring
-							
+							// removing meeples after city finishes scoring
+
 							board.players[k].meepleCount++;
 						}
 					}
@@ -430,6 +431,7 @@ class Scorer {
 						board.players[board.board[x][y].meeple[0]].meepleCount += 1;
 						board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
 					}
+					board.board[x][y].completion[i] = CarcassonneMain.cityCount;
 					for (int j = 0; j < sides.size(); j++) {
 						switch (sides.get(j)) {
 							case 0:
@@ -447,11 +449,13 @@ class Scorer {
 							default:
 								xy = new int[] { 0, 0 };
 						}
+						board.board[x][y].completion[sides.get(j)] = CarcassonneMain.cityCount;
 						sweepCityMeeples(xy[0], xy[1], board, (sides.get(j) + 2) % 4);
 					}
+					CarcassonneMain.cityCount++;
 					break;
 
-				case 0: // ------------------------------FARM-----------------------------------	
+				case 0: // ------------------------------FARM-----------------------------------
 					break;
 				default:
 					break;
@@ -462,6 +466,7 @@ class Scorer {
 
 	public void sweepRoadMeeples(int x, int y, Board board, int previousSide) {
 		int i = -1;
+		board.board[x][y].completion[previousSide] = 1;
 
 		if (board.board[x][y].meeple[previousSide * 3 + 1 + 2] == 1) {
 			// if there is a meeple on checkingTile's road. meeple[1] is tile type that
@@ -489,6 +494,8 @@ class Scorer {
 		if (i == -1) { // if hitting empty tile, end roadScore
 			return;
 		}
+
+		board.board[x][y].completion[i] = 1;
 
 		// get new checking tile coordinates, depending on which side of the current
 		// tile (old checkingTile) we are checking
@@ -587,6 +594,8 @@ class Scorer {
 	}
 
 	public void sweepCityMeeples(int x, int y, Board board, int previousSide) {
+		board.board[x][y].completion[previousSide] = CarcassonneMain.cityCount;
+
 		if (board.board[x][y].meeple[previousSide * 3 + 1 + 2] == 1) {
 			board.players[board.board[x][y].meeple[0]].meepleCount += 1;
 			board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
@@ -641,6 +650,7 @@ class Scorer {
 				tiletracker.add(new EmptyTile());
 				return;
 			}
+			board.board[x][y].completion[sides.get(j)] = CarcassonneMain.cityCount;
 			sweepCityMeeples(xy[0], xy[1], board, (j + 2) % 4);
 		}
 	}

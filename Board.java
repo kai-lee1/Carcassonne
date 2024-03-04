@@ -1,5 +1,6 @@
 package carcassonne;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Board {
 	public Tile[][] board;
@@ -8,6 +9,7 @@ public class Board {
 	public Player[] players;  //playercount is players.size
 	public ArrayList<Tile> tiles;
 	public int turnCount;
+	public ArrayList<int[]> fieldMeeples;
 	
 	public Board(int playerCount) {
 		this.turnCount = 0;
@@ -17,6 +19,7 @@ public class Board {
 		this.generatePlayers(playerCount);
 		this.generateBoard();
 		this.tiles = new ArrayList<Tile>(); //draw pile
+		this.fieldMeeples = new ArrayList<int[]>();
 		this.generateTiles();		
 	}
 	
@@ -102,14 +105,17 @@ public class Board {
 	}
 	
 	public void generateTiles() {
-		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("bowtiefield")); //done
-		}
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("Lroad")); //done
 		}
 		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("Troad")); //done
+		}
+		for (int i = 0; i < 3; i++) {
+			tiles.add(new Tile("bowtiefield")); //done
+		}
+		for (int i = 0; i < 8; i++) {
+			tiles.add(new Tile("Lroad")); //done
 		}
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("edgecityroadstraight")); //done
@@ -155,6 +161,6 @@ public class Board {
 		}
 		
 		
-		//Collections.shuffle(tiles);
+		// Collections.shuffle(tiles);
 	}
 }
