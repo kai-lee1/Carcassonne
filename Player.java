@@ -98,14 +98,14 @@ public class Player {
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 2) {
-								tile.meeple[(j + 1) * 3 + 2] = 1;
-								tile.meeple[(j + 1) * 3 + 2 - 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
+								tile.meeple[(j + 1) * 3 + 2] = 1;
+								tile.meeple[(j + 1) * 3 + 2 + 2] = 1;
 							}
 						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 2) {
-							tile.meeple[j * 3 + 2] = 1;
 							tile.meeple[j * 3 + 2 + 1] = 1;
-							tile.meeple[j * 3 + 2 - 1] = 1;
+							tile.meeple[j * 3 + 2] = 1;
+							tile.meeple[j * 3 + 2 + 2] = 1;
 						}
 					}
 				} else if ((tile.types[(position) / 3] == 1)) {
@@ -113,11 +113,11 @@ public class Player {
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 1) {
-								tile.meeple[(j + 1) * 3 + 2] = 1;
+								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 								break;
 							}
 						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 1) {
-							tile.meeple[j * 3 + 2] = 1;
+							tile.meeple[j * 3 + 2 + 1] = 1;
 							break;
 						}
 					}
@@ -130,14 +130,14 @@ public class Player {
 					for (int j = 0; j < 3; j++) {
 						if (position / 3 < j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 0) {
-								tile.meeple[(j + 1) * 3 + 2] = 1;
-								tile.meeple[(j + 1) * 3 + 2 - 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
+								tile.meeple[(j + 1) * 3 + 2] = 1;
+								tile.meeple[(j + 1) * 3 + 2 + 2] = 1;
 							}
 						} else if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j] == 0) {
-							tile.meeple[j * 3 + 2] = 1;
 							tile.meeple[j * 3 + 2 + 1] = 1;
-							tile.meeple[j * 3 + 2 - 1] = 1;
+							tile.meeple[j * 3 + 2] = 1;
+							tile.meeple[j * 3 + 2 + 2] = 1;
 						}
 					}
 					if (tile.types[(position / 3 + 1) % 4] == 0) {
@@ -214,7 +214,8 @@ public class Player {
 
 			for (int j = 0; j < 4; j++) {
 				oldcon = board.tiles.get(turn).connected[j];
-				board.tiles.get(turn).connected[j] = new boolean[] { oldcon[2], oldcon[0], oldcon[1] };
+				if (j != 3)
+					board.tiles.get(turn).connected[j] = new boolean[] { oldcon[2], oldcon[0], oldcon[1] };
 			}
 
 			oldcono = board.tiles.get(turn).connected;
