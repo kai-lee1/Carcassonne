@@ -32,6 +32,9 @@ public class Board {
 			for (int j = 0; j < 4; j++)
 				System.out.print(board.tiles.get(board.turnCount).types[j]);
 			CarcassonneMain.waitButton();
+			if (CarcassonneMain.end){
+				break;
+			}
 			// System.out.println("");
 			// System.out.println("Send x and y coordinates for your tile:");
 			// int x = Integer.parseInt(scan.nextLine());
@@ -40,6 +43,7 @@ public class Board {
 			this.turnCount += 1;
 			CarcassonneMain.drawGUI(board);
 		}
+		endGame(board);
 	}
 
 	public void endGame(Board board){
@@ -48,7 +52,7 @@ public class Board {
 				Tile current = board.board[i][j];
 				int[] meeplesPresent = new int[board.players.length];
 
-				if (current.types[0] != -1 && current.meeple[1] == 0){ //if not empty and has meeple
+				if (current.types[0] != -1 && current.meeple[1] == 0){ //if current is not empty and has meeple
 					if(current.meeple[1] == 0){ //if meeple is on farm
 						for (int k = 0; k < 4; k++){
 							endGameField(i, j, board, meeplesPresent, k); //call endGameField on each side of the tile
@@ -59,6 +63,7 @@ public class Board {
 				}
 			}
 		}
+		System.out.println("game has been ended");
 	}
 
 	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
@@ -66,17 +71,18 @@ public class Board {
 
 		for (int i = 0; i < 3; i++) {
 			if (previousSide <= i) {
-				if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i + 1] == 2) {
+				if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i + 1] == 0) {
 					sides.add(i + 1);
 					break;
 				}
 			} 
 			
-			else if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i] == 2) {
+			else if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i] == 0) {
 				sides.add(i);
 				break;
 			}
 		}
+		//sides contains all the sides on current that is connected to previousSide
 
 		if (sides.size() == 0)
 			return;

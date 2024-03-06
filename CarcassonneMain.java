@@ -9,6 +9,7 @@ public class CarcassonneMain {
 	static boolean ready = false;
 	static long endWaitTime = System.currentTimeMillis() + 500*1000;
 	static int cityCount = 0;
+	static boolean end = false;
 
 	public static void main(String[] args) {
 		Board board = new Board(2);
@@ -18,7 +19,6 @@ public class CarcassonneMain {
 		inp.draw();
 
 		board.gameTime(board); // TODO i think theres a better way to do this
-		board.endGame(board);
 
 	}
 
@@ -31,7 +31,7 @@ public class CarcassonneMain {
 	public static void waitButton() {
 		while (System.currentTimeMillis() < endWaitTime && !ready) {
 			// isConditionMet = condition();
-			if (ready) {
+			if (ready || end) {
 				break;
 			} else {
 				try {

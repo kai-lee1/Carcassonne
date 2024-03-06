@@ -15,12 +15,13 @@ public class Input {
     private JLabel rotsloc;
     private JLabel meepleloc;
     private JPanel mainPanel;
-    private JButton button;
+    private JButton confirmbutton;
+    private JButton endgamebutton;
     public JLabel error;
 
     public Input() {
         inpf = new JFrame();
-        inpf.setSize(400, 300);
+        inpf.setSize(400, 350);
         inpf.setTitle("Input");
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -32,8 +33,10 @@ public class Input {
         coordyloc = new JLabel("Y Coordinate:");
         rotsloc = new JLabel("Rotations (Clockwise):");
         meepleloc = new JLabel("Meeple:");
-        button = new JButton("Confirm");
-        button.addActionListener(new ButtonPress());
+        confirmbutton = new JButton("Confirm");
+        confirmbutton.addActionListener(new ButtonPress());
+        endgamebutton = new JButton("end the game");
+        endgamebutton.addActionListener(new EndGamePress());
         error = new JLabel("");
         error.setForeground(new Color(255, 0, 0));
         mainPanel.add(coordxloc);
@@ -44,7 +47,8 @@ public class Input {
         mainPanel.add(rots);
         mainPanel.add(meepleloc);
         mainPanel.add(meeple);
-        mainPanel.add(button);
+        mainPanel.add(confirmbutton);
+        mainPanel.add(endgamebutton);
         mainPanel.add(error);
     }
 
@@ -59,5 +63,11 @@ public class Input {
 class ButtonPress implements ActionListener {
     public void actionPerformed(ActionEvent evt) {
         CarcassonneMain.ready = true;
+    }
+}
+
+class EndGamePress implements ActionListener {
+    public void actionPerformed(ActionEvent evt) {
+        CarcassonneMain.end = true;
     }
 }
