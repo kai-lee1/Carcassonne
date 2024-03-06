@@ -49,9 +49,9 @@ public class Board {
 				int[] meeplesPresent = new int[board.players.length];
 
 				if (current.types[0] != -1 && current.meeple[1] == 0){ //if not empty and has meeple
-					if(current.meeple[1] == 0){
+					if(current.meeple[1] == 0){ //if meeple is on farm
 						for (int k = 0; k < 4; k++){
-							endGameField(i, j, board, meeplesPresent, k); //call endGameField on the tile
+							endGameField(i, j, board, meeplesPresent, k); //call endGameField on each side of the tile
 							//TODO k may be wrong here
 							//its supposed to be previousSide
 						}
@@ -64,15 +64,16 @@ public class Board {
 	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
 		ArrayList<Integer> sides = new ArrayList<Integer>();
 
-		for (int j = 0; j < 3; j++) {
-
-			if (previousSide <= j) {
-				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 2) {
-					sides.add(j + 1);
+		for (int i = 0; i < 3; i++) {
+			if (previousSide <= i) {
+				if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i + 1] == 2) {
+					sides.add(i + 1);
 					break;
 				}
-			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 2) {
-				sides.add(j);
+			} 
+			
+			else if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i] == 2) {
+				sides.add(i);
 				break;
 			}
 		}
@@ -102,15 +103,22 @@ public class Board {
 					break;
 			}
 		}
+
+		for (int i = 0; i < 4; i++){
+			if (board.board[x][y].types[i] == 2){
+				
+			}
+		}
+
 }
 
-public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
-	return;
-}
+	public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
+		return;
+	}
 
-public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
-	return;
-}
+	public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
+		return;
+	}
 
 
 	
