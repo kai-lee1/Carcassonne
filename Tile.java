@@ -7,7 +7,7 @@ public class Tile {
 	public int rotations;
 	public boolean[][] connected;
 	public int[] meeple; //array of length 15. [0] is the player, 1 is for type, 2-13 is for if the meeple is connected to the respective side. 
-						// [14] is for 
+						// [14] is for position
 	                     //0 if not connected, 1 if connected. NOTE - 0 is top left (https://tinyurl.com/yeyzkd96)
 						 //ex. meeple[4] is 1, means that meeple is connected to top middle ("2" on the 12 point system)
 	public String type;
