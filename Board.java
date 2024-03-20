@@ -91,22 +91,13 @@ public class Board {
 		return sides;
 	}
 
-	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
-		ArrayList<Integer> sides = new ArrayList<Integer>();
+	public ArrayList<Integer> meeplesidescreator (int x, int y, Board board, int previousMeepleSide) {
 		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
-		ArrayList<Integer> cities = new ArrayList<Integer>();
-
-		sides = sidescreator(x, y, board, previousSide);
-		//sides contains all the sides on current that is connected to previousSide
-
-		if (sides.size() == 0){
-			return; }
 		
-		int previousMeepleSide = board.board[x][y].meeple[14];
 		for (int i = 0; i < 12; i++) {
 			if (previousMeepleSide <= i) {
 				if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i + 1] == 0) {
-					sides.add(i + 1); //if previousSide connected to side i, and 
+					meeplesides.add(i + 1); //if previousSide connected to side i, and 
 					break;
 				}
 			} 
@@ -116,6 +107,26 @@ public class Board {
 				break;
 			}
 		}
+		return meeplesides;
+	}
+
+	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
+		ArrayList<Integer> sides = new ArrayList<Integer>();
+		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
+		ArrayList<Integer> cities = new ArrayList<Integer>();
+
+		sides = sidescreator(x, y, board, previousSide);
+		//sides contains all the sides on current that are connected to previousSide
+		//uses connected[]
+
+		
+		int previousMeepleSide = board.board[x][y].meeple[14];
+		meeplesides = meeplesidescreator(x, y, board, previousMeepleSide);
+		//meeplesides contains all 12-point sides on current that are connected to meeple
+		//uses meeple[]
+
+		if (sides.size() == 0 || meeplesides.size() == 0){
+			return; }
 
 	
 		// get new checking tile coordinates, depending on which side of the current
