@@ -3,7 +3,6 @@ package carcassonne;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
 
 public class Input {
     public static JFrame inpf = new JFrame();
