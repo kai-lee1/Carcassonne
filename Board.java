@@ -135,6 +135,10 @@ public class Board {
 			}
 		}
 
+		for (int i = 0; i < meeplesides.size(); i++){
+			//step 2.2
+		}
+
 		for (int i = 0; i < 4; i++){
 			
 			if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
