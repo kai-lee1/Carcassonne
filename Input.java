@@ -25,7 +25,12 @@ public class Input {
         inpf.getContentPane().removeAll();
         inpf.setSize(400, 500);
         inpf.setTitle("Input");
-        score = new JTable(CarcassonneMain.playerCount, 2);
+        Object[][] data = new Object[CarcassonneMain.playerCount][1];
+        Object[] columnNames = new Object[CarcassonneMain.playerCount];
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNames[i] = i;
+        }
+        score = new JTable(data, columnNames);
         score.setRowHeight(20);
         score.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         mainPanel = new JPanel();
@@ -80,6 +85,7 @@ public class Input {
         mainPanel.add(confirmbutton);
         mainPanel.add(endgamebutton);
         mainPanel.add(error);
+        mainPanel.add(score);
         mainPanel.repaint();
         inpf.getContentPane().removeAll();
         inpf.getContentPane().add((Component) mainPanel);
