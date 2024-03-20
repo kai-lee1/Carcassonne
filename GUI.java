@@ -65,25 +65,25 @@ public class GUI {
 class ImageRenderer extends DefaultTableCellRenderer {
     JLabel lbl = new JLabel();
 
-    ImageIcon blank = new ImageIcon(getClass().getResource("emptytile.png"));
-    ImageIcon plusroad = new ImageIcon(getClass().getResource("+road.png"));
-    ImageIcon oneedgecity = new ImageIcon(getClass().getResource("1edgecity.png"));
-    ImageIcon onenot = new ImageIcon(getClass().getResource("1not.png"));
-    ImageIcon oneroad = new ImageIcon(getClass().getResource("1road.png"));
-    ImageIcon twoadjcity = new ImageIcon(getClass().getResource("2adjacentcity.png"));
-    ImageIcon allcity = new ImageIcon(getClass().getResource("allcity.png"));
-    ImageIcon bowtiecity = new ImageIcon(getClass().getResource("bowtiecity.png"));
-    ImageIcon bowtiefield = new ImageIcon(getClass().getResource("bowtiefield.png"));
-    ImageIcon cornercity = new ImageIcon(getClass().getResource("cornercity.png"));
-    ImageIcon cornercityroad = new ImageIcon(getClass().getResource("cornercityroad.png"));
-    ImageIcon edgecityroadleft = new ImageIcon(getClass().getResource("edgecityroadleft.png"));
-    ImageIcon edgecityroadright = new ImageIcon(getClass().getResource("edgecityroadright.png"));
-    ImageIcon edgecityroadstraight = new ImageIcon(getClass().getResource("edgecityroadstraight.png"));
-    ImageIcon edgecityroadt = new ImageIcon(getClass().getResource("edgecityroadt.png"));
-    ImageIcon lroad = new ImageIcon(getClass().getResource("Lroad.png"));
-    ImageIcon straightroad = new ImageIcon(getClass().getResource("straightroad.png"));
-    ImageIcon troad = new ImageIcon(getClass().getResource("Troad.png"));
-    ImageIcon meeple = new ImageIcon(getClass().getResource("meeple.png"));
+    ImageIcon blank = new ImageIcon(getClass().getResource("res/emptytile.png"));
+    ImageIcon plusroad = new ImageIcon(getClass().getResource("res/+road.png"));
+    ImageIcon oneedgecity = new ImageIcon(getClass().getResource("res/1edgecity.png"));
+    ImageIcon onenot = new ImageIcon(getClass().getResource("res/1not.png"));
+    ImageIcon oneroad = new ImageIcon(getClass().getResource("res/1road.png"));
+    ImageIcon twoadjcity = new ImageIcon(getClass().getResource("res/2adjacentcity.png"));
+    ImageIcon allcity = new ImageIcon(getClass().getResource("res/allcity.png"));
+    ImageIcon bowtiecity = new ImageIcon(getClass().getResource("res/bowtiecity.png"));
+    ImageIcon bowtiefield = new ImageIcon(getClass().getResource("res/bowtiefield.png"));
+    ImageIcon cornercity = new ImageIcon(getClass().getResource("res/cornercity.png"));
+    ImageIcon cornercityroad = new ImageIcon(getClass().getResource("res/cornercityroad.png"));
+    ImageIcon edgecityroadleft = new ImageIcon(getClass().getResource("res/edgecityroadleft.png"));
+    ImageIcon edgecityroadright = new ImageIcon(getClass().getResource("res/edgecityroadright.png"));
+    ImageIcon edgecityroadstraight = new ImageIcon(getClass().getResource("res/edgecityroadstraight.png"));
+    ImageIcon edgecityroadt = new ImageIcon(getClass().getResource("res/edgecityroadt.png"));
+    ImageIcon lroad = new ImageIcon(getClass().getResource("res/Lroad.png"));
+    ImageIcon straightroad = new ImageIcon(getClass().getResource("res/straightroad.png"));
+    ImageIcon troad = new ImageIcon(getClass().getResource("res/Troad.png"));
+    ImageIcon meeple = new ImageIcon(getClass().getResource("res/meeple.png"));
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         // if (value.equals("emptytile.png"))

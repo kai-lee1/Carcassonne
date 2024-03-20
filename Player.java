@@ -40,28 +40,41 @@ public class Player {
 
 			boolean worked = false;
 			int position;
-			if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
-				// System.out.println("Where? (0-11)");
+			// System.out.println("Where? (0-11)");
+			try {
 				position = Integer.parseInt(CarcassonneMain.inp.meeple.getText());
+			} catch (NumberFormatException e) {
+				position = -1;
+			}
+
+			if (position != -1)
 				worked = placeMeeple(position, x, y, board);
-
-				while (!(worked)) {
-					System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
-					CarcassonneMain.inp.error.setText("invalid meeple position.");
-					CarcassonneMain.waitButton();
-					if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
-						System.out.println("Where? (0-11)");
+			
+			else worked = true;
+			
+			while (!(worked)) {
+				System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
+				CarcassonneMain.inp.error.setText("invalid meeple position. Choose -1 to not place one.");
+				CarcassonneMain.waitButton();
+				if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
+					System.out.println("Where? (0-11)");
+					try {
 						position = Integer.parseInt(CarcassonneMain.inp.meeple.getText());
-						worked = placeMeeple(position, x, y, board);
-					} else {
-						break;
+					} catch (NumberFormatException e) {
+						position = -1;
 					}
+					if (position != -1)
+						worked = placeMeeple(position, x, y, board);
+					
+					else worked = true;
+				} else {
+					break;
+				}
 
-				}
-				if (worked) {
-					System.out.println("meeple has been placed");
-					meepleCount--;
-				}
+			}
+			if (worked) {
+				System.out.println("meeple has been placed");
+				meepleCount--;
 			}
 			Scorer scorer = new Scorer(board, x, y);
 			scorer.scoring(x, y, board);
