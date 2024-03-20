@@ -57,6 +57,14 @@ public class Board {
 							//its supposed to be previousSide
 						}
 					}
+					if(current.meeple[1] == 1){ //if meeple is on city
+						for (int k = 0; k < 4; k++){
+							endGameCity(i, j, board, meeplesPresent);
+						}
+					}
+					if(current.meeple[1] == 2){ //if meeple is on farm
+						// ... endGameRoad(i, j, board, meeplesPresent);
+					}
 				}
 			}
 		}
@@ -65,6 +73,8 @@ public class Board {
 
 	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
 		ArrayList<Integer> sides = new ArrayList<Integer>();
+		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
+		ArrayList<Integer> cities = new ArrayList<Integer>();
 
 		for (int i = 0; i < 3; i++) {
 			if (previousSide <= i) {
@@ -107,10 +117,33 @@ public class Board {
 			}
 		}
 
-		for (int i = 0; i < 4; i++){
-			if (board.board[x][y].types[i] == 2){
-				
+		int previousMeepleSide = board.board[x][y].meeple[14];
+		for (int i = 0; i < 12; i++) {
+			if (previousMeepleSide <= i) {
+				if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i + 1] == 0) {
+					sides.add(i + 1); //if previousSide connected to side i, and 
+					break;
+				}
+			} 
+			
+			else if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i] == 0) {
+				meeplesides.add(i);   //if previousMeepleSide connected to side i, and i is farm, add side
+				break;
 			}
+		}
+
+		for (int i = 0; i < meeplesides.size(); i++){
+			//step 2.2
+		}
+
+		for (int i = 0; i < 4; i++){
+			
+			if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
+				cities.add(board.board[x][y].completion[i]);
+				board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+			}
+
+
 		}
 
 }
@@ -121,6 +154,17 @@ public class Board {
 
 	public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
 		return;
+	}
+
+	public static int oppositeSide(int x) {  //opposite side on 12-point system
+		switch (x){
+			case 0, 1, 2, 6, 7, 8:
+				return 8 - x;
+			case 3, 4, 5, 9, 10, 11:
+				return 14 - x;
+			default:
+				return -69420;
+		}
 	}
 
 
