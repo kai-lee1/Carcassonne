@@ -5,18 +5,19 @@ import javax.swing.*;
 public class CarcassonneMain {
 	// Frame initialization
 	static JFrame f = new JFrame();
+	static Tile currentTile = new EmptyTile();
 	static Input inp = new Input();
 	static boolean ready = false;
 	static long endWaitTime = System.currentTimeMillis() + 500*1000;
 	static int cityCount = 0;
 	static boolean end = false;
+	static int playerCount = 2;
 
 	public static void main(String[] args) {
-		Board board = new Board(2);
+		Board board = new Board(playerCount);
 		f.setSize(500, 133);
-		GUI.gui(board, f, 0, 0);
+		GUI.gui(board, f, 222*64, 222*64);
 		drawGUI(board);
-		inp.draw();
 
 		board.gameTime(board); // TODO i think theres a better way to do this
 
@@ -26,6 +27,7 @@ public class CarcassonneMain {
 		f.getContentPane().removeAll(); //or remove(JComponent)
 		f.repaint();
 		GUI.gui(board, f, GUI.sp.getHorizontalScrollBar().getValue(), GUI.sp.getVerticalScrollBar().getValue());
+		inp.draw();
 	}
 
 	public static void waitButton() {

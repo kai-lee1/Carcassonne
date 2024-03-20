@@ -24,13 +24,11 @@ public class Board {
 	}
 	
 	public void gameTime(Board board) {
-		System.out.println("starting tile is 2101");
 		while (this.turnCount < 66) {
 			int turn = turnCount % players.length;
 			System.out.print("Player " + turn + "'s turn. ");
-			System.out.println("here is the current tile to be placed: ");
-			for (int j = 0; j < 4; j++)
-				System.out.print(board.tiles.get(board.turnCount).types[j]);
+			CarcassonneMain.currentTile = board.tiles.get(board.turnCount);
+			CarcassonneMain.drawGUI(board);
 			CarcassonneMain.waitButton();
 			if (CarcassonneMain.end){
 				break;
@@ -41,7 +39,6 @@ public class Board {
 			// int y = Integer.parseInt(scan.nextLine());
 			players[turn].placeTile(board);
 			this.turnCount += 1;
-			CarcassonneMain.drawGUI(board);
 		}
 		endGame(board);
 	}
@@ -222,6 +219,6 @@ public class Board {
 		}
 		
 		
-		// Collections.shuffle(tiles);
+		Collections.shuffle(tiles);
 	}
 }

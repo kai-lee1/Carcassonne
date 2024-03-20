@@ -19,7 +19,4 @@ public class EmptyTile extends Tile {
 		};
 		
 	}
-	public EmptyTile(String type) {
-		super("");
-	}
 }
