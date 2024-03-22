@@ -13,7 +13,7 @@ public class Board {
 	
 	public Board(int playerCount) {
 		this.turnCount = 0;
-		this.board = new Tile[145][145]; //the game board
+		this.board = new Tile[133][133]; //the game board
 		this.extended = new int[]{0, 0, 0, 0};
 		this.players = new Player[playerCount];
 		this.generatePlayers(playerCount);
@@ -51,23 +51,19 @@ public class Board {
 
 				if (current.types[0] != -1 && current.meeple[1] == 0){ //if current is not empty and has meeple
 					if(current.meeple[1] == 0){ //if meeple is on farm
-						for (int k = 0; k < 4; k++){
-							endGameField(i, j, board, meeplesPresent, k); //call endGameField on each side of the tile
-							//TODO k may be wrong here
-							//its supposed to be previousSide
-						}
+						ArrayList<Integer> cities = new ArrayList<Integer>();
+						endGameField(i, j, board, meeplesPresent, cities); //call endGameField on each side of the tile
 					}
 					if(current.meeple[1] == 1){ //if meeple is on city
-						for (int k = 0; k < 4; k++){
-							endGameCity(i, j, board, meeplesPresent);
-						}
+						endGameCity(i, j, board, meeplesPresent);
 					}
+				}
 					if(current.meeple[1] == 2){ //if meeple is on farm
 						// ... endGameRoad(i, j, board, meeplesPresent);
 					}
 				}
 			}
-		}
+		
 		System.out.println("game has been ended");
 	}
 
@@ -110,75 +106,85 @@ public class Board {
 		return meeplesides;
 	}
 
-	public void endGameField(int x, int y, Board board, int[] meeplesPresent, int previousSide) { 
+	public void endGameField(int x, int y, Board board, int[] meeplesPresent, ArrayList<Integer> cities) { 
 		ArrayList<Integer> sides = new ArrayList<Integer>();
 		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
-		ArrayList<Integer> cities = new ArrayList<Integer>();
+		
+		ArrayList<int[]> tiletracker = new ArrayList<int[]>();
+		//int[] prevsidetracker = {x, y, previousSide};
 
-		sides = sidescreator(x, y, board, previousSide);
-		//sides contains all the sides on current that are connected to previousSide
-		//uses connected[]
+		int previousSide = 0;
+		for (int z = 0; z < 4; z++){
+			previousSide = z;
+		
+			sides = sidescreator(x, y, board, previousSide);
+			//sides contains all the sides on current that are connected to previousSide
+			//uses connected[]
+
+			
+			int previousMeepleSide = board.board[x][y].meeple[14];
+			meeplesides = meeplesidescreator(x, y, board, previousMeepleSide);
+			//meeplesides contains all 12-point sides on current that are connected to meeple
+			//uses meeple[]
+
+			if (sides.size() == 0 || meeplesides.size() == 0){
+				return; }
 
 		
-		int previousMeepleSide = board.board[x][y].meeple[14];
-		meeplesides = meeplesidescreator(x, y, board, previousMeepleSide);
-		//meeplesides contains all 12-point sides on current that are connected to meeple
-		//uses meeple[]
-
-		if (sides.size() == 0 || meeplesides.size() == 0){
-			return; }
-
-	
-		// get new checking tile coordinates, depending on which side of the current
-		// tile (old checkingTile) we are checking
-		int[] xy;
-		for (int i = 0; i < sides.size(); i++) {
-			switch (i) {
-				case 0:
-					xy = new int[] { x, y - 1 };
-					break;
-				case 1:
-					xy = new int[] { x + 1, y };
-					break;
-				case 2:
-					xy = new int[] { x, y + 1 };
-					break;
-				case 3:
-					xy = new int[] { x - 1, y };
-					break;
-				default:
-					xy = new int[] { 0, 0 };
-					break;
-			}
-		
-
-		for (int j = 0; j < meeplesides.size(); j++){
-			int newside = oppositeSide(meeplesides.get(j));
-			board.board[145][145] = board.board[xy[0]][xy[1]]; //using [145][145] as temp tile
-			if(board.players[0].placeMeeple(newside, 145, 145, board)){ //if placing meeple worked
-				ArrayList<Integer> anotherarray = meeplesidescreator(145, 145, board, newside); //TODO newside could be wrong here
-				for (int k = 0; k < anotherarray.size(); k++){ 
-					if(board.board[145][145].types[board.board[145][145].meeple[anotherarray.get(k)]/3] == 2 && board.board[145][145].completion[i] != 0){
-						cities.add(board.board[x][y].completion[i]); 
-						board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
-					}
+			// get new checking tile coordinates, depending on which side of the current
+			// tile (old checkingTile) we are checking
+			int[] xy;
+			for (int i = 0; i < sides.size(); i++) {
+				switch (i) {
+					case 0:
+						xy = new int[] { x, y - 1 };
+						break;
+					case 1:
+						xy = new int[] { x + 1, y };
+						break;
+					case 2:
+						xy = new int[] { x, y + 1 };
+						break;
+					case 3:
+						xy = new int[] { x - 1, y };
+						break;
+					default:
+						xy = new int[] { 0, 0 };
+						break;
 				}
+			
 
-				//check if there is a city connected to the 
-			}
-			
-			else{System.out.println("oops");}
-			
-		}
-	}
+			for (int j = 0; j < meeplesides.size(); j++){ //updating temp tile each time
+				int newside = oppositeSide(meeplesides.get(j));
+				board.board[board.board.length][board.board.length] = board.board[xy[0]][xy[1]]; //using [board.board.length][board.board.length] as temp tile
+				if(board.players[0].placeMeeple(newside, board.board.length, board.board.length, board)){ //if placing meeple worked
+					ArrayList<Integer> anotherarray = meeplesidescreator(board.board.length, board.board.length, board, newside); //TODO newside could be wrong here
+					for (int k = 0; k < anotherarray.size(); k++){ //give player points if meeple is connected
+						if(board.board[board.board.length][board.board.length].types[board.board[board.board.length][board.board.length].meeple[anotherarray.get(k)]/3] == 2 && 
+						board.board[board.board.length][board.board.length].completion[i] != 0 &&
+						!(cities.contains(board.board[x][y].completion[i])) ){
+							cities.add(board.board[x][y].completion[i]); 
+							board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+						}
+					}
 
-		for (int i = 0; i < 4; i++){
-			
-			if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
-				cities.add(board.board[x][y].completion[i]); 
-				board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+					//check if there is a city connected to the 
+				}
+				
+				else{System.out.println("oops");}
+				
 			}
 		}
+
+			for (int i = 0; i < 4; i++){
+				
+				if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
+					cities.add(board.board[x][y].completion[i]); 
+					board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+				}
+			}
+
+		} //this bracket closes the for loop at the top
 
 }
 
