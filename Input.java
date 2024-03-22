@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Input {
-    public static JFrame inpf = new JFrame();
+    public static JFrame inpf = CarcassonneMain.f;
     public JTextField coordx;
     public JTextField coordy;
     public JTextField rots;
@@ -19,20 +19,14 @@ public class Input {
     private JButton endgamebutton;
     private JLabel tile;
     public JLabel error;
-    private JTable score;
+    private String[] score;
+    private JLabel scoreloc;
 
     public Input() {
         inpf.getContentPane().removeAll();
         inpf.setSize(400, 500);
         inpf.setTitle("Input");
-        Object[][] data = new Object[CarcassonneMain.playerCount][1];
-        Object[] columnNames = new Object[CarcassonneMain.playerCount];
-        for (int i = 0; i < columnNames.length; i++) {
-            columnNames[i] = i;
-        }
-        score = new JTable(data, columnNames);
-        score.setRowHeight(20);
-        score.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        score = new String[CarcassonneMain.playerCount];
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         coordx = new JTextField(300);
@@ -50,6 +44,7 @@ public class Input {
         tile = new JLabel(CarcassonneMain.currentTile.type);
         error = new JLabel("");
         error.setForeground(new Color(255, 0, 0));
+        scoreloc = new JLabel("Player Scores: ");
         mainPanel.add(tile);
         mainPanel.add(coordxloc);
         mainPanel.add(coordx);
@@ -62,37 +57,44 @@ public class Input {
         mainPanel.add(confirmbutton);
         mainPanel.add(endgamebutton);
         mainPanel.add(error);
-        mainPanel.add(score);
+        mainPanel.add(scoreloc);
+        for (int i = 0; i < CarcassonneMain.playerCount; i++) {
+            score[i] = "";
+        }
+        for (String s : score) {
+            mainPanel.add(new JLabel(s));
+        }
         // displayTile.add(new JLabel(new ImageIcon(getClass().getResource(CarcassonneMain.currentTile.type + ".png"))));
     }
 
-    public void draw() {
+    public Component draw() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.add(coordxloc);
+        mainPanel.add(coordx);
+        mainPanel.add(coordyloc);
+        mainPanel.add(coordy);
+        mainPanel.add(rotsloc);
+        mainPanel.add(rots);
+        mainPanel.add(meepleloc);
+        mainPanel.add(meeple);
+        mainPanel.add(confirmbutton);
+        mainPanel.add(endgamebutton);
+        mainPanel.add(error);
+        mainPanel.add(scoreloc);
+        for (int i = 0; i < CarcassonneMain.playerCount; i++) {
+            score[i] = "Player " + i + ": " + CarcassonneMain.board.players[i].score;
+        }
+        for (String s : score) {
+            mainPanel.add(new JLabel(s));
+        }
         tile = new JLabel("Current Tile: ");
         mainPanel.add(tile);
         if (!CarcassonneMain.currentTile.type.equals("")) {
             mainPanel.add(new JLabel(new ImageIcon(getClass().getResource("res/" + CarcassonneMain.currentTile.type + ".png"))));
         }
-        mainPanel.add(coordxloc);
-        mainPanel.add(coordx);
-        mainPanel.add(coordyloc);
-        mainPanel.add(coordy);
-        mainPanel.add(rotsloc);
-        mainPanel.add(rots);
-        mainPanel.add(meepleloc);
-        mainPanel.add(meeple);
-        mainPanel.add(confirmbutton);
-        mainPanel.add(endgamebutton);
-        mainPanel.add(error);
-        mainPanel.add(score);
         mainPanel.repaint();
-        inpf.getContentPane().removeAll();
-        inpf.getContentPane().add((Component) mainPanel);
-        System.out.println(CarcassonneMain.currentTile.type);
-        inpf.pack();
-        inpf.repaint();
-        inpf.setVisible(true);
+        return mainPanel;
     }
 }
 

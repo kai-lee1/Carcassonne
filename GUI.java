@@ -12,13 +12,9 @@ public class GUI {
     static Tile[][] data;
     static JScrollPane sp;
     // Constructor
-    public static void gui(Board board, JFrame f, int x, int y) {
+    public static Component gui(Board board) {
         // Table
         JTable j;
-
-        // Frame Title
-        f.getContentPane().setLayout(new BorderLayout());
-        f.setTitle("Carcassonne");
 
         // Data to be displayed in the JTable
         data = board.board;
@@ -49,16 +45,8 @@ public class GUI {
 
         // adding it to JScrollPane
         sp = new JScrollPane(j);
-        
-        //f.add(sp);
-        f.getContentPane().add(sp);
-        // Frame Size
-        
-        // Frame Visible = true
-        f.setVisible(true);
 
-        sp.getVerticalScrollBar().setValue(y);
-        sp.getHorizontalScrollBar().setValue(x);
+        return sp;
     }
 }
 
