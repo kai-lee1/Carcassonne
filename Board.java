@@ -41,6 +41,7 @@ public class Board {
 			this.turnCount += 1;
 		}
 		endGame(board);
+		CarcassonneMain.drawGUI(board);
 	}
 
 	public void endGame(Board board){
