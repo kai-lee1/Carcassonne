@@ -92,7 +92,7 @@ public class Scorer {
 							xyn = new int[] { tx - 1, ty };
 							break;
 						case -1:
-							xyn = new int[] {xy[0], xy[1]};
+							xyn = new int[] { xy[0], xy[1] };
 						default:
 							xyn = new int[] { 0, 0 };
 							break;
@@ -471,4 +471,146 @@ public class Scorer {
 		}
 	}
 
+	public void endRoadScore(int x, int y, Board board) {
+		int[] checkedSides = new int[] { 0, 0, 0, 0 };
+		int[] xy;
+		int[] xyn;
+		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
+			int tx = x;
+			int ty = y;
+			int type = board.board[tx][ty].types[i];
+			this.tiletracker = new ArrayList<Tile>();
+
+			if (checkedSides[i] == 1)
+				continue c;
+
+			if (type == 1 && board.board[x][y].meeple[i * 3 + 3] == 1) { // ------------------------------ROAD-----------------------------------
+				switch (i) {
+					case 0:
+						xy = new int[] { tx, ty - 1 };
+						break;
+					case 1:
+						xy = new int[] { tx + 1, ty };
+						break;
+					case 2:
+						xy = new int[] { tx, ty + 1 };
+						break;
+					case 3:
+						xy = new int[] { tx - 1, ty };
+						break;
+					default:
+						xy = new int[] { 0, 0 };
+						break;
+				}
+				if (!tiletracker.contains(board.board[x][y]))
+					tiletracker.add(board.board[x][y]);
+
+				roadScoreEnd(xy[0], xy[1], board, (i + 2) % 4);
+				int s = -1; // i is the previousSide of just-placed tile, j is a counter for
+				// board.board[x][y]
+				for (int j = 0; j < 3; j++) {
+					// if (board.board[x][y].connected[previousSide][j] &&
+					// board.board[x][y].types[j] == 1) {
+					if (i <= j) {
+						if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 1) {
+							s = j + 1;
+							break;
+						}
+					} else if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 1) {
+						s = j;
+						break;
+					}
+
+				}
+				switch (s) {
+					case 0:
+						xyn = new int[] { tx, ty - 1 };
+						break;
+					case 1:
+						xyn = new int[] { tx + 1, ty };
+						break;
+					case 2:
+						xyn = new int[] { tx, ty + 1 };
+						break;
+					case 3:
+						xyn = new int[] { tx - 1, ty };
+						break;
+					case -1:
+						xyn = new int[] {xy[0], xy[1]};
+					default:
+						xyn = new int[] { 0, 0 };
+						break;
+				}
+				if (s != -1) {
+					roadScoreEnd(xyn[0], xyn[1], board, (s + 2) % 4);
+					checkedSides[s] = 1;
+				}
+				for (int k = 0; k < tiletracker.size(); k++) {
+					if (tiletracker.get(k).types[0] == -1) {
+						tiletracker.remove(k);
+						k--;
+					}
+				}
+				board.players[board.board[x][y].meeple[0]].score += tiletracker.size();
+				this.tiletracker = new ArrayList<Tile>();
+				if (board.board[tx][ty].meeple[i * 3 + 1 + 2] == 1) {
+					board.players[board.board[x][y].meeple[0]].meepleCount += 1;
+					board.board[x][y].meeple = new int[] { -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
+				}
+			}
+		}
+	}
+
+	private void roadScoreEnd(int x, int y, Board board, int previousSide) {
+		int i = -1;
+
+		for (int j = 0; j < 3; j++) {
+
+			if (previousSide <= j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 1) {
+					i = j + 1;
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 1) {
+				i = j;
+				break;
+			}
+		}
+
+		if (!tiletracker.contains(board.board[x][y]))
+			tiletracker.add(board.board[x][y]);
+
+		if (i == -1) { // if hitting empty tile, end roadScore
+			return;
+		}
+
+		// get new checking tile coordinates, depending on which side of the current
+		// tile (old checkingTile) we are checking
+		int[] xy;
+		switch (i) {
+			case 0:
+				xy = new int[] { x, y - 1 };
+				break;
+			case 1:
+				xy = new int[] { x + 1, y };
+				break;
+			case 2:
+				xy = new int[] { x, y + 1 };
+				break;
+			case 3:
+				xy = new int[] { x - 1, y };
+				break;
+			default:
+				xy = new int[] { 0, 0 };
+				break;
+		}
+
+		if (x == this.x && y == this.y) { // if hitting the original tile, double count must
+			// have happened (circle road). divide by 2
+			return;
+		}
+
+		roadScoreEnd(xy[0], xy[1], board, (i + 2) % 4);
+
+	}
 }

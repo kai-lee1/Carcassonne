@@ -174,7 +174,9 @@ public class Board {
 
 }
 
-	public void endGameRoad(int x, int y, Board board, int[] meeplesPresent){
+	public void endGameRoad(int x, int y, Board board){
+		Scorer s = new Scorer(board, x, y);
+		s.endRoadScore(x, y, board);
 		return;
 	}
 
