@@ -156,7 +156,15 @@ public class Board {
 			int newside = oppositeSide(meeplesides.get(j));
 			board.board[145][145] = board.board[xy[0]][xy[1]]; //using [145][145] as temp tile
 			if(board.players[0].placeMeeple(newside, 145, 145, board)){ //if placing meeple worked
-				
+				ArrayList<Integer> anotherarray = meeplesidescreator(145, 145, board, newside); //TODO newside could be wrong here
+				for (int k = 0; k < anotherarray.size(); k++){ 
+					if(board.board[145][145].types[board.board[145][145].meeple[anotherarray.get(k)]/3] == 2 && board.board[145][145].completion[i] != 0){
+						cities.add(board.board[x][y].completion[i]); 
+						board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+					}
+				}
+
+				//check if there is a city connected to the 
 			}
 			
 			else{System.out.println("oops");}
