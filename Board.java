@@ -49,17 +49,17 @@ public class Board {
 				Tile current = board.board[i][j];
 				int[] meeplesPresent = new int[board.players.length];
 
-				if (current.types[0] != -1 && current.meeple[1] == 0){ //if current is not empty and has meeple
+				if (current.types[0] != -1){ //if current is not empty and has meeple
 					if(current.meeple[1] == 0){ //if meeple is on farm
 						ArrayList<Integer> cities = new ArrayList<Integer>();
 						endGameField(i, j, board, meeplesPresent, cities); //call endGameField on each side of the tile
 					}
-					if(current.meeple[1] == 1){ //if meeple is on city
+					if(current.meeple[1] == 2){ //if meeple is on city
 						endGameCity(i, j, board, meeplesPresent);
 					}
 				}
-					if(current.meeple[1] == 2){ //if meeple is on farm
-						// ... endGameRoad(i, j, board, meeplesPresent);
+					if(current.meeple[1] == 1){ //if meeple is on road
+						endGameRoad(i, j, board);
 					}
 				}
 			}
