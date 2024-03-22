@@ -536,7 +536,7 @@ public class Scorer {
 						xyn = new int[] { tx - 1, ty };
 						break;
 					case -1:
-						xyn = new int[] {xy[0], xy[1]};
+						xyn = new int[] { xy[0], xy[1] };
 					default:
 						xyn = new int[] { 0, 0 };
 						break;
@@ -612,5 +612,119 @@ public class Scorer {
 
 		roadScoreEnd(xy[0], xy[1], board, (i + 2) % 4);
 
+	}
+
+	public void endCityScore(int x, int y, Board board) {
+		int[] checkedSides = new int[] { 0, 0, 0, 0 };
+		int[] xy;
+		c: for (int i = 0; i < 4; i++) { // i is the side # of the just-placed tile
+			int tx = x;
+			int ty = y;
+			int type = board.board[tx][ty].types[i];
+			this.tiletracker = new ArrayList<Tile>();
+
+			if (checkedSides[i] == 1)
+				continue c;
+
+			if (type == 2 && board.board[x][y].meeple[i * 3 + 3] == 1) { // ------------------------------CITY-----------------------------------
+				// get checkingTile coordinates, depending on which side of the current
+				// tile we are checking
+				// store in xy[]
+				tiletracker.add(board.board[x][y]);
+
+				ArrayList<Integer> sides = new ArrayList<Integer>();
+
+				sides.add(i);
+
+				for (int j = 0; j < 3; j++) {
+					if (i > j) {
+						if (board.board[x][y].connected[i][j] && board.board[x][y].types[j] == 2) {
+							sides.add(j);
+						}
+					} else if (board.board[x][y].connected[i][j] && board.board[x][y].types[j + 1] == 2) {
+						sides.add(j + 1);
+					}
+				}
+
+				for (int j = 0; j < sides.size(); j++) {
+					checkedSides[sides.get(j)] = 1;
+					switch (sides.get(j)) {
+						case 0:
+							xy = new int[] { tx, y - 1 };
+							break;
+						case 1:
+							xy = new int[] { tx + 1, y };
+							break;
+						case 2:
+							xy = new int[] { tx, y + 1 };
+							break;
+						case 3:
+							xy = new int[] { tx - 1, y };
+							break;
+						default:
+							xy = new int[] { 0, 0 };
+					}
+					cityScoreEnd(xy[0], xy[1], board, (sides.get(j) + 2) % 4);
+				}
+
+				for (int k = 0; k < tiletracker.size(); k++) {
+					if (tiletracker.get(k).types[0] == -1) {
+						tiletracker.remove(k);
+						k--;
+					}
+				}
+				board.players[board.board[x][y].meeple[0]].score += tiletracker.size();
+				this.tiletracker = new ArrayList<Tile>();
+			}
+		}
+	}
+
+	private void cityScoreEnd(int x, int y, Board board, int previousSide) {
+		if (!tiletracker.contains(board.board[x][y]))
+			tiletracker.add(board.board[x][y]);
+		else
+			return;
+
+		ArrayList<Integer> sides = new ArrayList<Integer>();
+
+		for (int j = 0; j < 3; j++) {
+
+			if (previousSide <= j) {
+				if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j + 1] == 2) {
+					sides.add(j + 1);
+					break;
+				}
+			} else if (board.board[x][y].connected[previousSide][j] && board.board[x][y].types[j] == 2) {
+				sides.add(j);
+				break;
+			}
+		}
+
+		if (sides.size() == 0)
+			return;
+
+		// get new checking tile coordinates, depending on which side of the current
+		// tile (old checkingTile) we are checking
+		int[] xy;
+		for (int i = 0; i < sides.size(); i++) {
+			switch (i) {
+				case 0:
+					xy = new int[] { x, y - 1 };
+					break;
+				case 1:
+					xy = new int[] { x + 1, y };
+					break;
+				case 2:
+					xy = new int[] { x, y + 1 };
+					break;
+				case 3:
+					xy = new int[] { x - 1, y };
+					break;
+				default:
+					xy = new int[] { 0, 0 };
+					break;
+			}
+			cityScoreEnd(xy[0], xy[1], board, (i + 2) % 4);
+		}
 	}
 }

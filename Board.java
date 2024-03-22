@@ -56,7 +56,7 @@ public class Board {
 						endGameField(i, j, board, meeplesPresent, cities); //call endGameField on each side of the tile
 					}
 					if(current.meeple[1] == 2){ //if meeple is on city
-						endGameCity(i, j, board, meeplesPresent);
+						endGameCity(i, j, board);
 					}
 				}
 					if(current.meeple[1] == 1){ //if meeple is on road
@@ -195,7 +195,9 @@ public class Board {
 		return;
 	}
 
-	public void endGameCity(int x, int y, Board board, int[] meeplesPresent){
+	public void endGameCity(int x, int y, Board board){
+		Scorer s = new Scorer(board, x, y);
+		s.endCityScore(x, y, board);
 		return;
 	}
 
