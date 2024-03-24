@@ -3,6 +3,8 @@ package carcassonne;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
+import java.awt.image.*;
 
 public class Input {
     public static JFrame inpf = CarcassonneMain.f;
@@ -91,7 +93,15 @@ public class Input {
         tile = new JLabel("Current Tile: ");
         mainPanel.add(tile);
         if (!CarcassonneMain.currentTile.type.equals("")) {
-            mainPanel.add(new JLabel(new ImageIcon(getClass().getResource("res/" + CarcassonneMain.currentTile.type + ".png"))));
+            ImageIcon img = new ImageIcon(getClass().getResource("res/" + CarcassonneMain.currentTile.type + ".png"));
+            BufferedImage combined = new BufferedImage(220, 220, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = combined.createGraphics();
+            AffineTransform old = g.getTransform();
+            g.rotate(CarcassonneMain.currentTile.rotations * Math.PI / 2, 110, 110);
+            g.drawImage(img.getImage(), 0, 0, null);
+            g.setTransform(old);
+            g.dispose();
+            mainPanel.add(new JLabel(new ImageIcon(combined)));
         }
         mainPanel.repaint();
         return mainPanel;

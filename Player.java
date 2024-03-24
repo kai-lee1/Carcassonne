@@ -12,15 +12,36 @@ public class Player {
 	public void placeTile(Board board) {
 		// System.out.println("how many times do you want to rotate tile? ");
 		// int rotateans = Integer.parseInt(scan.nextLine());
-		int x = Integer.parseInt(CarcassonneMain.inp.coordx.getText());
-		int y = Integer.parseInt(CarcassonneMain.inp.coordy.getText());
-		int rotateans = Integer.parseInt(CarcassonneMain.inp.rots.getText());
-		rotateTile(board.turnCount, rotateans, board);
-		System.out.println("new tile after rotating: ");
-		for (int j = 0; j < 4; j++) {
-			System.out.print(board.tiles.get(board.turnCount).types[j]);
+		int x = 0;
+		try { x = Integer.parseInt(CarcassonneMain.inp.coordx.getText()); }
+		catch (NumberFormatException e) {
+			CarcassonneMain.inp.error.setText("Invalid tile. Try new coordinates");
+			CarcassonneMain.waitButton();
+			placeTile(board);
+			return;
 		}
-		System.out.println("");
+		int y = 0;
+		try { y = Integer.parseInt(CarcassonneMain.inp.coordy.getText()); }
+		catch (NumberFormatException e) {
+			CarcassonneMain.inp.error.setText("Invalid tile. Try new coordinates");
+			CarcassonneMain.waitButton();
+			placeTile(board);
+			return;
+		}
+		int rotateans = 0;
+		try { rotateans = Integer.parseInt(CarcassonneMain.inp.rots.getText()); }
+		catch (NumberFormatException e) {
+			CarcassonneMain.inp.error.setText("Invalid rotations. Try new number");
+			CarcassonneMain.waitButton();
+			placeTile(board);
+			return;
+		}
+		rotateTile(board.turnCount, rotateans, board);
+		// System.out.println("new tile after rotating: ");
+		for (int j = 0; j < 4; j++) {
+			// System.out.print(board.tiles.get(board.turnCount).types[j]);
+		}
+		// System.out.println("");
 
 		// score every time a new tile is placed
 		if (x > 0 && y > 0 && (board.validSide(board.tiles.get(board.turnCount), board.board[x][y - 1], 0))
@@ -51,11 +72,11 @@ public class Player {
 			else worked = true;
 			
 			while (!(worked)) {
-				System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
+				// System.out.println("invalid meeple position. do you want to place a meeple? (y/n)");
 				CarcassonneMain.inp.error.setText("invalid meeple position. Choose -1 to not place one.");
 				CarcassonneMain.waitButton();
 				if (Integer.parseInt(CarcassonneMain.inp.meeple.getText()) != -1) {
-					System.out.println("Where? (0-11)");
+					// System.out.println("Where? (0-11)");
 					try {
 						position = Integer.parseInt(CarcassonneMain.inp.meeple.getText());
 					} catch (NumberFormatException e) {
@@ -71,18 +92,18 @@ public class Player {
 
 			}
 			if (worked) {
-				System.out.println("meeple has been placed");
+				// System.out.println("meeple has been placed");
 				meepleCount--;
 			}
 			Scorer scorer = new Scorer(board, x, y);
 			scorer.scoring(x, y, board);
-			System.out.println("score of player 1: " + board.players[0].score);
-			System.out.println("score of player 2: " + board.players[1].score);
+			// System.out.println("score of player 1: " + board.players[0].score);
+			// System.out.println("score of player 2: " + board.players[1].score);
 
 		}
 
 		else {
-			System.out.println("invalid tile. try new tile coordinates");
+			// System.out.println("invalid tile. try new tile coordinates");
 			CarcassonneMain.inp.error.setText("Invalid tile. Try new coordinates");
 			CarcassonneMain.waitButton();
 			placeTile(board);

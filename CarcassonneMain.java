@@ -47,13 +47,14 @@ public class CarcassonneMain {
 	}
 
 	public static void waitButton() {
+		CarcassonneMain.drawGUI(board);
 		while (System.currentTimeMillis() < endWaitTime && !ready) {
 			// isConditionMet = condition();
 			if (ready || end) {
 				break;
 			} else {
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(100);
 				}
 				catch (InterruptedException e) {}
 			}

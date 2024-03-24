@@ -3,7 +3,6 @@ package carcassonne;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.lang.Math;
-import java.util.Arrays;
 
 public class Scorer {
 	public int score;
@@ -742,32 +741,10 @@ public class Scorer {
 			}
 		}
 
-		System.out.println(Arrays.toString(new int[] { x, y }));
-		System.out.println(Arrays.toString(board.board[x][y].connects(board.board[x][y].meeple[14])));
+		// System.out.println(Arrays.toString(new int[] { x, y }));
+		// System.out.println(Arrays.toString(board.board[x][y].connects(board.board[x][y].meeple[14])));
 
 		farmScoreLoop(x, y, board, visited, board.board[x][y].meeple[14], cities);
-		
-		int newSide = oppositeSide(board.board[x][y].meeple[14]);
-		int[] xy;
-		switch (board.board[x][y].meeple[14]) {
-			case 0:
-				xy = new int[] { x, y - 1 };
-				break;
-			case 1:
-				xy = new int[] { x + 1, y };
-				break;
-			case 2:
-				xy = new int[] { x, y + 1 };
-				break;
-			case 3:
-				xy = new int[] { x - 1, y };
-				break;
-			default:
-				xy = new int[] { 0, 0 };
-				break;
-		}
-
-		// farmScoreLoop(xy[0], xy[1], board, visited, newSide, cities);
 
 		for (int i = 0; i < cities.length; i++) {
 			if (cities[i] == 1) {

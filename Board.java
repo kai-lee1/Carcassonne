@@ -26,9 +26,8 @@ public class Board {
 	public void gameTime(Board board) {
 		while (this.turnCount < 66) {
 			int turn = turnCount % players.length;
-			System.out.print("Player " + turn + "'s turn. ");
+			// System.out.print("Player " + turn + "'s turn. ");
 			CarcassonneMain.currentTile = board.tiles.get(board.turnCount);
-			CarcassonneMain.drawGUI(board);
 			CarcassonneMain.waitButton();
 			if (CarcassonneMain.end){
 				break;
@@ -48,7 +47,7 @@ public class Board {
 		for (int i = 0; i < board.board.length; i++) {
 			for (int j = 0; j < board.board[i].length; j++){
 				Tile current = board.board[i][j];
-				int[] meeplesPresent = new int[board.players.length];
+				// int[] meeplesPresent = new int[board.players.length];
 
 				if (current.types[0] != -1){ //if current is not empty and has meeple
 					if(current.meeple[1] == 0){ //if meeple is on farm
@@ -69,140 +68,140 @@ public class Board {
 				}
 			}
 		
-		System.out.println("game has been ended");
+		// System.out.println("game has been ended");
 	}
 
-	public ArrayList<Integer> sidescreator (int x, int y, Board board, int previousSide){
-		ArrayList<Integer> sides = new ArrayList<Integer>();
+	// public ArrayList<Integer> sidescreator (int x, int y, Board board, int previousSide){
+	// 	ArrayList<Integer> sides = new ArrayList<Integer>();
 
-		for (int i = 0; i < 3; i++) {  
-			if (previousSide <= i) {
-				if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i + 1] == 0) {
-					sides.add(i + 1);
-					break;
-				}
-			} 
+	// 	for (int i = 0; i < 3; i++) {  
+	// 		if (previousSide <= i) {
+	// 			if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i + 1] == 0) {
+	// 				sides.add(i + 1);
+	// 				break;
+	// 			}
+	// 		} 
 			
-			else if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i] == 0) {
-				sides.add(i);
-				break;
-			}
-		}
+	// 		else if (board.board[x][y].connected[previousSide][i] && board.board[x][y].types[i] == 0) {
+	// 			sides.add(i);
+	// 			break;
+	// 		}
+	// 	}
 
-		return sides;
-	}
+	// 	return sides;
+	// }
 
-	public ArrayList<Integer> meeplesidescreator (int x, int y, Board board, int previousMeepleSide) {
-		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
+	// public ArrayList<Integer> meeplesidescreator (int x, int y, Board board, int previousMeepleSide) {
+	// 	ArrayList<Integer> meeplesides = new ArrayList<Integer>();
 		
-		for (int i = 0; i < 12; i++) {
-			if (previousMeepleSide <= i) {
-				if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i + 1] == 0) {
-					meeplesides.add(i + 1); //if previousSide connected to side i, and 
-					break;
-				}
-			} 
+	// 	for (int i = 0; i < 12; i++) {
+	// 		if (previousMeepleSide <= i) {
+	// 			if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i + 1] == 0) {
+	// 				meeplesides.add(i + 1); //if previousSide connected to side i, and 
+	// 				break;
+	// 			}
+	// 		} 
 			
-			else if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i] == 0) {
-				meeplesides.add(i);   //if previousMeepleSide connected to side i, and i is farm, add side
-				break;
-			}
-		}
-		return meeplesides;
-	}
+	// 		else if (board.board[x][y].meeple[i+2] == 1 && board.board[x][y].types[i] == 0) {
+	// 			meeplesides.add(i);   //if previousMeepleSide connected to side i, and i is farm, add side
+	// 			break;
+	// 		}
+	// 	}
+	// 	return meeplesides;
+	// }
 
-	public void endGameField(int x, int y, Board board, int[] meeplesPresent, ArrayList<Integer> cities) { 
-		ArrayList<Integer> sides = new ArrayList<Integer>();
-		ArrayList<Integer> meeplesides = new ArrayList<Integer>();
+	// public void endGameField(int x, int y, Board board, int[] meeplesPresent, ArrayList<Integer> cities) { 
+	// 	ArrayList<Integer> sides = new ArrayList<Integer>();
+	// 	ArrayList<Integer> meeplesides = new ArrayList<Integer>();
 		
-		ArrayList<int[]> tiletracker = new ArrayList<int[]>();
-		//int[] prevsidetracker = {x, y, previousSide};
+	// 	// ArrayList<int[]> tiletracker = new ArrayList<int[]>();
+	// 	//int[] prevsidetracker = {x, y, previousSide};
 
-		int previousSide = 0;
-		for (int z = 0; z < 4; z++){
-			previousSide = z;
+	// 	int previousSide = 0;
+	// 	for (int z = 0; z < 4; z++){
+	// 		previousSide = z;
 		
-			sides = sidescreator(x, y, board, previousSide);
-			//sides contains all the sides on current that are connected to previousSide
-			//uses connected[]
+	// 		sides = sidescreator(x, y, board, previousSide);
+	// 		//sides contains all the sides on current that are connected to previousSide
+	// 		//uses connected[]
 
 			
-			int previousMeepleSide = board.board[x][y].meeple[14];
-			meeplesides = meeplesidescreator(x, y, board, previousMeepleSide);
-			//meeplesides contains all 12-point sides on current that are connected to meeple
-			//uses meeple[]
+	// 		int previousMeepleSide = board.board[x][y].meeple[14];
+	// 		meeplesides = meeplesidescreator(x, y, board, previousMeepleSide);
+	// 		//meeplesides contains all 12-point sides on current that are connected to meeple
+	// 		//uses meeple[]
 
-			if (sides.size() == 0 || meeplesides.size() == 0){
-				return; }
+	// 		if (sides.size() == 0 || meeplesides.size() == 0){
+	// 			return; }
 
 		
-			// get new checking tile coordinates, depending on which side of the current
-			// tile (old checkingTile) we are checking
-			int[] xy;
-			for (int i = 0; i < sides.size(); i++) {
-				switch (i) {
-					case 0:
-						xy = new int[] { x, y - 1 };
-						break;
-					case 1:
-						xy = new int[] { x + 1, y };
-						break;
-					case 2:
-						xy = new int[] { x, y + 1 };
-						break;
-					case 3:
-						xy = new int[] { x - 1, y };
-						break;
-					default:
-						xy = new int[] { 0, 0 };
-						break;
-				}
+	// 		// get new checking tile coordinates, depending on which side of the current
+	// 		// tile (old checkingTile) we are checking
+	// 		int[] xy;
+	// 		for (int i = 0; i < sides.size(); i++) {
+	// 			switch (i) {
+	// 				case 0:
+	// 					xy = new int[] { x, y - 1 };
+	// 					break;
+	// 				case 1:
+	// 					xy = new int[] { x + 1, y };
+	// 					break;
+	// 				case 2:
+	// 					xy = new int[] { x, y + 1 };
+	// 					break;
+	// 				case 3:
+	// 					xy = new int[] { x - 1, y };
+	// 					break;
+	// 				default:
+	// 					xy = new int[] { 0, 0 };
+	// 					break;
+	// 			}
 			
 
-			for (int j = 0; j < meeplesides.size(); j++){ //updating temp tile each time
-				int newside = oppositeSide(meeplesides.get(j));
-				board.board[board.board.length][board.board.length] = board.board[xy[0]][xy[1]]; //using [board.board.length][board.board.length] as temp tile
-				if(board.players[0].placeMeeple(newside, board.board.length, board.board.length, board)){ //if placing meeple worked
-					ArrayList<Integer> anotherarray = meeplesidescreator(board.board.length, board.board.length, board, newside); //TODO newside could be wrong here
-					for (int k = 0; k < anotherarray.size(); k++){ //give player points if meeple is connected
-						if(board.board[board.board.length][board.board.length].types[board.board[board.board.length][board.board.length].meeple[anotherarray.get(k)]/3] == 2 && 
-						board.board[board.board.length][board.board.length].completion[i] != 0 &&
-						!(cities.contains(board.board[x][y].completion[i])) ){
-							cities.add(board.board[x][y].completion[i]); 
-							board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
-						}
-					}
+	// 		for (int j = 0; j < meeplesides.size(); j++){ //updating temp tile each time
+	// 			int newside = oppositeSide(meeplesides.get(j));
+	// 			board.board[board.board.length][board.board.length] = board.board[xy[0]][xy[1]]; //using [board.board.length][board.board.length] as temp tile
+	// 			if(board.players[0].placeMeeple(newside, board.board.length, board.board.length, board)){ //if placing meeple worked
+	// 				ArrayList<Integer> anotherarray = meeplesidescreator(board.board.length, board.board.length, board, newside); //TODO newside could be wrong here
+	// 				for (int k = 0; k < anotherarray.size(); k++){ //give player points if meeple is connected
+	// 					if(board.board[board.board.length][board.board.length].types[board.board[board.board.length][board.board.length].meeple[anotherarray.get(k)]/3] == 2 && 
+	// 					board.board[board.board.length][board.board.length].completion[i] != 0 &&
+	// 					!(cities.contains(board.board[x][y].completion[i])) ){
+	// 						cities.add(board.board[x][y].completion[i]); 
+	// 						board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+	// 					}
+	// 				}
 
-					//check if there is a city connected to the 
-				}
+	// 				//check if there is a city connected to the 
+	// 			}
 				
-				else{System.out.println("oops");}
+	// 			else{System.out.println("oops");}
 				
-			}
-		}
+	// 		}
+	// 	}
 
-			for (int i = 0; i < 4; i++){
+	// 		for (int i = 0; i < 4; i++){
 				
-				if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
-					cities.add(board.board[x][y].completion[i]); 
-					board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
-				}
-			}
+	// 			if (board.board[x][y].types[i] == 2 && board.board[x][y].completion[i] != 0){
+	// 				cities.add(board.board[x][y].completion[i]); 
+	// 				board.players[board.board[x][y].meeple[0]].score += 3; //give current player +3 pts
+	// 			}
+	// 		}
 
-		} //this bracket closes the for loop at the top
+	// 	} //this bracket closes the for loop at the top
 
-	}
+	// }
 
-	public static int oppositeSide(int x) {  //opposite side on 12-point system
-		switch (x){
-			case 0, 1, 2, 6, 7, 8:
-				return 8 - x;
-			case 3, 4, 5, 9, 10, 11:
-				return 14 - x;
-			default:
-				return -69420;
-		}
-	}
+	// public static int oppositeSide(int x) {  //opposite side on 12-point system
+	// 	switch (x){
+	// 		case 0, 1, 2, 6, 7, 8:
+	// 			return 8 - x;
+	// 		case 3, 4, 5, 9, 10, 11:
+	// 			return 14 - x;
+	// 		default:
+	// 			return -69420;
+	// 	}
+	// }
 
 
 	
@@ -245,7 +244,10 @@ public class Board {
 	
 	public void generateTiles() {
 		for (int i = 0; i < 1; i++) {
-			tiles.add(new Tile("cornercityroad")); //done
+			tiles.add(new Tile("cornercity")); //done
+		}
+		for (int i = 0; i < 1; i++) {
+			tiles.add(new Tile("bowtiefield")); //done
 		}
 		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("1edgecity")); //done
@@ -259,7 +261,7 @@ public class Board {
 		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("Troad")); //done
 		}
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 			tiles.add(new Tile("bowtiefield")); //done
 		}
 		for (int i = 0; i < 8; i++) {
@@ -277,10 +279,10 @@ public class Board {
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("1road")); //done
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("cornercity")); //done
 		}
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			tiles.add(new Tile("cornercityroad")); //done
 		}
 		for (int i = 0; i < 3; i++) {
