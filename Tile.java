@@ -1,5 +1,7 @@
 package carcassonne;
 
+import java.util.Arrays;
+
 public class Tile {
 	//types: 0->field 1->road 2->city
 	//Later: shields, cathedrals, lakes, churches
@@ -149,6 +151,154 @@ public class Tile {
 			default:
 				break;
 		}
+	}
+
+	public int[] connects(int pos1) {
+		Tile newTile = this.copy();
+		newTile.meeple = new int[] {-1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1};
+		
+		if (placeMeeple(pos1, newTile)) {
+			return Arrays.copyOfRange(newTile.meeple, 2, 14);
+		}
+		
+		if (pos1 % 3 == 0) {
+			if (pos1 == 0) {
+				placeMeeple(10, newTile);
+				return Arrays.copyOfRange(newTile.meeple, 2, 14);
+			}
+			placeMeeple(pos1 - 2, newTile);
+			return Arrays.copyOfRange(newTile.meeple, 2, 14);
+		}
+
+		if (pos1 == 11) {
+			placeMeeple(1, newTile);
+			return Arrays.copyOfRange(newTile.meeple, 2, 14);
+		}
+		placeMeeple(pos1 + 2, newTile);
+		return Arrays.copyOfRange(newTile.meeple, 2, 14);
+	}
+
+	private boolean placeMeeple(int position, Tile tile) { // position is one of the 12 sides of tile
+		// New switch, case 1 edge, case 0 & 2 different side corners
+		switch (position % 3) {
+			case 1:
+				tile.meeple[1] = tile.types[position / 3];
+				if ((tile.types[(position) / 3] == 2)) {
+					// know it isn't 0 or 11
+					tile.meeple[position + 2] = 1;
+					tile.meeple[position + 1] = 1;
+					tile.meeple[position + 3] = 1;
+					for (int j = 0; j < 3; j++) {
+						if (position / 3 < j) {
+							if (tile.connected[position / 3][j] && tile.types[j + 1] == 2) {
+								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
+								tile.meeple[(j + 1) * 3 + 2] = 1;
+								tile.meeple[(j + 1) * 3 + 2 + 2] = 1;
+							}
+						} else if (tile.connected[position / 3][j] && tile.types[j] == 2) {
+							tile.meeple[j * 3 + 2 + 1] = 1;
+							tile.meeple[j * 3 + 2] = 1;
+							tile.meeple[j * 3 + 2 + 2] = 1;
+						}
+					}
+				} else if ((tile.types[(position) / 3] == 1)) {
+					tile.meeple[position + 2] = 1;
+					for (int j = 0; j < 3; j++) {
+						if (position / 3 < j) {
+							if (tile.connected[position / 3][j] && tile.types[j + 1] == 1) {
+								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
+								break;
+							}
+						} else if (tile.connected[position / 3][j] && tile.types[j] == 1) {
+							tile.meeple[j * 3 + 2 + 1] = 1;
+							break;
+						}
+					}
+				} else {
+					// field
+					tile.meeple[position + 2] = 1;
+					tile.meeple[position + 1] = 1;
+					tile.meeple[position + 3] = 1;
+					for (int j = 0; j < 3; j++) {
+						if (position / 3 < j) {
+							if (tile.connected[position / 3][j] && tile.types[j + 1] == 0) {
+								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
+								tile.meeple[(j + 1) * 3 + 2] = 1;
+								tile.meeple[(j + 1) * 3 + 2 + 2] = 1;
+							}
+						} else if (tile.connected[position / 3][j] && tile.types[j] == 0) {
+							tile.meeple[j * 3 + 2 + 1] = 1;
+							tile.meeple[j * 3 + 2] = 1;
+							tile.meeple[j * 3 + 2 + 2] = 1;
+						}
+					}
+					if (tile.types[(position / 3 + 1) % 4] == 0) {
+						tile.meeple[(position + 2) % 12 + 2] = 1;
+					}
+					if (tile.types[(position / 3 + 3) % 4] == 0) {
+						tile.meeple[(position - 2) % 12 + 2] = 1;
+					}
+
+					if (tile.type == "edgecityroadleft") {
+						tile.meeple[(position + 7) % 12 + 2] = 1;
+					} else if (tile.type == "edgecityroadright") {
+						tile.meeple[(position + 5) % 12 + 2] = 1;
+					}
+				}
+				break;
+			case 0:
+				// side must be road and meeple must be adjacent to non-field
+				if (tile.types[(position) / 3] != 1 || tile.types[((position) / 3 - 1) % 3] == 0) {
+					// destroy target player
+					tile.meeple[0] = -1;
+					tile.meeple[14] = -1;
+					return false;
+				}
+				if (tile.types[((position) / 3 - 1) % 3] == 1) {
+					tile.meeple[position + 2] = 1;
+					tile.meeple[(position - 1) % 12 + 2] = 1;
+				} else {
+					tile.meeple[position + 2] = 1;
+					if (tile.type == "cornercityroad") {
+						tile.meeple[(position + 5) % 12 + 2] = 1;
+					} else if ((tile.type == "edgecityroadt") || (tile.type == "edgecityroadstraight")) {
+						tile.meeple[(position + 8) % 12 + 2] = 1;
+					}
+				}
+				tile.meeple[1] = 0;
+				break;
+			case 2:
+				if (tile.types[(position) / 3] != 1 || tile.types[((position) / 3 + 1) % 3] == 0) {
+					tile.meeple[0] = -1;
+					tile.meeple[14] = -1;
+					return false;
+				}
+				if (tile.types[((position) / 3 + 1) % 3] == 1) {
+					tile.meeple[position + 2] = 1;
+					tile.meeple[(position + 1) % 12 + 2] = 1;
+				} else {
+					tile.meeple[position + 2] = 1;
+					if (tile.type == "cornercityroad") {
+						tile.meeple[(position + 7) % 12 + 2] = 1;
+					} else if ((tile.type == "edgecityroadt") || (tile.type == "edgecityroadstraight")) {
+						tile.meeple[(position + 4) % 12 + 2] = 1;
+					}
+				}
+				tile.meeple[1] = 0;
+				break;
+			default:
+				return false;
+		}
+		return true;
+	}
+	
+	public Tile copy() {
+		Tile ret = new Tile(this.types.clone(), this.connected.clone());
+		ret.type = this.type;
+		ret.meeple = this.meeple.clone();
+		ret.rotations = this.rotations;
+		ret.completion = this.completion.clone();
+		return ret;
 	}
 	
 	public String toString() {

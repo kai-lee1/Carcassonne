@@ -52,15 +52,19 @@ public class Board {
 
 				if (current.types[0] != -1){ //if current is not empty and has meeple
 					if(current.meeple[1] == 0){ //if meeple is on farm
-						ArrayList<Integer> cities = new ArrayList<Integer>();
-						endGameField(i, j, board, meeplesPresent, cities); //call endGameField on each side of the tile
+						// ArrayList<Integer> cities = new ArrayList<Integer>();
+						// endGameField(i, j, board, meeplesPresent, cities); //call endGameField on each side of the tile
+						Scorer s = new Scorer(board, i, j);
+						s.farmScore(i, j, board);
 					}
 					if(current.meeple[1] == 2){ //if meeple is on city
-						endGameCity(i, j, board);
+						Scorer s = new Scorer(board, i, j);
+						s.endCityScore(i, j, board);
 					}
 				}
 					if(current.meeple[1] == 1){ //if meeple is on road
-						endGameRoad(i, j, board);
+						Scorer s = new Scorer(board, i, j);
+						s.endRoadScore(i, j, board);
 					}
 				}
 			}
@@ -187,18 +191,6 @@ public class Board {
 
 		} //this bracket closes the for loop at the top
 
-}
-
-	public void endGameRoad(int x, int y, Board board){
-		Scorer s = new Scorer(board, x, y);
-		s.endRoadScore(x, y, board);
-		return;
-	}
-
-	public void endGameCity(int x, int y, Board board){
-		Scorer s = new Scorer(board, x, y);
-		s.endCityScore(x, y, board);
-		return;
 	}
 
 	public static int oppositeSide(int x) {  //opposite side on 12-point system
@@ -252,6 +244,9 @@ public class Board {
 	}
 	
 	public void generateTiles() {
+		for (int i = 0; i < 3; i++) {
+			tiles.add(new Tile("edgecityroadt")); //done
+		}
 		for (int i = 0; i < 1; i++) {
 			tiles.add(new Tile("Lroad")); //done
 		}
@@ -297,9 +292,6 @@ public class Board {
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("edgecityroadright")); //done
 		}
-		for (int i = 0; i < 3; i++) {
-			tiles.add(new Tile("edgecityroadt")); //done
-		}
 		for (int i = 0; i < 8; i++) {
 			tiles.add(new Tile("straightroad")); //done
 		}
@@ -308,6 +300,6 @@ public class Board {
 		}
 		
 		
-		Collections.shuffle(tiles);
+		// Collections.shuffle(tiles);
 	}
 }

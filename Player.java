@@ -200,9 +200,9 @@ public class Player {
 				} else {
 					tile.meeple[position + 2] = 1;
 					if (tile.type == "cornercityroad") {
-						tile.meeple[(position - 5) % 12 + 2] = 1;
+						tile.meeple[(position + 7) % 12 + 2] = 1;
 					} else if ((tile.type == "edgecityroadt") || (tile.type == "edgecityroadstraight")) {
-						tile.meeple[(position - 8) % 12 + 2] = 1;
+						tile.meeple[(position + 4) % 12 + 2] = 1;
 					}
 				}
 				tile.meeple[1] = 0;

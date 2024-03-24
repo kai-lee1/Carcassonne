@@ -11,7 +11,7 @@ public class CarcassonneMain {
 	static Input inp = new Input();
 	static boolean ready = false;
 	static long endWaitTime = System.currentTimeMillis() + 500*1000;
-	static int cityCount = 0;
+	static int cityCount = 1;
 	static boolean end = false;
 	static Board board;
 

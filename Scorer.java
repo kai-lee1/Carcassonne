@@ -1,6 +1,9 @@
 package carcassonne;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.lang.Math;
+import java.util.Arrays;
 
 public class Scorer {
 	public int score;
@@ -725,6 +728,141 @@ public class Scorer {
 					break;
 			}
 			cityScoreEnd(xy[0], xy[1], board, (i + 2) % 4);
+		}
+	}
+
+	public void farmScore(int x, int y, Board board) {
+		HashMap<Integer, int[]> visited = new HashMap<Integer, int[]>();
+		int[] cities = new int[CarcassonneMain.cityCount];
+		for (int i = 0; i < cities.length; i++) {
+			cities[i] = 0;
+		}
+		for (int i = 0; i < board.board.length; i++) {
+			for (int j = 0; j < board.board[i].length; j++) {
+				visited.put(i * 1000 + j, new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+			}
+		}
+
+		System.out.println(Arrays.toString(new int[] { x, y }));
+		System.out.println(Arrays.toString(board.board[x][y].completion));
+
+		farmScoreLoop(x, y, board, visited, board.board[x][y].meeple[14], cities);
+		
+		int newSide = oppositeSide(board.board[x][y].meeple[14]);
+		int[] xy;
+		switch (board.board[x][y].meeple[14]) {
+			case 0:
+				xy = new int[] { x, y - 1 };
+				break;
+			case 1:
+				xy = new int[] { x + 1, y };
+				break;
+			case 2:
+				xy = new int[] { x, y + 1 };
+				break;
+			case 3:
+				xy = new int[] { x - 1, y };
+				break;
+			default:
+				xy = new int[] { 0, 0 };
+				break;
+		}
+
+		farmScoreLoop(xy[0], xy[1], board, visited, newSide, cities);
+
+		for (int i = 0; i < cities.length; i++) {
+			if (cities[i] == 1) {
+				board.players[board.board[x][y].meeple[0]].score += 3;
+			}
+		}
+		// int[] connecteds = board.board[x][y].connects(board.board[x][y].meeple[14]);
+		// for (int i = 0; i < connecteds.length; i++) {
+		// 	if (connecteds[i] == 1) {
+		// 		int newSide = oppositeSide(i);
+				
+		// 	}
+		// }
+	}
+
+	private void farmScoreLoop(int x, int y, Board board, HashMap<Integer, int[]> visited, int pos, int[] cities) {
+		if (x < 0 || y < 0 || x >= board.board.length || y >= board.board[0].length) {
+			return;
+		}
+
+		if (board.board[x][y].types[0] == -1) {
+			return;
+		}
+
+		if (visited.get(x * 1000 + y)[pos] == 1) {
+			return;
+		}
+
+		visited.get(x * 1000 + y)[pos] = 1;
+
+		for (int i = 0; i < 4; i++) {
+			if (board.board[x][y].types[i] == 2 && fieldCityConnected(board.board[x][y], pos, i) && board.board[x][y].completion[i] != 0) {
+				cities[board.board[x][y].completion[i]] = 1;
+			}
+		}
+
+		int[] connecteds = board.board[x][y].connects(pos);
+		for (int i = 0; i < connecteds.length; i++) {
+			if (connecteds[i] == 1) {
+				int newSide = oppositeSide(i);
+				int[] xy;
+				switch (i) {
+					case 0:
+						xy = new int[] { x, y - 1 };
+						break;
+					case 1:
+						xy = new int[] { x + 1, y };
+						break;
+					case 2:
+						xy = new int[] { x, y + 1 };
+						break;
+					case 3:
+						xy = new int[] { x - 1, y };
+						break;
+					default:
+						xy = new int[] { 0, 0 };
+						break;
+				}
+				farmScoreLoop(xy[0], xy[1], board, visited, newSide, cities);
+			}
+		}
+	}
+
+	private static boolean fieldCityConnected(Tile tile, int fieldPos, int citySide) {
+		int[] connecteds = tile.connects(fieldPos);
+		for (int i = 0; i < connecteds.length; i++) {
+			if (connecteds[i] == 1 && (i + 1) % 3 == 0) {
+				if (i / 3 < citySide) {
+					if (tile.connected[i / 3][citySide - 1]) {
+						return true;
+					}
+				}
+			}
+		}
+
+		if (Math.abs((citySide * 3 + 1) - fieldPos) == 2) {
+			return true;
+		}
+
+		if (fieldPos == 0 && citySide == 3) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	private static int oppositeSide(int x) {  //opposite side on 12-point system
+		switch (x){
+			case 0, 1, 2, 6, 7, 8:
+				return 8 - x;
+			case 3, 4, 5, 9, 10, 11:
+				return 14 - x;
+			default:
+				return -69420;
 		}
 	}
 }
