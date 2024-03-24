@@ -300,6 +300,6 @@ public class Board {
 		}
 		
 		
-		// Collections.shuffle(tiles);
+		Collections.shuffle(tiles);
 	}
 }
