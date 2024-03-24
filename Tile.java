@@ -220,23 +220,35 @@ public class Tile {
 					tile.meeple[position + 1] = 1;
 					tile.meeple[position + 3] = 1;
 					for (int j = 0; j < 3; j++) {
-						if (position / 3 < j) {
+						if (position / 3 <= j) {
 							if (tile.connected[position / 3][j] && tile.types[j + 1] == 0) {
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2] = 1;
 								tile.meeple[(j + 1) * 3 + 2 + 2] = 1;
+								if (tile.types[j] == 1) {
+									tile.meeple[(j * 3 + 2 + 2) % 12] = 1;
+								}
+								if (tile.types[(j + 2) % 4] == 1) {
+									tile.meeple[(((j + 2) % 4) * 3 + 2) % 12] = 1;
+								}
 							}
 						} else if (tile.connected[position / 3][j] && tile.types[j] == 0) {
 							tile.meeple[j * 3 + 2 + 1] = 1;
 							tile.meeple[j * 3 + 2] = 1;
 							tile.meeple[j * 3 + 2 + 2] = 1;
+							if (tile.types[(j + 3) % 4] == 1) {
+								tile.meeple[(((j + 3) % 4) * 3 + 2 + 2) % 12] = 1;
+							}
+							if (tile.types[(j + 1) % 4] == 1) {
+								tile.meeple[((j + 1) * 3 + 2) % 12] = 1;
+							}
 						}
 					}
-					if (tile.types[(position / 3 + 1) % 4] == 0) {
+					if (tile.types[(position / 3 + 1) % 4] == 1) {
 						tile.meeple[(position + 2) % 12 + 2] = 1;
 					}
-					if (tile.types[(position / 3 + 3) % 4] == 0) {
-						tile.meeple[(position - 2) % 12 + 2] = 1;
+					if (tile.types[(position / 3 + 3) % 4] == 1) {
+						tile.meeple[(position + 10) % 12 + 2] = 1;
 					}
 
 					if (tile.type == "edgecityroadleft") {

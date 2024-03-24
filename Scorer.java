@@ -180,8 +180,6 @@ public class Scorer {
 						if (meeplesPresent[k] == 1) {
 							board.players[k].score += tiletracker.size() * 2;
 							// removing meeples after city finishes scoring
-
-							board.players[k].meepleCount++;
 						}
 					}
 					this.tiletracker = new ArrayList<Tile>();
@@ -408,7 +406,7 @@ public class Scorer {
 				tiletracker.add(new EmptyTile());
 				return;
 			}
-			board.board[x][y].completion[sides.get(j)] = CarcassonneMain.cityCount;
+			board.board[x][y].completion[j] = CarcassonneMain.cityCount;
 			sweepCityMeeples(xy[0], xy[1], board, (j + 2) % 4);
 		}
 	}
@@ -449,7 +447,8 @@ public class Scorer {
 		// tile (old checkingTile) we are checking
 		int[] xy;
 		for (int i = 0; i < sides.size(); i++) {
-			switch (i) {
+			int j = sides.get(i);
+			switch (j) {
 				case 0:
 					xy = new int[] { x, y - 1 };
 					break;
@@ -470,7 +469,7 @@ public class Scorer {
 				tiletracker.add(new EmptyTile());
 				return;
 			}
-			cityScore(xy[0], xy[1], board, meeplesPresent, (i + 2) % 4);
+			cityScore(xy[0], xy[1], board, meeplesPresent, (j + 2) % 4);
 		}
 	}
 
@@ -744,7 +743,7 @@ public class Scorer {
 		}
 
 		System.out.println(Arrays.toString(new int[] { x, y }));
-		System.out.println(Arrays.toString(board.board[x][y].completion));
+		System.out.println(Arrays.toString(board.board[x][y].connects(board.board[x][y].meeple[14])));
 
 		farmScoreLoop(x, y, board, visited, board.board[x][y].meeple[14], cities);
 		
@@ -768,7 +767,7 @@ public class Scorer {
 				break;
 		}
 
-		farmScoreLoop(xy[0], xy[1], board, visited, newSide, cities);
+		// farmScoreLoop(xy[0], xy[1], board, visited, newSide, cities);
 
 		for (int i = 0; i < cities.length; i++) {
 			if (cities[i] == 1) {
@@ -810,7 +809,7 @@ public class Scorer {
 			if (connecteds[i] == 1) {
 				int newSide = oppositeSide(i);
 				int[] xy;
-				switch (i) {
+				switch (i / 3) {
 					case 0:
 						xy = new int[] { x, y - 1 };
 						break;

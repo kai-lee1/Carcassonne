@@ -107,7 +107,7 @@ public class Player {
 					tile.meeple[position + 1] = 1;
 					tile.meeple[position + 3] = 1;
 					for (int j = 0; j < 3; j++) {
-						if (position / 3 < j) {
+						if (position / 3 <= j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 2) {
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2] = 1;
@@ -121,7 +121,7 @@ public class Player {
 					}
 				} else if ((tile.types[(position) / 3] == 1)) {
 					tile.meeple[position + 2] = 1;
-					for (int j = 0; j < 3; j++) {
+					for (int j = 0; j <= 3; j++) {
 						if (position / 3 < j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 1) {
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
@@ -139,7 +139,7 @@ public class Player {
 					tile.meeple[position + 1] = 1;
 					tile.meeple[position + 3] = 1;
 					for (int j = 0; j < 3; j++) {
-						if (position / 3 < j) {
+						if (position / 3 <= j) {
 							if (board.board[x][y].connected[position / 3][j] && board.board[x][y].types[j + 1] == 0) {
 								tile.meeple[(j + 1) * 3 + 2 + 1] = 1;
 								tile.meeple[(j + 1) * 3 + 2] = 1;

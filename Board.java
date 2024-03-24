@@ -244,6 +244,12 @@ public class Board {
 	}
 	
 	public void generateTiles() {
+		for (int i = 0; i < 1; i++) {
+			tiles.add(new Tile("cornercityroad")); //done
+		}
+		for (int i = 0; i < 1; i++) {
+			tiles.add(new Tile("1edgecity")); //done
+		}
 		for (int i = 0; i < 3; i++) {
 			tiles.add(new Tile("edgecityroadt")); //done
 		}
@@ -274,7 +280,7 @@ public class Board {
 		for (int i = 0; i < 5; i++) {
 			tiles.add(new Tile("cornercity")); //done
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("cornercityroad")); //done
 		}
 		for (int i = 0; i < 3; i++) {
@@ -283,7 +289,7 @@ public class Board {
 		for (int i = 0; i < 2; i++) {
 			tiles.add(new Tile("2adjacentcity")); //done
 		}
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 4; i++) {
 			tiles.add(new Tile("1edgecity")); //done
 		}
 		for (int i = 0; i < 3; i++) {
