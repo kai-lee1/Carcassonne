@@ -38,12 +38,13 @@ public class CarcassonneMain {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, table, input);
 		f.getContentPane().add(splitPane);
 		f.pack();
-		f.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		splitPane.setDividerLocation(splitPane.getSize().width - 250);
+		f.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		//f.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		GUI.sp.getVerticalScrollBar().setValue(pos[1]);
         GUI.sp.getHorizontalScrollBar().setValue(pos[0]);
 		f.repaint();
 		f.setVisible(true);
+		splitPane.setDividerLocation(0.85);
 	}
 
 	public static void waitButton() {
