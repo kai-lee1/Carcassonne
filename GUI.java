@@ -72,6 +72,9 @@ class ImageRenderer extends DefaultTableCellRenderer {
     ImageIcon straightroad = new ImageIcon(getClass().getResource("res/straightroad.png"));
     ImageIcon troad = new ImageIcon(getClass().getResource("res/Troad.png"));
     ImageIcon meeple = new ImageIcon(getClass().getResource("res/meeple.png"));
+    ImageIcon meepley = new ImageIcon(getClass().getResource("res/meepleyellow.png"));
+    ImageIcon meepleg = new ImageIcon(getClass().getResource("res/meeplegreen.png"));
+
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         // if (value.equals("emptytile.png"))
@@ -144,7 +147,16 @@ class ImageRenderer extends DefaultTableCellRenderer {
         g.setTransform(old);
         if (((Tile) value).meeple[14] != -1) {
             int[] pos = meeplePos(((Tile) value).meeple[14]);
-            g.drawImage(meeple.getImage(), pos[0], pos[1], null);
+            if (((Tile)value).meeple[0] == 0) {
+                g.drawImage(meeple.getImage(), pos[0], pos[1], null);
+            }
+            else if (((Tile)value).meeple[0] == 1) {
+                g.drawImage(meepley.getImage(), pos[0], pos[1], null);
+            }
+            else if (((Tile)value).meeple[0] == 2) {
+                g.drawImage(meepleg.getImage(), pos[0], pos[1], null);
+            }
+            
         }
         g.dispose();
         lbl.setIcon(new ImageIcon(combined));
