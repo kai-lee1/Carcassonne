@@ -60,13 +60,13 @@ public class Board {
 						Scorer s = new Scorer(board, i, j);
 						s.endCityScore(i, j, board);
 					}
-				}
 					if(current.meeple[1] == 1){ //if meeple is on road
 						Scorer s = new Scorer(board, i, j);
 						s.endRoadScore(i, j, board);
 					}
 				}
 			}
+		}
 		
 		// System.out.println("game has been ended");
 	}
