@@ -1,8 +1,3 @@
-
-import tkinter as tk
-from PIL import Image, ImageTk
-import CarcassonneMain, Input, Player, Scorer, Tile, EmptyTile
-
 class GUI:
     def __init__(self, board):
         self.board = board

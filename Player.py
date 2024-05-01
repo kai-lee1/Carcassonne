@@ -1,5 +1,3 @@
-import CarcassonneMain, GUI, Input, Player, Scorer, Tile, EmptyTile
-
 class Player:
     def __init__(self):
         self.meeple_count = 7

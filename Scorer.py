@@ -1,5 +1,3 @@
-import CarcassonneMain, GUI, Input, Player, Scorer, Tile, EmptyTile
-
 class Scorer:
     def __init__(self, board, x, y):
         self.score = 0

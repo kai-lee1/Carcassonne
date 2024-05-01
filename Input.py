@@ -1,7 +1,3 @@
-import tkinter as tk
-from tkinter import messagebox
-import CarcassonneMain, GUI, Input, Player, Scorer, Tile, EmptyTile
-
 class Input:
     def __init__(self, master):
         self.master = master

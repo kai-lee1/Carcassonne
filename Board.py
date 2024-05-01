@@ -1,15 +1,3 @@
-
-import random
-from CarcassonneMain import *
-from Tile import *
-from GUI import *
-from Player import *
-from Scorer import *
-from Input import *
-from EmptyTile import *
-
-
-
 class Board:
     def __init__(self, player_count):
         self.turn_count = 0
